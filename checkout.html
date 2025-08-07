@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Palm Beach Pass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --palm-green: #2D5016;
+            --ocean-blue: #006B7D;
+            --sand: #FAF3E3;
+            --coral: #FF6B6B;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --success: #10B981;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #FAF3E3 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .checkout-header {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .logo-text span {
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .checkout-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .step.active {
+            color: var(--palm-green);
+            font-weight: 500;
+        }
+
+        .step.completed {
+            color: var(--ocean-blue);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            background: white;
+        }
+
+        .step.active .step-number {
+            background: var(--palm-green);
+            color: white;
+            border-color: var(--palm-green);
+        }
+
+        .step.completed .step-number {
+            background: var(--ocean-blue);
+            color: white;
+            border-color: var(--ocean-blue);
+        }
+
+        /* Main Content */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+        }
+
+        /* Left Column - Forms */
+        .checkout-main {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--palm-green);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .form-section {
+            margin-bottom: 3rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+            box-shadow: 0 0 0 3px rgba(0,107,125,0.1);
+        }
+
+        .form-group input.error {
+            border-color: var(--coral);
+        }
+
+        .error-message {
+            color: var(--coral);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Pass Quantity Selector */
+        .pass-selector {
+            background: var(--sand);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pass-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .pass-type:last-child {
+            margin-bottom: 0;
+        }
+
+        .pass-info {
+            flex: 1;
+        }
+
+        .pass-name {
+            font-weight: 600;
+            color: var(--palm-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .pass-price {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: var(--palm-green);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: var(--ocean-blue);
+        }
+
+        .qty-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .qty-value {
+            width: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .payment-method:hover {
+            border-color: var(--ocean-blue);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: var(--palm-green);
+            background: linear-gradient(135deg, rgba(45,80,22,0.05), rgba(0,107,125,0.05));
+        }
+
+        .payment-method .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-method .label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* Credit Card Form */
+        .card-visual {
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .card-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .card-number-display {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-holder {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Right Column - Order Summary */
+        .order-summary {
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-header {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--palm-green);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .item-details h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-details p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .item-price {
+            text-align: right;
+        }
+
+        .price-main {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .price-qty {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .summary-totals {
+            padding-top: 1rem;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .total-row.final {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--palm-green);
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .promo-code {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .promo-code input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .btn-apply {
+            padding: 0.75rem 1.5rem;
+            background: var(--ocean-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-apply:hover {
+            background: var(--palm-green);
+        }
+
+        /* Action Buttons */
+        .checkout-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-back {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-dark);
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-back:hover {
+            border-color: var(--ocean-blue);
+            color: var(--ocean-blue);
+        }
+
+        .btn-continue {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-continue:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Security badges */
+        .security-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .security-badge .icon {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-modal.active {
+            display: flex;
+        }
+
+        .success-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .success-content h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--palm-green);
+        }
+
+        .success-content p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .order-number {
+            background: var(--sand);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--palm-green);
+            font-weight: 600;
+        }
+
+        .btn-view-passes {
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-view-passes:hover {
+            background: var(--ocean-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0,0,0,0.1);
+            border-top-color: var(--palm-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--palm-green);
+            font-size: 1.1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: relative;
+                top: 0;
+            }
+
+            .checkout-steps {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--palm-green);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="checkout-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🌴</div>
+                <div class="logo-text">Palm Beach <span>Pass</span></div>
+            </a>
+            
+            <div class="checkout-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <span>Details</span>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <span>Payment</span>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span>Confirm</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="checkout-container">
+        <!-- Left Column -->
+        <div class="checkout-main">
+            <!-- Pass Selection -->
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="icon">🎫</div>
+                    <span>Select Your Passes</span>
+                </div>
+                
+                <div class="pass-selector">
+                    <div class="pass-type">
+                        <div class="pass-info">
+                            <div class="pass-name">Adult Pass</div>
+                            <div class="pass-price">$189 per pass</div>
+                        </div>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="updateQuantity('adult', -1)">−</button>
+                            <div class="qty-value" id="adultQty">1</div>
+                            <button class="qty-btn" onclick="updateQuantity('adult', 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pass-type">
+                        <div class="pass-info">
+                            <div class="pass-name">Child Pass</div>
+                            <div class="pass-price">$149 per pass (Ages 3-12)</div>
+                        </div>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="updateQuantity('child', -1)">−</button>
+                            <div class="qty-value" id="childQty">0</div>
+                            <button class="qty-btn" onclick="updateQuantity('child', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest Information -->
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="icon">👤</div>
+                    <span>Guest Information</span>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" placeholder="(561) 555-0123">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="icon">💳</div>
+                    <span>Payment Method</span>
+                </div>
+                
+                <div class="payment-methods">
+                    <div class="payment-method selected" onclick="selectPayment('card')">
+                        <div class="icon">💳</div>
+                        <div class="label">Credit Card</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('paypal')">
+                        <div class="icon">🅿️</div>
+                        <div class="label">PayPal</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('apple')">
+                        <div class="icon">🍎</div>
+                        <div class="label">Apple Pay</div>
+                    </div>
+                </div>
+
+                <div class="card-visual">
+                    <div class="card-number-display" id="cardDisplay">•••• •••• •••• ••••</div>
+                    <div class="card-details">
+                        <div class="card-holder" id="cardHolderDisplay">CARDHOLDER NAME</div>
+                        <div class="card-holder" id="cardExpiryDisplay">MM/YY</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cardholder Name</label>
+                        <input type="text" id="cardName" placeholder="John Doe" oninput="updateCardDisplay()">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Month</label>
+                        <select id="expiryMonth" onchange="updateCardDisplay()">
+                            <option value="">Month</option>
+                            <option value="01">01 - January</option>
+                            <option value="02">02 - February</option>
+                            <option value="03">03 - March</option>
+                            <option value="04">04 - April</option>
+                            <option value="05">05 - May</option>
+                            <option value="06">06 - June</option>
+                            <option value="07">07 - July</option>
+                            <option value="08">08 - August</option>
+                            <option value="09">09 - September</option>
+                            <option value="10">10 - October</option>
+                            <option value="11">11 - November</option>
+                            <option value="12">12 - December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Year</label>
+                        <select id="expiryYear" onchange="updateCardDisplay()">
+                            <option value="">Year</option>
+                            <option value="25">2025</option>
+                            <option value="26">2026</option>
+                            <option value="27">2027</option>
+                            <option value="28">2028</option>
+                            <option value="29">2029</option>
+                            <option value="30">2030</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Address -->
+            <div class="form-section">
+                <div class="section-title">
+                    <div class="icon">📍</div>
+                    <span>Billing Address</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <input type="text" id="address" placeholder="123 Ocean Drive">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="city" placeholder="Palm Beach">
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <select id="state">
+                            <option value="FL" selected>Florida</option>
+                            <option value="NY">New York</option>
+                            <option value="CA">California</option>
+                            <option value="TX">Texas</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ZIP Code</label>
+                        <input type="text" id="zip" placeholder="33480" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select id="country">
+                            <option value="US" selected>United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="checkout-actions">
+                <button class="btn-back" onclick="window.location.href='index.html'">← Back</button>
+                <button class="btn-continue" onclick="processPayment()">Complete Purchase</button>
+            </div>
+
+            <!-- Security Badges -->
+            <div class="security-badges">
+                <div class="security-badge">
+                    <span class="icon">🔒</span>
+                    <span>Secure Checkout</span>
+                </div>
+                <div class="security-badge">
+                    <span class="icon">✓</span>
+                    <span>SSL Encrypted</span>
+                </div>
+                <div class="security-badge">
+                    <span class="icon">🛡️</span>
+                    <span>PCI Compliant</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Order Summary -->
+        <div class="order-summary">
+            <div class="summary-card">
+                <h3 class="summary-header">Order Summary</h3>
+                
+                <div id="orderItems">
+                    <div class="summary-item">
+                        <div class="item-details">
+                            <h4>3 Day Pass</h4>
+                            <p>Valid for 72 hours from first use</p>
+                        </div>
+                        <div class="item-price">
+                            <div class="price-main">$189</div>
+                            <div class="price-qty">Adult × 1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="promo-code">
+                    <input type="text" placeholder="Promo code" id="promoCode">
+                    <button class="btn-apply" onclick="applyPromo()">Apply</button>
+                </div>
+                
+                <div class="summary-totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$189.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (6.5%)</span>
+                        <span id="tax">$12.29</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Processing Fee</span>
+                        <span>$4.99</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total</span>
+                        <span id="total">$206.28</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1rem; background: var(--sand); border-radius: 10px;">
+                    <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.5;">
+                        <strong style="color: var(--palm-green);">✓ Instant Delivery:</strong> Your digital passes will be available immediately after purchase.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">✓</div>
+            <h2>Purchase Complete!</h2>
+            <p>Your Palm Beach Pass has been successfully purchased and is ready to use.</p>
+            <div class="order-number">Order #PB-2025-0847</div>
+            <p style="font-size: 0.9rem;">We've sent a confirmation email with your passes and receipt.</p>
+            <button class="btn-view-passes" onclick="viewPasses()">View My Passes</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div style="text-align: center;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing your payment...</div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with cart data
+        let cartData = {
+            passType: '3-day',
+            adult: 1,
+            child: 0,
+            adultPrice: 189,
+            childPrice: 149
+        };
+
+        // Load cart from localStorage
+        window.onload = function() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const cart = JSON.parse(savedCart);
+                if (cart.length > 0) {
+                    // Update prices based on pass type
+                    const pass = cart[0];
+                    cartData.adultPrice = pass.adult;
+                    cartData.childPrice = pass.child;
+                    updateOrderSummary();
+                }
+            }
+            
+            // Pre-fill if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.email) {
+                document.getElementById('email').value = currentUser.email;
+            }
+        };
+
+        // Update quantity
+        function updateQuantity(type, change) {
+            if (type === 'adult') {
+                cartData.adult = Math.max(0, cartData.adult + change);
+                document.getElementById('adultQty').textContent = cartData.adult;
+            } else {
+                cartData.child = Math.max(0, cartData.child + change);
+                document.getElementById('childQty').textContent = cartData.child;
+            }
+            updateOrderSummary();
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const subtotal = (cartData.adult * cartData.adultPrice) + (cartData.child * cartData.childPrice);
+            const tax = subtotal * 0.065;
+            const processingFee = 4.99;
+            const total = subtotal + tax + processingFee;
+            
+            // Update items display
+            let itemsHTML = '';
+            if (cartData.adult > 0) {
+                itemsHTML += `
+                    <div class="summary-item">
+                        <div class="item-details">
+                            <h4>3 Day Pass</h4>
+                            <p>Valid for 72 hours from first use</p>
+                        </div>
+                        <div class="item-price">
+                            <div class="price-main">$${cartData.adultPrice}</div>
+                            <div class="price-qty">Adult × ${cartData.adult}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            if (cartData.child > 0) {
+                itemsHTML += `
+                    <div class="summary-item">
+                        <div class="item-details">
+                            <h4>3 Day Pass</h4>
+                            <p>Child (Ages 3-12)</p>
+                        </div>
+                        <div class="item-price">
+                            <div class="price-main">$${cartData.childPrice}</div>
+                            <div class="price-qty">Child × ${cartData.child}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            orderItems.innerHTML = itemsHTML;
+            
+            // Update totals
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Payment method selection
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            if (method === 'paypal' || method === 'apple') {
+                showToast(`${method === 'paypal' ? 'PayPal' : 'Apple Pay'} integration coming soon!`);
+            }
+        }
+
+        // Format card number
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+            
+            // Update card display
+            if (value.length > 0) {
+                const display = value.match(/.{1,4}/g)?.map((group, index) => {
+                    return index === 0 || index === 3 ? group : '••••';
+                }).join(' ') || '•••• •••• •••• ••••';
+                document.getElementById('cardDisplay').textContent = display;
+            }
+        }
+
+        // Update card display
+        function updateCardDisplay() {
+            const name = document.getElementById('cardName').value;
+            const month = document.getElementById('expiryMonth').value;
+            const year = document.getElementById('expiryYear').value;
+            
+            if (name) {
+                document.getElementById('cardHolderDisplay').textContent = name.toUpperCase();
+            }
+            
+            if (month && year) {
+                document.getElementById('cardExpiryDisplay').textContent = `${month}/${year}`;
+            }
+        }
+
+        // Apply promo code
+        function applyPromo() {
+            const code = document.getElementById('promoCode').value;
+            if (code.toUpperCase() === 'PALM10') {
+                showToast('Promo code applied! 10% discount added.');
+                // Update totals with discount
+                updateOrderSummary();
+            } else if (code) {
+                showToast('Invalid promo code', 'error');
+            }
+        }
+
+        // Process payment
+        function processPayment() {
+            // Validate form
+            const required = ['firstName', 'lastName', 'email', 'phone', 'cardNumber', 'cardName', 'cvv', 'address', 'city', 'zip'];
+            let isValid = true;
+            
+            required.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value) {
+                    input.classList.add('error');
+                    isValid = false;
+                } else {
+                    input.classList.remove('error');
+                }
+            });
+            
+            if (!document.getElementById('expiryMonth').value || !document.getElementById('expiryYear').value) {
+                isValid = false;
+                showToast('Please select card expiry date', 'error');
+            }
+            
+            if (cartData.adult === 0 && cartData.child === 0) {
+                isValid = false;
+                showToast('Please select at least one pass', 'error');
+            }
+            
+            if (!isValid) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingOverlay').classList.add('active');
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Hide loading
+                document.getElementById('loadingOverlay').classList.remove('active');
+                
+                // Generate passes data
+                const passes = [];
+                for (let i = 0; i < cartData.adult; i++) {
+                    passes.push({
+                        id: `PB${Math.floor(Math.random() * 900) + 100}-3D-ADT-${String(i + 1).padStart(3, '0')}`,
+                        type: '3-day',
+                        category: 'adult',
+                        status: 'active',
+                        purchaseDate: new Date().toISOString()
+                    });
+                }
+                for (let i = 0; i < cartData.child; i++) {
+                    passes.push({
+                        id: `PB${Math.floor(Math.random() * 900) + 100}-3D-CHD-${String(i + 1).padStart(3, '0')}`,
+                        type: '3-day',
+                        category: 'child',
+                        status: 'active',
+                        purchaseDate: new Date().toISOString()
+                    });
+                }
+                
+                // Save passes to localStorage
+                localStorage.setItem('userPasses', JSON.stringify(passes));
+                localStorage.setItem('lastOrder', JSON.stringify({
+                    orderNumber: 'PB-2025-0847',
+                    date: new Date().toISOString(),
+                    total: document.getElementById('total').textContent
+                }));
+                
+                // Clear cart
+                localStorage.removeItem('cart');
+                
+                // Show success modal
+                document.getElementById('successModal').classList.add('active');
+            }, 2000);
+        }
+
+        // View passes
+        function viewPasses() {
+            window.location.href = 'customer-passes.html';
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.style.background = 'var(--coral)';
+            }
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Update steps when user progresses
+        function updateSteps(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s, index) => {
+                if (index < step) {
+                    s.classList.add('completed');
+                    s.classList.remove('active');
+                } else if (index === step) {
+                    s.classList.add('active');
+                    s.classList.remove('completed');
+                } else {
+                    s.classList.remove('active', 'completed');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
