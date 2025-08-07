@@ -980,7 +980,7 @@
                     <button class="tab-btn active" onclick="switchTab('history')">Scan History</button>
                     <button class="tab-btn" onclick="switchTab('analytics')">Analytics</button>
                     <button class="tab-btn" id="staffTab" onclick="switchTab('staff')" style="display: none;">Staff Management</button>
-                    <button class="tab-btn" id="settingsTab" onclick="switchTab('settings')" style="display: none;">Settings</button>
+                    <button class="tab-btn" id="settingsTab" onclick="switchTab('settings')" style="display: none;">Attraction Settings</button>
                 </div>
 
                 <!-- Scan History Tab -->
@@ -1092,26 +1092,214 @@
                 <div class="tab-content" id="settings-tab">
                     <div class="employee-section">
                         <div class="section-header">
-                            <h2 class="section-title">Venue Settings</h2>
+                            <h2 class="section-title">Attraction Management</h2>
+                            <button class="btn-add" onclick="previewAttraction()">Preview on Customer Site</button>
                         </div>
                         
+                        <!-- Attraction Profile Section -->
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; padding: 2rem;">
+                            <!-- Image Upload Section -->
+                            <div>
+                                <label class="form-label">Attraction Images</label>
+                                <div style="background: linear-gradient(135deg, var(--ocean-blue), var(--palm-green)); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; margin-bottom: 1rem;">
+                                    🦁
+                                </div>
+                                <button class="btn-scan" style="width: 100%; margin-bottom: 0.5rem;" onclick="uploadImage()">📷 Upload Main Image</button>
+                                <button class="btn-action btn-edit" style="width: 100%;" onclick="uploadGallery()">+ Add Gallery Images (0/6)</button>
+                            </div>
+                            
+                            <!-- Basic Information -->
+                            <div>
+                                <h3 style="margin-bottom: 1rem; color: var(--purple);">Basic Information</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Attraction Name</label>
+                                    <input type="text" class="form-input" id="attractionName" value="Lion Country Safari">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" id="attractionCategory">
+                                        <option value="outdoor" selected>Outdoor Adventure</option>
+                                        <option value="family">Family Fun</option>
+                                        <option value="culture">Culture & Museums</option>
+                                        <option value="dining">Dining Experience</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="shopping">Shopping</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Short Description (Shows in card)</label>
+                                    <textarea class="form-input" rows="3" id="shortDescription">Drive through 4 miles of open range habitat with over 1,000 animals roaming free.</textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Full Description</label>
+                                    <textarea class="form-input" rows="5" id="fullDescription">Experience Florida's first cageless zoo! Lion Country Safari is a drive-through safari park and walk-through amusement park on over 600 acres. Home to over 1,000 animals including lions, giraffes, zebras, rhinos, and chimpanzees. Enjoy animal encounters, feeding experiences, and our splash pad perfect for cooling off.</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Operating Hours & Pricing -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 0 2rem;">
+                            <div>
+                                <h3 style="margin-bottom: 1rem; color: var(--purple);">Operating Hours</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Monday - Friday</label>
+                                    <input type="text" class="form-input" value="9:30 AM - 5:30 PM">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Saturday - Sunday</label>
+                                    <input type="text" class="form-input" value="9:00 AM - 6:00 PM">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Special Hours</label>
+                                    <input type="text" class="form-input" placeholder="Holiday hours, seasonal changes...">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 style="margin-bottom: 1rem; color: var(--purple);">Pricing (Without Pass)</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Adult Price</label>
+                                    <input type="text" class="form-input" value="$39.95">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Child Price (3-12)</label>
+                                    <input type="text" class="form-input" value="$29.95">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Value with Pass</label>
+                                    <input type="text" class="form-input" value="FREE with Palm Beach Pass" style="background: var(--sand); font-weight: 600;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Features & Amenities -->
                         <div style="padding: 2rem;">
-                            <div class="form-group">
-                                <label class="form-label">Venue Name</label>
-                                <input type="text" class="form-input" value="Lion Country Safari">
+                            <h3 style="margin-bottom: 1rem; color: var(--purple);">Features & Amenities</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> 🅿️ Free Parking
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> ♿ Wheelchair Accessible
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> 🍔 Food & Dining
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> 🎁 Gift Shop
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox"> 📸 Photo Opportunities
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> 👶 Baby Facilities
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox"> 🎭 Live Shows
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> 🦮 Pet Friendly Areas
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Location & Contact -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 0 2rem;">
+                            <div>
+                                <h3 style="margin-bottom: 1rem; color: var(--purple);">Location Details</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Street Address</label>
+                                    <input type="text" class="form-input" value="2003 Lion Country Safari Rd">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">City, State ZIP</label>
+                                    <input type="text" class="form-input" value="Loxahatchee, FL 33470">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">GPS Coordinates</label>
+                                    <input type="text" class="form-input" value="26.7153° N, 80.3168° W">
+                                </div>
                             </div>
                             
-                            <div class="form-group">
-                                <label class="form-label">Location Coordinates</label>
-                                <input type="text" class="form-input" value="26.7153° N, 80.3168° W">
+                            <div>
+                                <h3 style="margin-bottom: 1rem; color: var(--purple);">Contact Information</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-input" value="(561) 793-1084">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" value="info@lioncountrysafari.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" class="form-input" value="www.lioncountrysafari.com">
+                                </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Time Restriction (minutes)</label>
-                                <input type="number" class="form-input" value="60">
+                        </div>
+                        
+                        <!-- Special Offers -->
+                        <div style="padding: 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: var(--purple);">Special Offers & Events</h3>
+                            <div style="background: var(--sand); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Current Promotion</label>
+                                    <input type="text" class="form-input" value="Safari Night Tours - Every Friday 7-10 PM">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Pass Holder Exclusive</label>
+                                    <input type="text" class="form-input" value="20% off all animal encounters with valid pass">
+                                </div>
                             </div>
-                            
-                            <button class="btn-scan" onclick="saveSettings()">Save Settings</button>
+                        </div>
+                        
+                        <!-- SEO & Marketing -->
+                        <div style="padding: 0 2rem 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: var(--purple);">SEO & Marketing</h3>
+                            <div class="form-group">
+                                <label class="form-label">Search Keywords (comma separated)</label>
+                                <input type="text" class="form-input" value="safari, zoo, animals, wildlife, family fun, drive through, lions, giraffes">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Featured Badge</label>
+                                <select class="form-select">
+                                    <option>None</option>
+                                    <option selected>🏆 Top Rated</option>
+                                    <option>🔥 Most Popular</option>
+                                    <option>✨ New</option>
+                                    <option>💎 Premium Experience</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- QR Settings -->
+                        <div style="padding: 0 2rem 2rem;">
+                            <h3 style="margin-bottom: 1rem; color: var(--purple);">QR Validation Settings</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Time Restriction Between Scans</label>
+                                    <select class="form-select">
+                                        <option>No restriction</option>
+                                        <option>30 minutes</option>
+                                        <option selected>1 hour</option>
+                                        <option>2 hours</option>
+                                        <option>Once per day</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Geolocation Radius (meters)</label>
+                                    <input type="number" class="form-input" value="500">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div style="padding: 2rem; border-top: 2px solid #f0f0f0; display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button class="btn-action btn-edit" onclick="saveDraft()">Save as Draft</button>
+                            <button class="btn-scan" onclick="saveAndPublish()">Save & Publish Changes</button>
                         </div>
                     </div>
                 </div>
@@ -1350,6 +1538,35 @@
         // Save settings
         function saveSettings() {
             showToast('Settings saved successfully!');
+        }
+        
+        // Enhanced attraction management functions
+        function uploadImage() {
+            showToast('Image upload dialog would open');
+        }
+        
+        function uploadGallery() {
+            showToast('Gallery management would open - add up to 6 images');
+        }
+        
+        function previewAttraction() {
+            showToast('Opening preview of how your attraction appears to customers...');
+            // Would open a preview window showing the customer view
+        }
+        
+        function saveDraft() {
+            showToast('Changes saved as draft - not visible to customers yet');
+        }
+        
+        function saveAndPublish() {
+            // Simulate saving
+            const attractionName = document.getElementById('attractionName').value;
+            showToast(`${attractionName} has been updated and published!`);
+            
+            // In real app, this would sync with customer portal
+            setTimeout(() => {
+                showToast('Changes are now live on customer portal');
+            }, 1500);
         }
 
         // Logout
