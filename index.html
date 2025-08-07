@@ -532,6 +532,36 @@
             padding: 2rem 3rem;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-out;
+        }
+
+        .map-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+
+        .overlay-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .overlay-close:hover {
+            background: rgba(0,0,0,0.1);
+            color: var(--text-dark);
         }
 
         .map-overlay h1 {
@@ -1287,7 +1317,8 @@
                 </div>
                 
                 <!-- Header Text Overlay -->
-                <div class="map-overlay">
+                <div class="map-overlay" id="mapOverlay">
+                    <button class="overlay-close" onclick="closeMapOverlay()">×</button>
                     <h1>CHOOSE FROM 156 ATTRACTIONS</h1>
                     <h2><span style="color: var(--success);">FREE</span> WITH PALM BEACH PASS</h2>
                     <p>Access outback adventures, surfing hotspots, museums and more experiences.<br>One time payment.</p>
@@ -1738,6 +1769,12 @@
             } else {
                 badge.style.display = 'none';
             }
+        }
+
+        // Close map overlay
+        function closeMapOverlay() {
+            document.getElementById('mapOverlay').classList.add('hidden');
+            showMessage('Click any pin to explore attractions');
         }
 
         // Attraction filtering
