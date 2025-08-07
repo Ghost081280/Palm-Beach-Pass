@@ -3,12 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Digital attraction passes for Palm Beach County - save up to 50% on 156+ attractions">
+    <meta name="theme-color" content="#10B981">
     <title>Palm Beach Pass - Demo</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Palm Beach Pass">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTIiIGZpbGw9IiMxMEI5ODEiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSIxMiIgeT0iMTIiPgo8cGF0aCBkPSJNMjEgMTBjMCAyLTEgNC0zIDUtMiAxLTMgMi0zIDMgMCAyIDEgMyAzIDNoN3YtMmMwLTEtMS0yLTItMnMtMi0xLTItMmMwLTEgMS0yIDItMnMxLTIgMS0yeiIgZmlsbD0id2hpdGUiLz4KPHN0cm9rZSBkPSJNOSAxMWEzIDMgMCAxIDAgNi0zIDMgMyAwIDAgMC02IDN6IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHN0cm9rZSBkPSJtOSAxMi00IDEzaDZsMS0zaDRsMS0zaC00eiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+Cjwvc3ZnPgo8L3N2Zz4K">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iNDgiIGZpbGw9IiMxMEI5ODEiLz4KPHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSI0OCIgeT0iNDgiPgo8cGF0aCBkPSJNMjEgMTBjMCAyLTEgNC0zIDUtMiAxLTMgMi0zIDMgMCAyIDEgMyAzIDNoN3YtMmMwLTEtMS0yLTItMnMtMi0xLTItMmMwLTEgMS0yIDItMnMxLTIgMS0yeiIgZmlsbD0id2hpdGUiLz4KPHN0cm9rZSBkPSJNOSAxMWEzIDMgMCAxIDAgNi0zIDMgMyAwIDAgMC02IDN6IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjgiIGZpbGw9Im5vbmUiLz4KPHN0cm9rZSBkPSJtOSAxMi00IDEzaDZsMS0zaDRsMS0zaC00eiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIi8+Cjwvc3ZnPgo8L3N2Zz4K">
+    
+    <!-- Error handler for CDN failures -->
+    <script>
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('Script error:', msg, 'at', url, ':', line);
+            return false;
+        };
+    </script>
+    
+    <!-- Primary CDN - jsDelivr (more reliable) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Fallback to alternative CDNs -->
+    <script>
+        if (!window.React) {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"><\/script>');
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"><\/script>');
+        }
+    </script>
+    
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        if (!window.Babel) {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"><\/script>');
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    
     <style>
         .line-clamp-2 {
             overflow: hidden;
@@ -16,14 +60,61 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
         }
+        
+        /* Loading animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loading" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-family: Arial, sans-serif;">
+        <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <div style="width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        </div>
+        <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 8px;">Palm Beach Pass</h1>
+        <p style="opacity: 0.8;">Loading your digital attraction pass...</p>
+    </div>
+
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { MapPin, Phone, Mail, Star, Filter, Grid, List, Heart, ShoppingCart, User, Menu, X, Search, Clock, DollarSign } = lucide;
+        // Hide loading screen when React loads
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            if (loading) loading.style.display = 'none';
+        }, 1000);
+
+        const { useState, useEffect, useRef } = React;
+        
+        // Check if Lucide loaded, provide fallback
+        let Icons = {};
+        if (window.lucide) {
+            Icons = window.lucide;
+        } else {
+            // Fallback icons as Unicode symbols
+            Icons = {
+                MapPin: () => React.createElement('span', { style: { fontSize: '16px' } }, '📍'),
+                Phone: () => React.createElement('span', { style: { fontSize: '16px' } }, '📞'),
+                Mail: () => React.createElement('span', { style: { fontSize: '16px' } }, '✉️'),
+                Star: () => React.createElement('span', { style: { fontSize: '16px' } }, '⭐'),
+                Filter: () => React.createElement('span', { style: { fontSize: '16px' } }, '🔽'),
+                Grid: () => React.createElement('span', { style: { fontSize: '16px' } }, '⊞'),
+                List: () => React.createElement('span', { style: { fontSize: '16px' } }, '☰'),
+                Heart: () => React.createElement('span', { style: { fontSize: '16px' } }, '❤️'),
+                ShoppingCart: () => React.createElement('span', { style: { fontSize: '16px' } }, '🛒'),
+                User: () => React.createElement('span', { style: { fontSize: '16px' } }, '👤'),
+                Menu: () => React.createElement('span', { style: { fontSize: '16px' } }, '☰'),
+                X: () => React.createElement('span', { style: { fontSize: '16px' } }, '✕'),
+                Search: () => React.createElement('span', { style: { fontSize: '16px' } }, '🔍'),
+                Clock: () => React.createElement('span', { style: { fontSize: '16px' } }, '🕒'),
+                DollarSign: () => React.createElement('span', { style: { fontSize: '16px' } }, '$')
+            };
+        }
+
+        const { MapPin, Phone, Mail, Star, Filter, Grid, List, Heart, ShoppingCart, User, Menu, X, Search, Clock, DollarSign } = Icons;
 
         // Shared activity feed simulation
         const activityFeed = {
@@ -201,6 +292,7 @@
                                 className: "text-gray-600"
                             }, "Saving on attractions, made simple")
                         ),
+                        
                         React.createElement('div', {
                             className: "space-y-4"
                         }, 
@@ -525,7 +617,8 @@
                                     className: "bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-colors",
                                     onClick: () => {
                                         setCart([...cart, { days, prices }]);
-                                        alert('Pass added to cart!');
+                                        alert('Pass added to cart! Click here to proceed to checkout.html');
+                                        setTimeout(() => window.open('checkout.html', '_blank'), 1000);
                                     }
                                 }, "CHOOSE PASS")
                             )
@@ -801,6 +894,27 @@
                                 }, "5")
                             )
                         )
+                    ),
+                    
+                    // Quick Access Buttons for Demo
+                    React.createElement('div', {
+                        className: "fixed bottom-4 right-4 space-y-2"
+                    },
+                        React.createElement('button', {
+                            onClick: () => window.open('customer-passes.html', '_blank'),
+                            className: "block bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700",
+                            title: "View My Passes"
+                        }, "📱"),
+                        React.createElement('button', {
+                            onClick: () => window.open('customer-account.html', '_blank'),
+                            className: "block bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700",
+                            title: "My Account"
+                        }, "👤"),
+                        React.createElement('button', {
+                            onClick: () => window.open('vendor-portal.html', '_blank'),
+                            className: "block bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700",
+                            title: "Vendor Portal"
+                        }, "🔍")
                     )
                 );
             };
@@ -821,6 +935,39 @@
                     return React.createElement(AttractionsScreen);
             }
         };
+
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button after login
+            setTimeout(() => {
+                if (confirm('Install Palm Beach Pass as an app on your device?')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the A2HS prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            }, 10000); // Show after 10 seconds
+        });
 
         ReactDOM.render(React.createElement(PalmBeachPassDemo), document.getElementById('root'));
     </script>
