@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palm Beach Pass - Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { MapPin, Phone, Mail, Star, Filter, Grid, List, Heart, ShoppingCart, User, Menu, X, Search, Clock, DollarSign } = lucide;
+
+        // Shared activity feed simulation
+        const activityFeed = {
+            attractions: [
+                {
+                    id: 1,
+                    name: "Palm Beach Seaquarium",
+                    category: "family",
+                    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.8,
+                    description: "Both entertaining and educational, this underwater wonderland has it all to dive in and explore the ocean's most amazing creatures at Seaquarium.",
+                    location: "2010 N Federal Hwy, Boynton Beach, FL 33435",
+                    status: "open"
+                },
+                {
+                    id: 2,
+                    name: "Boynton Beach Dive Center",
+                    category: "outdoor",
+                    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.7,
+                    description: "Discover the underwater world with professional diving experiences.",
+                    location: "Boynton Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 3,
+                    name: "Spady Museum",
+                    category: "culture",
+                    image: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.5,
+                    description: "Explore local history and culture in this engaging museum.",
+                    location: "Delray Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 4,
+                    name: "Worth Avenue",
+                    category: "shopping",
+                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.6,
+                    description: "Luxury shopping and dining destination in Palm Beach.",
+                    location: "Palm Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 5,
+                    name: "Boca Raton Museum of Art",
+                    category: "culture",
+                    image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.4,
+                    description: "Contemporary and modern art in a beautiful setting.",
+                    location: "Boca Raton, FL",
+                    status: "open"
+                },
+                {
+                    id: 6,
+                    name: "Norton Museum of Art",
+                    category: "culture",
+                    image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.7,
+                    description: "World-class art collection and exhibitions.",
+                    location: "West Palm Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 7,
+                    name: "Craft Food Tours",
+                    category: "food",
+                    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.6,
+                    description: "Culinary adventures through Palm Beach's best restaurants.",
+                    location: "Palm Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 8,
+                    name: "FlyBoard South Florida",
+                    category: "outdoor",
+                    image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.8,
+                    description: "Experience the thrill of flying above the water with flyboarding.",
+                    location: "South Florida",
+                    status: "open"
+                },
+                {
+                    id: 9,
+                    name: "Delray Beach Playhouse",
+                    category: "culture",
+                    image: "https://images.unsplash.com/photo-1507924538820-ede94a04019d?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.3,
+                    description: "Live theater performances in an intimate setting.",
+                    location: "Delray Beach, FL",
+                    status: "open"
+                },
+                {
+                    id: 10,
+                    name: "Young At Art Museum",
+                    category: "family",
+                    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.4,
+                    description: "Interactive art museum designed for children and families.",
+                    location: "Davie, FL",
+                    status: "open"
+                },
+                {
+                    id: 11,
+                    name: "West Palm Beach Food Tours",
+                    category: "food",
+                    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop",
+                    price: 120,
+                    rating: 4.5,
+                    description: "Taste your way through West Palm Beach's culinary scene.",
+                    location: "West Palm Beach, FL",
+                    status: "open"
+                }
+            ],
+            passPrices: {
+                1: { adult: 35.00, child: 25.00 },
+                2: { adult: 55.00, child: 35.00 },
+                3: { adult: 70.00, child: 45.00 },
+                5: { adult: 85.00, child: 55.00 },
+                7: { adult: 95.00, child: 65.00 }
+            }
+        };
+
+        const PalmBeachPassDemo = () => {
+            const [currentScreen, setCurrentScreen] = useState('login');
+            const [user, setUser] = useState(null);
+            const [verificationCode, setVerificationCode] = useState('');
+            const [selectedCategory, setSelectedCategory] = useState('all');
+            const [viewMode, setViewMode] = useState('grid');
+            const [cart, setCart] = useState([]);
+            const [selectedPass, setSelectedPass] = useState(null);
+            const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+            // Login Screen
+            const LoginScreen = () => {
+                const [email, setEmail] = useState('demo@demo.com');
+                const [password, setPassword] = useState('demo');
+
+                const handleLogin = () => {
+                    if (email === 'demo@demo.com' && password === 'demo') {
+                        setCurrentScreen('2fa');
+                    } else {
+                        alert('Please use demo@demo.com / demo for this demo');
+                    }
+                };
+
+                return React.createElement('div', {
+                    className: "min-h-screen bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center p-4"
+                }, 
+                    React.createElement('div', {
+                        className: "bg-white rounded-lg shadow-2xl p-8 w-full max-w-md"
+                    }, 
+                        React.createElement('div', {
+                            className: "text-center mb-8"
+                        }, 
+                            React.createElement('div', {
+                                className: "w-16 h-16 bg-green-500 rounded-lg mx-auto mb-4 flex items-center justify-center"
+                            }, React.createElement(MapPin, { className: "w-8 h-8 text-white" })),
+                            React.createElement('h1', {
+                                className: "text-2xl font-bold text-gray-800"
+                            }, "Palm Beach Pass"),
+                            React.createElement('p', {
+                                className: "text-gray-600"
+                            }, "Saving on attractions, made simple")
+                        ),
+                        React.createElement('div', {
+                            className: "space-y-4"
+                        }, 
+                            React.createElement('div', null,
+                                React.createElement('label', {
+                                    className: "block text-sm font-medium text-gray-700 mb-2"
+                                }, "Email"),
+                                React.createElement('input', {
+                                    type: "email",
+                                    value: email,
+                                    onChange: (e) => setEmail(e.target.value),
+                                    className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500",
+                                    placeholder: "Enter your email"
+                                })
+                            ),
+                            React.createElement('div', null,
+                                React.createElement('label', {
+                                    className: "block text-sm font-medium text-gray-700 mb-2"
+                                }, "Password"),
+                                React.createElement('input', {
+                                    type: "password",
+                                    value: password,
+                                    onChange: (e) => setPassword(e.target.value),
+                                    className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500",
+                                    placeholder: "Enter your password"
+                                })
+                            ),
+                            React.createElement('button', {
+                                onClick: handleLogin,
+                                className: "w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
+                            }, "Sign In"),
+                            React.createElement('p', {
+                                className: "text-xs text-gray-500 text-center mt-4"
+                            }, "Demo: Use demo@demo.com / demo")
+                        )
+                    )
+                );
+            };
+
+            // 2FA Screen
+            const TwoFactorScreen = () => {
+                const handleVerification = () => {
+                    if (verificationCode === '123456') {
+                        setUser({ email: 'demo@demo.com', phone: '+1 (555) 123-4567' });
+                        setCurrentScreen('home');
+                    } else {
+                        alert('Please enter 123456 for this demo');
+                    }
+                };
+
+                return React.createElement('div', {
+                    className: "min-h-screen bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center p-4"
+                },
+                    React.createElement('div', {
+                        className: "bg-white rounded-lg shadow-2xl p-8 w-full max-w-md"
+                    },
+                        React.createElement('div', {
+                            className: "text-center mb-8"
+                        },
+                            React.createElement(Phone, { className: "w-16 h-16 text-green-500 mx-auto mb-4" }),
+                            React.createElement('h1', {
+                                className: "text-2xl font-bold text-gray-800"
+                            }, "Verify Your Phone"),
+                            React.createElement('p', {
+                                className: "text-gray-600"
+                            }, "We've sent a verification code to +1 (555) 123-4567")
+                        ),
+                        React.createElement('div', {
+                            className: "space-y-4"
+                        },
+                            React.createElement('div', null,
+                                React.createElement('label', {
+                                    className: "block text-sm font-medium text-gray-700 mb-2"
+                                }, "Verification Code"),
+                                React.createElement('input', {
+                                    type: "text",
+                                    value: verificationCode,
+                                    onChange: (e) => setVerificationCode(e.target.value),
+                                    className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-center text-2xl tracking-widest",
+                                    placeholder: "000000",
+                                    maxLength: "6"
+                                })
+                            ),
+                            React.createElement('button', {
+                                onClick: handleVerification,
+                                className: "w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
+                            }, "Verify"),
+                            React.createElement('p', {
+                                className: "text-xs text-gray-500 text-center mt-4"
+                            }, "Demo code: 123456")
+                        )
+                    )
+                );
+            };
+
+            // Header Component
+            const Header = () => React.createElement('header', {
+                className: "bg-white shadow-sm border-b"
+            },
+                React.createElement('div', {
+                    className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+                },
+                    React.createElement('div', {
+                        className: "flex justify-between items-center h-16"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center"
+                        },
+                            React.createElement('div', {
+                                className: "w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center"
+                            }, React.createElement(MapPin, { className: "w-5 h-5 text-white" })),
+                            React.createElement('span', {
+                                className: "ml-2 text-xl font-bold text-gray-800"
+                            }, "Palm Beach Pass"),
+                            React.createElement('span', {
+                                className: "ml-2 text-sm text-gray-600 hidden md:inline"
+                            }, "Saving on attractions, made simple")
+                        ),
+                        React.createElement('div', {
+                            className: "hidden md:flex items-center space-x-6"
+                        },
+                            React.createElement('span', {
+                                className: "text-sm text-gray-600 cursor-pointer hover:text-green-600"
+                            }, "Account"),
+                            React.createElement('span', {
+                                className: "text-sm text-gray-600 cursor-pointer hover:text-green-600"
+                            }, "FAQ"),
+                            React.createElement('span', {
+                                className: "text-sm text-gray-600 cursor-pointer hover:text-green-600"
+                            }, "ENG"),
+                            React.createElement('div', {
+                                className: "flex items-center cursor-pointer",
+                                onClick: () => setCurrentScreen('pass-selection')
+                            },
+                                React.createElement(ShoppingCart, { className: "w-5 h-5 text-gray-600" }),
+                                cart.length > 0 && React.createElement('span', {
+                                    className: "ml-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                                }, cart.length)
+                            )
+                        ),
+                        React.createElement('button', {
+                            className: "md:hidden",
+                            onClick: () => setShowMobileMenu(!showMobileMenu)
+                        }, showMobileMenu ? React.createElement(X, { className: "w-6 h-6" }) : React.createElement(Menu, { className: "w-6 h-6" }))
+                    )
+                )
+            );
+
+            // Navigation Component
+            const Navigation = () => React.createElement('nav', {
+                className: "bg-purple-900 text-white"
+            },
+                React.createElement('div', {
+                    className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+                },
+                    React.createElement('div', {
+                        className: "flex items-center h-12 space-x-8"
+                    },
+                        React.createElement('span', {
+                            className: "cursor-pointer hover:text-green-300",
+                            onClick: () => setCurrentScreen('home')
+                        }, "Home"),
+                        React.createElement('span', {
+                            className: "cursor-pointer hover:text-green-300"
+                        }, "Attractions"),
+                        selectedPass && React.createElement('span', {
+                            className: "text-green-300"
+                        }, selectedPass.name)
+                    )
+                )
+            );
+
+            // Attraction Detail Screen
+            const AttractionDetail = ({ attraction }) => React.createElement('div', {
+                className: "min-h-screen bg-gray-50"
+            },
+                React.createElement(Header),
+                React.createElement(Navigation),
+                React.createElement('div', {
+                    className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+                },
+                    React.createElement('div', {
+                        className: "bg-white rounded-lg shadow-lg overflow-hidden"
+                    },
+                        React.createElement('div', {
+                            className: "relative h-64 md:h-96"
+                        },
+                            React.createElement('img', {
+                                src: attraction.image,
+                                alt: attraction.name,
+                                className: "w-full h-full object-cover"
+                            }),
+                            React.createElement('div', {
+                                className: "absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"
+                            },
+                                React.createElement('button', {
+                                    className: "bg-white bg-opacity-20 rounded-full p-4 hover:bg-opacity-30 transition-all"
+                                },
+                                    React.createElement('div', {
+                                        className: "w-0 h-0 border-l-8 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent ml-1"
+                                    })
+                                )
+                            ),
+                            React.createElement('div', {
+                                className: "absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm"
+                            }, "FREE ENTRY with Palm Beach pass")
+                        ),
+                        React.createElement('div', {
+                            className: "p-6"
+                        },
+                            React.createElement('div', {
+                                className: "flex justify-between items-start mb-4"
+                            },
+                                React.createElement('div', null,
+                                    React.createElement('h1', {
+                                        className: "text-3xl font-bold text-gray-800 mb-2"
+                                    }, attraction.name),
+                                    attraction.status === 'closed' && React.createElement('p', {
+                                        className: "text-red-500 text-sm"
+                                    }, "Closed for the season.")
+                                ),
+                                React.createElement('button', {
+                                    className: "bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-colors",
+                                    onClick: () => setCurrentScreen('pass-selection')
+                                }, "BUY PASS")
+                            ),
+                            React.createElement('div', {
+                                className: "grid md:grid-cols-2 gap-8"
+                            },
+                                React.createElement('div', null,
+                                    React.createElement('h2', {
+                                        className: "text-xl font-semibold mb-4"
+                                    }, "WHAT TO EXPECT"),
+                                    React.createElement('p', {
+                                        className: "text-gray-700 mb-4"
+                                    }, attraction.description),
+                                    React.createElement('div', {
+                                        className: "space-y-4"
+                                    },
+                                        React.createElement('div', null,
+                                            React.createElement('h3', {
+                                                className: "font-semibold text-gray-800"
+                                            }, "Featured Experience"),
+                                            React.createElement('p', {
+                                                className: "text-sm text-gray-600"
+                                            }, "Discover unique experiences and interactive exhibits designed for all ages.")
+                                        ),
+                                        React.createElement('div', null,
+                                            React.createElement('h3', {
+                                                className: "font-semibold text-gray-800"
+                                            }, "Special Programs"),
+                                            React.createElement('p', {
+                                                className: "text-sm text-gray-600"
+                                            }, "Join guided tours and educational programs throughout the day.")
+                                        )
+                                    )
+                                ),
+                                React.createElement('div', null,
+                                    React.createElement('h2', {
+                                        className: "text-xl font-semibold mb-4"
+                                    }, "GETTING THERE"),
+                                    React.createElement('div', {
+                                        className: "bg-gray-100 rounded-lg p-4"
+                                    },
+                                        React.createElement('div', {
+                                            className: "h-64 bg-gray-300 rounded flex items-center justify-center"
+                                        }, React.createElement(MapPin, { className: "w-12 h-12 text-gray-500" })),
+                                        React.createElement('p', {
+                                            className: "text-sm text-gray-700 mt-2"
+                                        }, attraction.location)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+
+            // Pass Selection Screen
+            const PassSelection = () => React.createElement('div', {
+                className: "min-h-screen bg-gray-50"
+            },
+                React.createElement(Header),
+                React.createElement('div', {
+                    className: "max-w-md mx-auto px-4 py-8"
+                },
+                    React.createElement('div', {
+                        className: "text-center mb-8"
+                    },
+                        React.createElement('h1', {
+                            className: "text-2xl font-bold text-gray-800 mb-2"
+                        }, "Choose your Palm Beach Pass"),
+                        React.createElement('p', {
+                            className: "text-gray-600"
+                        }, "Access outdoor adventures, surfing hotspots, museums and more experiences. One time payment.")
+                    ),
+                    React.createElement('div', {
+                        className: "space-y-4 mb-8"
+                    }, Object.entries(activityFeed.passPrices).map(([days, prices]) =>
+                        React.createElement('div', {
+                            key: days,
+                            className: "bg-white rounded-lg shadow-md p-4 border-2 border-transparent hover:border-green-500 cursor-pointer"
+                        },
+                            React.createElement('div', {
+                                className: "flex justify-between items-center"
+                            },
+                                React.createElement('div', null,
+                                    React.createElement('h3', {
+                                        className: "font-bold text-lg"
+                                    }, days + (days === '1' ? ' Day' : ' Days')),
+                                    React.createElement('p', {
+                                        className: "text-sm text-gray-600"
+                                    }, "Adults"),
+                                    React.createElement('p', {
+                                        className: "text-2xl font-bold text-green-600"
+                                    }, '$' + prices.adult),
+                                    React.createElement('p', {
+                                        className: "text-sm text-gray-500"
+                                    }, 'Child $' + prices.child)
+                                ),
+                                React.createElement('button', {
+                                    className: "bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-colors",
+                                    onClick: () => {
+                                        setCart([...cart, { days, prices }]);
+                                        alert('Pass added to cart!');
+                                    }
+                                }, "CHOOSE PASS")
+                            )
+                        )
+                    )),
+                    React.createElement('div', {
+                        className: "space-y-6"
+                    },
+                        React.createElement('div', {
+                            className: "text-center"
+                        },
+                            React.createElement('div', {
+                                className: "w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center"
+                            }, React.createElement(MapPin, { className: "w-8 h-8 text-green-500" })),
+                            React.createElement('h3', {
+                                className: "font-bold text-lg mb-2"
+                            }, "156+ Attractions & Experiences"),
+                            React.createElement('p', {
+                                className: "text-sm text-gray-600"
+                            }, "Access to over 150 attractions including museums, outdoor adventures, dining experiences, and cultural sites throughout Palm Beach County."),
+                            React.createElement('button', {
+                                className: "text-green-500 text-sm hover:underline mt-2",
+                                onClick: () => setCurrentScreen('home')
+                            }, "VIEW ALL")
+                        ),
+                        React.createElement('div', {
+                            className: "text-center"
+                        },
+                            React.createElement('div', {
+                                className: "w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center"
+                            }, React.createElement(DollarSign, { className: "w-8 h-8 text-green-500" })),
+                            React.createElement('h3', {
+                                className: "font-bold text-lg mb-2"
+                            }, "Cost Savings"),
+                            React.createElement('p', {
+                                className: "text-sm text-gray-600"
+                            }, "Save up to 50% on individual attraction prices. The more you visit, the more you save with unlimited access during your pass duration.")
+                        ),
+                        React.createElement('div', {
+                            className: "text-center"
+                        },
+                            React.createElement('div', {
+                                className: "w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center"
+                            }, React.createElement(Phone, { className: "w-8 h-8 text-green-500" })),
+                            React.createElement('h3', {
+                                className: "font-bold text-lg mb-2"
+                            }, "Digital Pass Benefits"),
+                            React.createElement('p', {
+                                className: "text-sm text-gray-600"
+                            }, "Instant access via mobile app, skip-the-line privileges, real-time updates, and GPS-enabled attraction discovery.")
+                        )
+                    )
+                )
+            );
+
+            // Main Attractions Screen
+            const AttractionsScreen = () => {
+                const filteredAttractions = selectedCategory === 'all' 
+                    ? activityFeed.attractions 
+                    : activityFeed.attractions.filter(attraction => attraction.category === selectedCategory);
+
+                return React.createElement('div', {
+                    className: "min-h-screen bg-gray-50"
+                },
+                    React.createElement(Header),
+                    React.createElement(Navigation),
+                    // Hero Section
+                    React.createElement('div', {
+                        className: "relative h-64 bg-blue-500"
+                    },
+                        React.createElement('img', {
+                            src: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=300&fit=crop",
+                            alt: "Palm Beach",
+                            className: "w-full h-full object-cover"
+                        }),
+                        React.createElement('div', {
+                            className: "absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"
+                        },
+                            React.createElement('div', {
+                                className: "text-center text-white"
+                            },
+                                React.createElement('h1', {
+                                    className: "text-4xl font-bold mb-4"
+                                }, "CHOOSE FROM 156 ATTRACTIONS"),
+                                React.createElement('h2', {
+                                    className: "text-2xl mb-2"
+                                }, React.createElement('span', { className: "text-green-400" }, "FREE"), " WITH PALM BEACH PASS"),
+                                React.createElement('p', {
+                                    className: "text-lg"
+                                }, "Access outdoor adventures, surfing hotspots, museums and more experiences. One time payment.")
+                            )
+                        )
+                    ),
+                    // Trust pilot rating
+                    React.createElement('div', {
+                        className: "bg-white border-b py-2"
+                    },
+                        React.createElement('div', {
+                            className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center"
+                        },
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2 text-sm"
+                            },
+                                React.createElement('span', { className: "text-green-600 font-semibold" }, "★"),
+                                React.createElement('span', null, "Trustpilot"),
+                                React.createElement('span', null, "TrustScore 4.8"),
+                                React.createElement('span', { className: "text-green-600" }, "★★★★★"),
+                                React.createElement('span', { className: "text-gray-600" }, "| 347 reviews"),
+                                React.createElement('span', { className: "ml-4 italic" }, '"We saved time and money. Great deal."')
+                            )
+                        )
+                    ),
+                    // Filters and Controls
+                    React.createElement('div', {
+                        className: "bg-white border-b"
+                    },
+                        React.createElement('div', {
+                            className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
+                        },
+                            React.createElement('div', {
+                                className: "flex flex-wrap items-center justify-between gap-4"
+                            },
+                                React.createElement('div', {
+                                    className: "flex items-center space-x-4"
+                                },
+                                    React.createElement('button', {
+                                        className: "flex items-center space-x-2 border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-50"
+                                    },
+                                        React.createElement(Filter, { className: "w-4 h-4" }),
+                                        React.createElement('span', null, "FILTERS")
+                                    ),
+                                    React.createElement('span', {
+                                        className: "text-sm text-gray-600"
+                                    }, filteredAttractions.length + " items found")
+                                ),
+                                React.createElement('div', {
+                                    className: "flex items-center space-x-4"
+                                },
+                                    React.createElement('div', {
+                                        className: "flex border rounded"
+                                    },
+                                        React.createElement('button', {
+                                            className: `p-2 ${viewMode === 'grid' ? 'bg-red-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`,
+                                            onClick: () => setViewMode('grid')
+                                        }, React.createElement(Grid, { className: "w-4 h-4" })),
+                                        React.createElement('button', {
+                                            className: `p-2 ${viewMode === 'list' ? 'bg-red-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`,
+                                            onClick: () => setViewMode('list')
+                                        }, React.createElement(List, { className: "w-4 h-4" }))
+                                    ),
+                                    React.createElement('select', {
+                                        className: "border border-gray-300 rounded px-3 py-2 text-sm"
+                                    },
+                                        React.createElement('option', null, "SORT BY: USUAL GATE PRICE"),
+                                        React.createElement('option', null, "Price: Low to High"),
+                                        React.createElement('option', null, "Price: High to Low"),
+                                        React.createElement('option', null, "Rating")
+                                    )
+                                )
+                            ),
+                            // Category Filters
+                            React.createElement('div', {
+                                className: "flex flex-wrap gap-2 mt-4"
+                            },
+                                React.createElement('button', {
+                                    className: `px-4 py-2 rounded ${selectedCategory === 'all' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`,
+                                    onClick: () => setSelectedCategory('all')
+                                }, "ALL"),
+                                React.createElement('button', {
+                                    className: `px-4 py-2 rounded ${selectedCategory === 'family' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`,
+                                    onClick: () => setSelectedCategory('family')
+                                }, "FAMILY ATTRACTIONS"),
+                                React.createElement('button', {
+                                    className: `px-4 py-2 rounded ${selectedCategory === 'outdoor' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`,
+                                    onClick: () => setSelectedCategory('outdoor')
+                                }, "OUTDOOR SPORTS"),
+                                React.createElement('button', {
+                                    className: `px-4 py-2 rounded ${selectedCategory === 'culture' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`,
+                                    onClick: () => setSelectedCategory('culture')
+                                }, "CULTURE & ARTS"),
+                                React.createElement('button', {
+                                    className: `px-4 py-2 rounded ${selectedCategory === 'food' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`,
+                                    onClick: () => setSelectedCategory('food')
+                                }, "FOOD TOURS")
+                            )
+                        )
+                    ),
+                    // Attractions Grid
+                    React.createElement('div', {
+                        className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+                    },
+                        React.createElement('div', {
+                            className: viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6' : 'space-y-4'
+                        }, filteredAttractions.map((attraction) =>
+                            React.createElement('div', {
+                                key: attraction.id,
+                                className: "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer",
+                                onClick: () => {
+                                    setSelectedPass(attraction);
+                                    setCurrentScreen('attraction-detail');
+                                }
+                            },
+                                React.createElement('div', {
+                                    className: "relative"
+                                },
+                                    React.createElement('img', {
+                                        src: attraction.image,
+                                        alt: attraction.name,
+                                        className: "w-full h-48 object-cover"
+                                    }),
+                                    React.createElement('button', {
+                                        className: "absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-100",
+                                        onClick: (e) => {
+                                            e.stopPropagation();
+                                            alert('Added to favorites!');
+                                        }
+                                    }, React.createElement(Heart, { className: "w-4 h-4 text-gray-600" })),
+                                    attraction.status === "closed" && React.createElement('div', {
+                                        className: "absolute bottom-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs"
+                                    }, "Closed for the season")
+                                ),
+                                React.createElement('div', {
+                                    className: "p-4"
+                                },
+                                    React.createElement('h3', {
+                                        className: "font-bold text-lg mb-1"
+                                    }, attraction.name),
+                                    React.createElement('p', {
+                                        className: "text-sm text-gray-600 mb-2"
+                                    }, "Regular price $" + attraction.price),
+                                    React.createElement('p', {
+                                        className: "text-xs text-gray-500 line-clamp-2"
+                                    }, attraction.description),
+                                    React.createElement('div', {
+                                        className: "flex items-center justify-between mt-3"
+                                    },
+                                        React.createElement('div', {
+                                            className: "flex items-center"
+                                        },
+                                            React.createElement(Star, { className: "w-4 h-4 text-yellow-400 fill-current" }),
+                                            React.createElement('span', {
+                                                className: "text-sm text-gray-600 ml-1"
+                                            }, attraction.rating)
+                                        ),
+                                        React.createElement('span', {
+                                            className: "text-xs text-gray-500"
+                                        }, attraction.location.split(',')[0])
+                                    )
+                                )
+                            )
+                        )),
+                        // Pagination
+                        React.createElement('div', {
+                            className: "flex justify-center mt-8"
+                        },
+                            React.createElement('div', {
+                                className: "flex space-x-2"
+                            },
+                                React.createElement('button', {
+                                    className: "w-8 h-8 bg-red-500 text-white rounded flex items-center justify-center"
+                                }, "1"),
+                                React.createElement('button', {
+                                    className: "w-8 h-8 bg-gray-200 text-gray-700 rounded flex items-center justify-center hover:bg-gray-300"
+                                }, "2"),
+                                React.createElement('button', {
+                                    className: "w-8 h-8 bg-gray-200 text-gray-700 rounded flex items-center justify-center hover:bg-gray-300"
+                                }, "3"),
+                                React.createElement('span', {
+                                    className: "flex items-center px-2"
+                                }, "..."),
+                                React.createElement('button', {
+                                    className: "w-8 h-8 bg-gray-200 text-gray-700 rounded flex items-center justify-center hover:bg-gray-300"
+                                }, "5")
+                            )
+                        )
+                    )
+                );
+            };
+
+            // Main render logic
+            switch (currentScreen) {
+                case 'login':
+                    return React.createElement(LoginScreen);
+                case '2fa':
+                    return React.createElement(TwoFactorScreen);
+                case 'home':
+                    return React.createElement(AttractionsScreen);
+                case 'pass-selection':
+                    return React.createElement(PassSelection);
+                case 'attraction-detail':
+                    return React.createElement(AttractionDetail, { attraction: selectedPass });
+                default:
+                    return React.createElement(AttractionsScreen);
+            }
+        };
+
+        ReactDOM.render(React.createElement(PalmBeachPassDemo), document.getElementById('root'));
+    </script>
+</body>
+</html>
