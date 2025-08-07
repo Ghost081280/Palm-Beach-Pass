@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Passes - Palm Beach Pass</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .pass-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .pass-active {
+            animation: active-pulse 3s infinite;
+        }
+        
+        @keyframes active-pulse {
+            0%, 100% { 
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 12px 40px 0 rgba(16, 185, 129, 0.4);
+                transform: scale(1.02);
+            }
+        }
+        
+        .pass-expired {
+            background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
+            opacity: 0.7;
+        }
+        
+        .pass-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            animation: warning-pulse 2s infinite;
+        }
+        
+        @keyframes warning-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .qr-scanner-ready {
+            animation: qr-ready 1.5s infinite;
+        }
+        
+        @keyframes qr-ready {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .brightness-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: brightness(1.5);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        
+        .scan-mode .brightness-overlay {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: brightness(2);
+        }
+        
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .notification-badge {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .tap-hint {
+            animation: tap-pulse 2s infinite;
+        }
+        
+        @keyframes tap-pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { 
+            QrCode, MapPin, Clock, Shield, Check, X, AlertTriangle, Star,
+            RefreshCw, Download, Share, Eye, Settings, Calendar, ArrowLeft,
+            Smartphone, CreditCard, Users, Bell, Menu, Plus, Gift, History,
+            Ticket, Zap, Wifi, WifiOff, Battery, Signal
+        } = lucide;
+
+        // Customer passes data simulation
+        const customerData = {
+            user: {
+                id: 1,
+                name: 'John Smith',
+                email: 'demo@demo.com',
+                phone: '+1 (555) 123-4567',
+                memberSince: '2024-01-15',
+                totalSavings: 287.50,
+                passesUsed: 12
+            },
+            
+            passes: [
+                {
+                    id: 'PB001-7D-ADT-001',
+                    customerName: 'John Smith',
+                    type: 'adult',
+                    duration: 7,
+                    status: 'active',
+                    purchasedAt: '2025-08-05T10:00:00Z',
+                    activatedAt: '2025-08-05T14:30:00Z',
+                    expiresAt: '2025-08-12T14:30:00Z',
+                    price: 95.00,
+                    originalValue: 840.00,
+                    savings: 745.00,
+                    attractionsVisited: 8,
+                    attractionsIncluded: 156,
+                    lastUsedAt: '2025-08-07T11:15:00Z',
+                    lastUsedLocation: 'Norton Museum of Art',
+                    scanCount: 8,
+                    remainingTime: '5 days, 2 hours',
+                    qrBrightness: 100,
+                    favorite: true
+                },
+                {
+                    id: 'PB045-3D-CHD-002',
+                    customerName: 'Emma Smith',
+                    type: 'child',
+                    duration: 3,
+                    status: 'active',
+                    purchasedAt: '2025-08-06T15:20:00Z',
+                    activatedAt: '2025-08-07T09:00:00Z',
+                    expiresAt: '2025-08-10T09:00:00Z',
+                    price: 45.00,
+                    originalValue: 360.00,
+                    savings: 315.00,
+                    attractionsVisited: 3,
+                    attractionsIncluded: 156,
+                    lastUsedAt: '2025-08-07T14:45:00Z',
+                    lastUsedLocation: 'Palm Beach Seaquarium',
+                    scanCount: 3,
+                    remainingTime: '2 days, 18 hours',
+                    qrBrightness: 100,
+                    favorite: false
+                },
+                {
+                    id: 'PB023-5D-ADT-003',
+                    customerName: 'John Smith',
+                    type: 'adult',
+                    duration: 5,
+                    status: 'warning',
+                    purchasedAt: '2025-08-03T12:00:00Z',
+                    activatedAt: '2025-08-04T10:30:00Z',
+                    expiresAt: '2025-08-09T10:30:00Z',
+                    price: 85.00,
+                    originalValue: 600.00,
+                    savings: 515.00,
+                    attractionsVisited: 7,
+                    attractionsIncluded: 156,
+                    lastUsedAt: '2025-08-07T16:20:00Z',
+                    lastUsedLocation: 'Boca Raton Museum',
+                    scanCount: 7,
+                    remainingTime: '18 hours',
+                    qrBrightness: 100,
+                    favorite: false
+                },
+                {
+                    id: 'PB012-7D-ADT-004',
+                    customerName: 'John Smith',
+                    type: 'adult',
+                    duration: 7,
+                    status: 'expired',
+                    purchasedAt: '2025-07-20T09:00:00Z',
+                    activatedAt: '2025-07-21T11:00:00Z',
+                    expiresAt: '2025-07-28T11:00:00Z',
+                    price: 95.00,
+                    originalValue: 950.00,
+                    savings: 855.00,
+                    attractionsVisited: 12,
+                    attractionsIncluded: 156,
+                    lastUsedAt: '2025-07-27T19:30:00Z',
+                    lastUsedLocation: 'Worth Avenue',
+                    scanCount: 12,
+                    remainingTime: 'Expired',
+                    qrBrightness: 50,
+                    favorite: true
+                }
+            ],
+            
+            recentActivity: [
+                {
+                    id: 1,
+                    type: 'scan',
+                    attraction: 'Norton Museum of Art',
+                    timestamp: '2025-08-07T11:15:00Z',
+                    passUsed: 'PB001-7D-ADT-001',
+                    savings: 25.00
+                },
+                {
+                    id: 2,
+                    type: 'scan',
+                    attraction: 'Palm Beach Seaquarium',
+                    timestamp: '2025-08-07T14:45:00Z',
+                    passUsed: 'PB045-3D-CHD-002',
+                    savings: 30.00
+                },
+                {
+                    id: 3,
+                    type: 'purchase',
+                    attraction: 'New 3-Day Child Pass',
+                    timestamp: '2025-08-06T15:20:00Z',
+                    passUsed: 'PB045-3D-CHD-002',
+                    amount: 45.00
+                }
+            ]
+        };
+
+        // Generate QR code
+        const generateQRCode = (passId, brightness = 100) => {
+            const qr = qrcode(0, 'M');
+            qr.addData(passId);
+            qr.make();
+            return qr.createDataURL(8, 2);
+        };
+
+        const CustomerPassesApp = () => {
+            const [currentView, setCurrentView] = useState('wallet');
+            const [selectedPass, setSelectedPass] = useState(null);
+            const [scanMode, setScanMode] = useState(false);
+            const [brightnessLevel, setBrightnessLevel] = useState(100);
+            const [showNotifications, setShowNotifications] = useState(false);
+            const [isOnline, setIsOnline] = useState(true);
+            const [batteryLevel, setBatteryLevel] = useState(85);
+
+            // Simulate connectivity and battery
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setIsOnline(Math.random() > 0.1); // 90% online
+                    setBatteryLevel(prev => Math.max(20, prev - Math.random() * 2));
+                }, 30000);
+                return () => clearInterval(interval);
+            }, []);
+
+            // Header Component
+            const Header = () => React.createElement('header', {
+                className: "bg-white shadow-sm border-b sticky top-0 z-50"
+            },
+                React.createElement('div', {
+                    className: "px-4 py-3"
+                },
+                    React.createElement('div', {
+                        className: "flex items-center justify-between"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center space-x-3"
+                        },
+                            selectedPass ? React.createElement('button', {
+                                onClick: () => {
+                                    setSelectedPass(null);
+                                    setScanMode(false);
+                                    setCurrentView('wallet');
+                                },
+                                className: "p-1 text-gray-600 hover:text-gray-800"
+                            }, React.createElement(ArrowLeft, { className: "w-5 h-5" })) : null,
+                            React.createElement('div', null,
+                                React.createElement('h1', {
+                                    className: "text-xl font-bold text-gray-800"
+                                }, selectedPass ? 'Digital Pass' : 'My Passes'),
+                                React.createElement('p', {
+                                    className: "text-sm text-gray-600"
+                                }, selectedPass ? selectedPass.id : `${customerData.user.name}`)
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: "flex items-center space-x-2"
+                        },
+                            // Connection indicator
+                            React.createElement('div', {
+                                className: `w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`
+                            }),
+                            // Battery indicator
+                            React.createElement('div', {
+                                className: "flex items-center space-x-1"
+                            },
+                                React.createElement(Battery, { 
+                                    className: `w-4 h-4 ${batteryLevel > 20 ? 'text-green-600' : 'text-red-600'}` 
+                                }),
+                                React.createElement('span', {
+                                    className: "text-xs text-gray-600"
+                                }, `${Math.round(batteryLevel)}%`)
+                            ),
+                            // Notifications
+                            React.createElement('button', {
+                                onClick: () => setShowNotifications(!showNotifications),
+                                className: "relative p-2 text-gray-600 hover:text-gray-800"
+                            },
+                                React.createElement(Bell, { className: "w-5 h-5" }),
+                                React.createElement('span', {
+                                    className: "absolute -top-1 -right-1 w-3 h-3 bg-red-500 text-white text-xs rounded-full flex items-center justify-center notification-badge"
+                                }, "2")
+                            )
+                        )
+                    )
+                )
+            );
+
+            // Pass Card Component
+            const PassCard = ({ pass, isCompact = false, onClick }) => {
+                const getStatusColor = () => {
+                    switch (pass.status) {
+                        case 'active': return 'text-green-400';
+                        case 'warning': return 'text-yellow-400';
+                        case 'expired': return 'text-red-400';
+                        default: return 'text-gray-400';
+                    }
+                };
+
+                const getStatusBadge = () => {
+                    switch (pass.status) {
+                        case 'active': return 'ACTIVE';
+                        case 'warning': return 'EXPIRES SOON';
+                        case 'expired': return 'EXPIRED';
+                        default: return 'INACTIVE';
+                    }
+                };
+
+                return React.createElement('div', {
+                    onClick: onClick,
+                    className: `pass-card rounded-lg p-4 text-white cursor-pointer transition-all ${
+                        pass.status === 'active' ? 'pass-active' : 
+                        pass.status === 'warning' ? 'pass-warning' : 
+                        pass.status === 'expired' ? 'pass-expired' : ''
+                    } ${isCompact ? 'mb-3' : 'mb-6'}`
+                },
+                    // Pass Header
+                    React.createElement('div', {
+                        className: "flex justify-between items-start mb-3"
+                    },
+                        React.createElement('div', null,
+                            React.createElement('h3', {
+                                className: "text-lg font-bold"
+                            }, "Palm Beach Pass"),
+                            React.createElement('p', {
+                                className: "text-sm opacity-90"
+                            }, `${pass.duration}-Day ${pass.type.charAt(0).toUpperCase() + pass.type.slice(1)}`)
+                        ),
+                        React.createElement('div', {
+                            className: "text-right"
+                        },
+                            React.createElement('span', {
+                                className: `text-xs px-2 py-1 rounded-full bg-black bg-opacity-20 ${getStatusColor()}`
+                            }, getStatusBadge()),
+                            pass.favorite && React.createElement(Star, {
+                                className: "w-4 h-4 text-yellow-400 mt-1 ml-auto fill-current"
+                            })
+                        )
+                    ),
+
+                    // Pass Content
+                    !isCompact && React.createElement('div', {
+                        className: "grid grid-cols-2 gap-4 mb-4"
+                    },
+                        React.createElement('div', null,
+                            React.createElement('p', {
+                                className: "text-xs opacity-80"
+                            }, "Attractions Used"),
+                            React.createElement('p', {
+                                className: "text-lg font-semibold"
+                            }, `${pass.attractionsVisited}/${pass.attractionsIncluded}`)
+                        ),
+                        React.createElement('div', null,
+                            React.createElement('p', {
+                                className: "text-xs opacity-80"
+                            }, "Savings"),
+                            React.createElement('p', {
+                                className: "text-lg font-semibold"
+                            }, `$${pass.savings.toFixed(0)}`)
+                        ),
+                        React.createElement('div', null,
+                            React.createElement('p', {
+                                className: "text-xs opacity-80"
+                            }, "Time Remaining"),
+                            React.createElement('p', {
+                                className: "text-sm font-medium"
+                            }, pass.remainingTime)
+                        ),
+                        React.createElement('div', null,
+                            React.createElement('p', {
+                                className: "text-xs opacity-80"
+                            }, "Last Used"),
+                            React.createElement('p', {
+                                className: "text-sm font-medium"
+                            }, pass.lastUsedLocation || 'Not used')
+                        )
+                    ),
+
+                    // Pass Footer
+                    React.createElement('div', {
+                        className: "flex justify-between items-center text-xs"
+                    },
+                        React.createElement('span', {
+                            className: "font-mono opacity-80"
+                        }, pass.id),
+                        React.createElement('span', {
+                            className: "opacity-80"
+                        }, `${pass.scanCount} scans`)
+                    )
+                );
+            };
+
+            // QR Display Component
+            const QRDisplay = ({ pass }) => {
+                const qrDataURL = generateQRCode(pass.id, brightnessLevel);
+
+                return React.createElement('div', {
+                    className: `max-w-sm mx-auto ${scanMode ? 'scan-mode' : ''}`
+                },
+                    // Pass Card for QR
+                    React.createElement('div', {
+                        className: `pass-card rounded-lg p-6 text-white mb-6 relative ${
+                            pass.status === 'active' && scanMode ? 'qr-scanner-ready' : ''
+                        }`
+                    },
+                        scanMode && React.createElement('div', { className: "brightness-overlay" }),
+                        
+                        React.createElement('div', {
+                            className: "text-center mb-4"
+                        },
+                            React.createElement('h3', {
+                                className: "text-xl font-bold"
+                            }, "Palm Beach Pass"),
+                            React.createElement('p', {
+                                className: "text-sm opacity-90"
+                            }, `${pass.duration}-Day ${pass.type.charAt(0).toUpperCase() + pass.type.slice(1)} Pass`)
+                        ),
+
+                        // QR Code
+                        React.createElement('div', {
+                            className: "bg-white rounded-lg p-4 mb-4"
+                        },
+                            React.createElement('img', {
+                                src: qrDataURL,
+                                alt: "QR Code",
+                                className: "w-full h-auto",
+                                style: { filter: `brightness(${brightnessLevel}%)` }
+                            })
+                        ),
+
+                        // Pass Status
+                        React.createElement('div', {
+                            className: "text-center space-y-1"
+                        },
+                            React.createElement('p', {
+                                className: "text-sm font-medium"
+                            }, pass.customerName),
+                            React.createElement('p', {
+                                className: "text-xs opacity-80 font-mono"
+                            }, pass.id),
+                            React.createElement('p', {
+                                className: "text-xs opacity-80"
+                            }, `Expires: ${new Date(pass.expiresAt).toLocaleDateString()}`)
+                        )
+                    ),
+
+                    // Scan Controls
+                    React.createElement('div', {
+                        className: "space-y-4"
+                    },
+                        // Scan Mode Toggle
+                        React.createElement('button', {
+                            onClick: () => setScanMode(!scanMode),
+                            className: `w-full py-3 px-4 rounded-lg font-semibold transition-all ${
+                                scanMode 
+                                    ? 'bg-green-600 text-white' 
+                                    : 'bg-white text-gray-800 border border-gray-200'
+                            }`
+                        }, scanMode ? "Exit Scan Mode" : "Ready to Scan"),
+
+                        scanMode && React.createElement('div', {
+                            className: "bg-white rounded-lg p-4 slide-up"
+                        },
+                            React.createElement('div', {
+                                className: "text-center mb-4"
+                            },
+                                React.createElement(Smartphone, { className: "w-8 h-8 text-green-600 mx-auto mb-2 tap-hint" }),
+                                React.createElement('p', {
+                                    className: "text-sm font-medium text-gray-800"
+                                }, "Ready for scanning"),
+                                React.createElement('p', {
+                                    className: "text-xs text-gray-600"
+                                }, "Show this QR code to the staff member")
+                            ),
+
+                            // Brightness Control
+                            React.createElement('div', {
+                                className: "space-y-2"
+                            },
+                                React.createElement('label', {
+                                    className: "block text-xs font-medium text-gray-700"
+                                }, `Brightness: ${brightnessLevel}%`),
+                                React.createElement('input', {
+                                    type: "range",
+                                    min: "50",
+                                    max: "150",
+                                    value: brightnessLevel,
+                                    onChange: (e) => setBrightnessLevel(e.target.value),
+                                    className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                })
+                            )
+                        ),
+
+                        // Quick Actions
+                        React.createElement('div', {
+                            className: "grid grid-cols-2 gap-3"
+                        },
+                            React.createElement('button', {
+                                onClick: () => {
+                                    if (navigator.share) {
+                                        navigator.share({
+                                            title: 'Palm Beach Pass',
+                                            text: `My ${pass.duration}-day pass`,
+                                            url: window.location.href
+                                        });
+                                    } else {
+                                        alert('Pass sharing feature - would copy link to clipboard');
+                                    }
+                                },
+                                className: "flex items-center justify-center space-x-2 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            },
+                                React.createElement(Share, { className: "w-4 h-4" }),
+                                React.createElement('span', { className: "text-sm" }, "Share")
+                            ),
+                            React.createElement('button', {
+                                onClick: () => {
+                                    const canvas = document.createElement('canvas');
+                                    const ctx = canvas.getContext('2d');
+                                    const img = new Image();
+                                    img.onload = () => {
+                                        canvas.width = img.width;
+                                        canvas.height = img.height;
+                                        ctx.drawImage(img, 0, 0);
+                                        const link = document.createElement('a');
+                                        link.download = `palm-beach-pass-${pass.id}.png`;
+                                        link.href = canvas.toDataURL();
+                                        link.click();
+                                    };
+                                    img.src = qrDataURL;
+                                },
+                                className: "flex items-center justify-center space-x-2 py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                            },
+                                React.createElement(Download, { className: "w-4 h-4" }),
+                                React.createElement('span', { className: "text-sm" }, "Save")
+                            )
+                        )
+                    )
+                );
+            };
+
+            // Wallet Overview
+            const WalletOverview = () => {
+                const activePasses = customerData.passes.filter(p => p.status === 'active');
+                const expiringSoon = customerData.passes.filter(p => p.status === 'warning');
+
+                return React.createElement('div', {
+                    className: "px-4 py-6"
+                },
+                    // Summary Stats
+                    React.createElement('div', {
+                        className: "grid grid-cols-2 gap-4 mb-6"
+                    },
+                        React.createElement('div', {
+                            className: "bg-white rounded-lg p-4 shadow-sm"
+                        },
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2 mb-2"
+                            },
+                                React.createElement(Ticket, { className: "w-5 h-5 text-blue-600" }),
+                                React.createElement('span', {
+                                    className: "text-sm font-medium text-gray-700"
+                                }, "Active Passes")
+                            ),
+                            React.createElement('p', {
+                                className: "text-2xl font-bold text-gray-800"
+                            }, activePasses.length)
+                        ),
+                        React.createElement('div', {
+                            className: "bg-white rounded-lg p-4 shadow-sm"
+                        },
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2 mb-2"
+                            },
+                                React.createElement(Zap, { className: "w-5 h-5 text-green-600" }),
+                                React.createElement('span', {
+                                    className: "text-sm font-medium text-gray-700"
+                                }, "Total Savings")
+                            ),
+                            React.createElement('p', {
+                                className: "text-2xl font-bold text-gray-800"
+                            }, `$${customerData.user.totalSavings}`)
+                        )
+                    ),
+
+                    // Expiring Soon Alert
+                    expiringSoon.length > 0 && React.createElement('div', {
+                        className: "bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center space-x-2 mb-2"
+                        },
+                            React.createElement(AlertTriangle, { className: "w-5 h-5 text-yellow-600" }),
+                            React.createElement('span', {
+                                className: "font-medium text-yellow-800"
+                            }, "Expires Soon")
+                        ),
+                        React.createElement('p', {
+                            className: "text-sm text-yellow-700"
+                        }, `${expiringSoon.length} pass${expiringSoon.length !== 1 ? 'es' : ''} expiring within 24 hours`)
+                    ),
+
+                    // Offline Notice
+                    !isOnline && React.createElement('div', {
+                        className: "bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center space-x-2"
+                        },
+                            React.createElement(WifiOff, { className: "w-5 h-5 text-red-600" }),
+                            React.createElement('span', {
+                                className: "font-medium text-red-800"
+                            }, "Offline Mode"),
+                            React.createElement('span', {
+                                className: "text-sm text-red-700"
+                            }, "- Passes available without internet")
+                        )
+                    ),
+
+                    // Active Passes
+                    React.createElement('div', {
+                        className: "mb-8"
+                    },
+                        React.createElement('h2', {
+                            className: "text-lg font-semibold text-gray-800 mb-4"
+                        }, "Active Passes"),
+                        customerData.passes.filter(p => p.status === 'active' || p.status === 'warning').map(pass => 
+                            React.createElement(PassCard, {
+                                key: pass.id,
+                                pass: pass,
+                                onClick: () => {
+                                    setSelectedPass(pass);
+                                    setCurrentView('pass-detail');
+                                }
+                            })
+                        )
+                    ),
+
+                    // Recent Activity
+                    React.createElement('div', {
+                        className: "mb-8"
+                    },
+                        React.createElement('h2', {
+                            className: "text-lg font-semibold text-gray-800 mb-4"
+                        }, "Recent Activity"),
+                        React.createElement('div', {
+                            className: "bg-white rounded-lg shadow-sm"
+                        }, customerData.recentActivity.slice(0, 3).map((activity, index) => 
+                            React.createElement('div', {
+                                key: activity.id,
+                                className: `p-4 ${index !== customerData.recentActivity.length - 1 ? 'border-b border-gray-100' : ''}`
+                            },
+                                React.createElement('div', {
+                                    className: "flex justify-between items-start"
+                                },
+                                    React.createElement('div', null,
+                                        React.createElement('p', {
+                                            className: "font-medium text-gray-800"
+                                        }, activity.attraction),
+                                        React.createElement('p', {
+                                            className: "text-sm text-gray-600"
+                                        }, new Date(activity.timestamp).toLocaleDateString())
+                                    ),
+                                    activity.savings && React.createElement('span', {
+                                        className: "text-sm font-medium text-green-600"
+                                    }, `+$${activity.savings}`)
+                                )
+                            )
+                        ))
+                    ),
+
+                    // Past Passes
+                    React.createElement('div', null,
+                        React.createElement('h2', {
+                            className: "text-lg font-semibold text-gray-800 mb-4"
+                        }, "Past Passes"),
+                        customerData.passes.filter(p => p.status === 'expired').map(pass => 
+                            React.createElement(PassCard, {
+                                key: pass.id,
+                                pass: pass,
+                                isCompact: true,
+                                onClick: () => {
+                                    setSelectedPass(pass);
+                                    setCurrentView('pass-detail');
+                                }
+                            })
+                        )
+                    )
+                );
+            };
+
+            // Bottom Navigation
+            const BottomNav = () => React.createElement('nav', {
+                className: "fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg safe-area-pb"
+            },
+                React.createElement('div', {
+                    className: "flex justify-around py-2"
+                }, [
+                    { id: 'wallet', icon: Ticket, label: 'My Passes' },
+                    { id: 'discover', icon: MapPin, label: 'Discover' },
+                    { id: 'account', icon: Users, label: 'Account' }
+                ].map(item => 
+                    React.createElement('button', {
+                        key: item.id,
+                        onClick: () => setCurrentView(item.id),
+                        className: `flex flex-col items-center p-2 ${
+                            currentView === item.id ? 'text-blue-600' : 'text-gray-600'
+                        }`
+                    },
+                        React.createElement(item.icon, { 
+                            className: `w-6 h-6 ${currentView === item.id ? 'text-blue-600' : 'text-gray-600'}` 
+                        }),
+                        React.createElement('span', {
+                            className: "text-xs mt-1"
+                        }, item.label)
+                    )
+                ))
+            );
+
+            // Main render
+            const renderContent = () => {
+                if (selectedPass) {
+                    return React.createElement('div', {
+                        className: "p-4 pb-20"
+                    }, React.createElement(QRDisplay, { pass: selectedPass }));
+                }
+
+                switch (currentView) {
+                    case 'wallet':
+                        return React.createElement('div', {
+                            className: "pb-20"
+                        }, React.createElement(WalletOverview));
+                    case 'discover':
+                        return React.createElement('div', {
+                            className: "p-6 pb-20 text-center"
+                        },
+                            React.createElement('h2', {
+                                className: "text-xl font-bold text-gray-800 mb-4"
+                            }, "Discover Attractions"),
+                            React.createElement('p', {
+                                className: "text-gray-600"
+                            }, "Explore 156+ attractions included with your pass"),
+                            React.createElement('button', {
+                                onClick: () => window.open('index.html', '_blank'),
+                                className: "mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg"
+                            }, "Browse Attractions")
+                        );
+                    case 'account':
+                        return React.createElement('div', {
+                            className: "p-6 pb-20"
+                        },
+                            React.createElement('h2', {
+                                className: "text-xl font-bold text-gray-800 mb-4"
+                            }, "Account"),
+                            React.createElement('div', {
+                                className: "bg-white rounded-lg p-4 mb-4"
+                            },
+                                React.createElement('h3', {
+                                    className: "font-semibold text-gray-800"
+                                }, customerData.user.name),
+                                React.createElement('p', {
+                                    className: "text-sm text-gray-600"
+                                }, customerData.user.email),
+                                React.createElement('p', {
+                                    className: "text-sm text-gray-600"
+                                }, `Member since ${new Date(customerData.user.memberSince).getFullYear()}`)
+                            )
+                        );
+                    default:
+                        return React.createElement(WalletOverview);
+                }
+            };
+
+            return React.createElement('div', {
+                className: "min-h-screen bg-gray-50"
+            },
+                React.createElement(Header),
+                renderContent(),
+                React.createElement(BottomNav)
+            );
+        };
+
+        ReactDOM.render(React.createElement(CustomerPassesApp), document.getElementById('root'));
+    </script>
+</body>
+</html>
