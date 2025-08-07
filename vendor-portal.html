@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Portal - Palm Beach Pass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --palm-green: #2D5016;
+            --ocean-blue: #006B7D;
+            --sand: #FAF3E3;
+            --coral: #FF6B6B;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --purple: #7C3AED;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f8f8f8 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Vendor Header */
+        .vendor-header {
+            background: linear-gradient(135deg, var(--purple), #9333EA);
+            color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vendor-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .logo-text span {
+            font-weight: 600;
+        }
+
+        .vendor-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .venue-name {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            margin-left: 1rem;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Main Layout */
+        .vendor-container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Scanner Section */
+        .scanner-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .scanner-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--purple);
+        }
+
+        .scanner-box {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(147,51,234,0.05));
+            border: 2px dashed var(--purple);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .scanner-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--purple), #9333EA);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .scanner-instructions {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .manual-input {
+            display: flex;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .input-qr {
+            flex: 1;
+            padding: 0.875rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .input-qr:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+        }
+
+        .btn-scan {
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .btn-scan:hover {
+            background: #9333EA;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-camera {
+            width: 100%;
+            background: var(--ocean-blue);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-camera:hover {
+            background: var(--palm-green);
+        }
+
+        /* Validation Result */
+        .validation-result {
+            display: none;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 15px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .validation-result.success {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05));
+            border: 2px solid var(--success);
+        }
+
+        .validation-result.error {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05));
+            border: 2px solid var(--danger);
+        }
+
+        .validation-result.warning {
+            background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05));
+            border: 2px solid var(--warning);
+        }
+
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .result-icon.success {
+            background: var(--success);
+        }
+
+        .result-icon.error {
+            background: var(--danger);
+        }
+
+        .result-icon.warning {
+            background: var(--warning);
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .result-message {
+            text-align: center;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .result-details {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.primary {
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(147,51,234,0.2));
+            color: var(--purple);
+        }
+
+        .stat-icon.success {
+            background: rgba(16,185,129,0.2);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245,158,11,0.2);
+            color: var(--warning);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: var(--success);
+        }
+
+        /* Tabs */
+        .tab-navigation {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-light);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--purple);
+        }
+
+        .tab-btn.active {
+            color: var(--purple);
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--purple);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(147,51,234,0.1));
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--purple);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: rgba(124,58,237,0.03);
+        }
+
+        .pass-id {
+            font-family: monospace;
+            background: var(--sand);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: rgba(16,185,129,0.2);
+            color: var(--success);
+        }
+
+        .status-badge.error {
+            background: rgba(239,68,68,0.2);
+            color: var(--danger);
+        }
+
+        /* Employee Management (Owner View) */
+        .employee-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--purple);
+        }
+
+        .btn-add {
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #9333EA;
+        }
+
+        .employee-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--sand);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .employee-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .employee-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .employee-details h4 {
+            margin-bottom: 0.25rem;
+            color: var(--text-dark);
+        }
+
+        .employee-details p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-edit {
+            background: var(--ocean-blue);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: var(--palm-green);
+        }
+
+        .btn-remove {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-remove:hover {
+            background: #DC2626;
+        }
+
+        /* Access Level Indicator */
+        .access-indicator {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(147,51,234,0.05));
+            border-radius: 10px;
+        }
+
+        .access-level {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .access-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .access-dot.active {
+            background: var(--purple);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Login Form */
+        .login-container {
+            max-width: 450px;
+            margin: 5rem auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+        }
+
+        .btn-login-submit {
+            width: 100%;
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .btn-login-submit:hover {
+            background: #9333EA;
+        }
+
+        .demo-info {
+            background: var(--sand);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .demo-info strong {
+            color: var(--purple);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--purple);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease-out;
+            z-index: 3000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .vendor-info {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-navigation {
+                overflow-x: auto;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen (shown first) -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1 class="login-title">Vendor Portal</h1>
+                <p class="login-subtitle">Palm Beach Pass Management System</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Access Level</label>
+                    <select class="form-select" id="accessLevel">
+                        <option value="employee">Employee (Scan Only)</option>
+                        <option value="manager">Manager (Scan + Reports)</option>
+                        <option value="owner">Owner (Full Access)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-login-submit">Sign In</button>
+            </form>
+            
+            <div class="demo-info">
+                <strong>Demo Credentials:</strong><br>
+                Employee: employee@demo.com / demo<br>
+                Manager: manager@demo.com / demo<br>
+                Owner: owner@demo.com / demo
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Portal (hidden initially) -->
+    <div id="mainPortal" style="display: none;">
+        <!-- Vendor Header -->
+        <header class="vendor-header">
+            <div class="header-content">
+                <div class="vendor-logo">
+                    <div class="logo-icon">🏢</div>
+                    <div class="logo-text">Vendor <span>Portal</span></div>
+                </div>
+                
+                <div class="vendor-info">
+                    <div class="venue-name">📍 Lion Country Safari</div>
+                    <div class="user-menu">
+                        <div class="user-avatar" id="userAvatar">JD</div>
+                        <div>
+                            <div id="userName">John Doe</div>
+                            <div class="user-role" id="userRole">Employee</div>
+                        </div>
+                    </div>
+                    <button class="btn-logout" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="vendor-container">
+            <!-- QR Scanner Section -->
+            <div class="scanner-section">
+                <h1 class="scanner-title">QR Code Scanner</h1>
+                
+                <div class="scanner-box">
+                    <div class="scanner-icon">📱</div>
+                    <p class="scanner-instructions">
+                        Scan a guest's QR code or enter the pass ID manually
+                    </p>
+                    
+                    <div class="manual-input">
+                        <input type="text" class="input-qr" id="qrInput" placeholder="PB001-7D-ADT-001">
+                        <button class="btn-scan" onclick="scanQR()">Validate</button>
+                    </div>
+                    
+                    <button class="btn-camera" onclick="openCamera()">
+                        <span>📷</span>
+                        <span>Open Camera Scanner</span>
+                    </button>
+                </div>
+                
+                <!-- Validation Result -->
+                <div class="validation-result" id="validationResult"></div>
+            </div>
+
+            <!-- Stats Dashboard (Manager/Owner only) -->
+            <div id="statsSection" style="display: none;">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Scans Today</div>
+                                <div class="stat-value">247</div>
+                                <div class="stat-change">↑ 12% from yesterday</div>
+                            </div>
+                            <div class="stat-icon primary">📊</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Valid Passes</div>
+                                <div class="stat-value">238</div>
+                                <div class="stat-change">96.4% success rate</div>
+                            </div>
+                            <div class="stat-icon success">✓</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Peak Hour</div>
+                                <div class="stat-value">2:00 PM</div>
+                                <div class="stat-change">45 scans</div>
+                            </div>
+                            <div class="stat-icon warning">🕐</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Revenue Today</div>
+                                <div class="stat-value">$4,286</div>
+                                <div class="stat-change">Based on pass value</div>
+                            </div>
+                            <div class="stat-icon success">💰</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="switchTab('history')">Scan History</button>
+                    <button class="tab-btn" onclick="switchTab('analytics')">Analytics</button>
+                    <button class="tab-btn" id="staffTab" onclick="switchTab('staff')" style="display: none;">Staff Management</button>
+                    <button class="tab-btn" id="settingsTab" onclick="switchTab('settings')" style="display: none;">Settings</button>
+                </div>
+
+                <!-- Scan History Tab -->
+                <div class="tab-content active" id="history-tab">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Pass ID</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Scanned By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2:45 PM</td>
+                                <td><span class="pass-id">PB001-7D-ADT-001</span></td>
+                                <td>7 Day Adult</td>
+                                <td><span class="status-badge success">Valid</span></td>
+                                <td>John Doe</td>
+                            </tr>
+                            <tr>
+                                <td>2:32 PM</td>
+                                <td><span class="pass-id">PB002-3D-CHD-001</span></td>
+                                <td>3 Day Child</td>
+                                <td><span class="status-badge success">Valid</span></td>
+                                <td>Jane Smith</td>
+                            </tr>
+                            <tr>
+                                <td>2:15 PM</td>
+                                <td><span class="pass-id">PB003-1D-ADT-002</span></td>
+                                <td>1 Day Adult</td>
+                                <td><span class="status-badge error">Expired</span></td>
+                                <td>John Doe</td>
+                            </tr>
+                            <tr>
+                                <td>2:08 PM</td>
+                                <td><span class="pass-id">PB004-5D-FAM-001</span></td>
+                                <td>5 Day Family</td>
+                                <td><span class="status-badge success">Valid</span></td>
+                                <td>Mike Johnson</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div class="tab-content" id="analytics-tab">
+                    <div style="background: white; padding: 3rem; border-radius: 15px; text-align: center;">
+                        <p style="color: var(--text-light);">📈 Detailed analytics charts and graphs will be displayed here</p>
+                        <p style="margin-top: 1rem; color: var(--text-light);">Peak hours, pass types distribution, revenue tracking, etc.</p>
+                    </div>
+                </div>
+
+                <!-- Staff Management Tab (Owner only) -->
+                <div class="tab-content" id="staff-tab">
+                    <div class="employee-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Staff Management</h2>
+                            <button class="btn-add" onclick="addEmployee()">+ Add Employee</button>
+                        </div>
+                        
+                        <div class="employee-card">
+                            <div class="employee-info">
+                                <div class="employee-avatar">JD</div>
+                                <div class="employee-details">
+                                    <h4>John Doe</h4>
+                                    <p>Employee • john@lioncountry.com</p>
+                                </div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="btn-action btn-edit" onclick="editEmployee('John Doe')">Edit</button>
+                                <button class="btn-action btn-remove" onclick="removeEmployee('John Doe')">Remove</button>
+                            </div>
+                        </div>
+                        
+                        <div class="employee-card">
+                            <div class="employee-info">
+                                <div class="employee-avatar">JS</div>
+                                <div class="employee-details">
+                                    <h4>Jane Smith</h4>
+                                    <p>Manager • jane@lioncountry.com</p>
+                                </div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="btn-action btn-edit" onclick="editEmployee('Jane Smith')">Edit</button>
+                                <button class="btn-action btn-remove" onclick="removeEmployee('Jane Smith')">Remove</button>
+                            </div>
+                        </div>
+                        
+                        <div class="employee-card">
+                            <div class="employee-info">
+                                <div class="employee-avatar">MJ</div>
+                                <div class="employee-details">
+                                    <h4>Mike Johnson</h4>
+                                    <p>Employee • mike@lioncountry.com</p>
+                                </div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="btn-action btn-edit" onclick="editEmployee('Mike Johnson')">Edit</button>
+                                <button class="btn-action btn-remove" onclick="removeEmployee('Mike Johnson')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab (Owner only) -->
+                <div class="tab-content" id="settings-tab">
+                    <div class="employee-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Venue Settings</h2>
+                        </div>
+                        
+                        <div style="padding: 2rem;">
+                            <div class="form-group">
+                                <label class="form-label">Venue Name</label>
+                                <input type="text" class="form-input" value="Lion Country Safari">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Location Coordinates</label>
+                                <input type="text" class="form-input" value="26.7153° N, 80.3168° W">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Time Restriction (minutes)</label>
+                                <input type="number" class="form-input" value="60">
+                            </div>
+                            
+                            <button class="btn-scan" onclick="saveSettings()">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Access Level Indicator -->
+            <div class="access-indicator" id="accessIndicator" style="display: none;">
+                <div class="access-level">
+                    <div class="access-dot" id="scanAccess"></div>
+                    <span>Scan QR Codes</span>
+                </div>
+                <div class="access-level">
+                    <div class="access-dot" id="reportAccess"></div>
+                    <span>View Reports</span>
+                </div>
+                <div class="access-level">
+                    <div class="access-dot" id="staffAccess"></div>
+                    <span>Manage Staff</span>
+                </div>
+                <div class="access-level">
+                    <div class="access-dot" id="settingsAccess"></div>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentAccessLevel = 'employee';
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const accessLevel = document.getElementById('accessLevel').value;
+            
+            // Simple validation for demo
+            if (password === 'demo') {
+                currentAccessLevel = accessLevel;
+                
+                // Set user info based on access level
+                const users = {
+                    employee: { name: 'John Doe', initials: 'JD', role: 'Employee' },
+                    manager: { name: 'Jane Smith', initials: 'JS', role: 'Manager' },
+                    owner: { name: 'Mike Johnson', initials: 'MJ', role: 'Owner' }
+                };
+                
+                currentUser = users[accessLevel];
+                
+                // Update UI
+                document.getElementById('userAvatar').textContent = currentUser.initials;
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userRole').textContent = currentUser.role;
+                
+                // Show/hide sections based on access level
+                setupAccessLevel(accessLevel);
+                
+                // Switch screens
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainPortal').style.display = 'block';
+                
+                showToast(`Welcome, ${currentUser.name}!`);
+            } else {
+                showToast('Invalid credentials. Use "demo" as password.', 'error');
+            }
+        }
+
+        // Setup access level
+        function setupAccessLevel(level) {
+            const statsSection = document.getElementById('statsSection');
+            const staffTab = document.getElementById('staffTab');
+            const settingsTab = document.getElementById('settingsTab');
+            const accessIndicator = document.getElementById('accessIndicator');
+            
+            // Reset all access dots
+            document.querySelectorAll('.access-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            switch(level) {
+                case 'employee':
+                    statsSection.style.display = 'none';
+                    staffTab.style.display = 'none';
+                    settingsTab.style.display = 'none';
+                    accessIndicator.style.display = 'flex';
+                    document.getElementById('scanAccess').classList.add('active');
+                    break;
+                    
+                case 'manager':
+                    statsSection.style.display = 'block';
+                    staffTab.style.display = 'inline-block';
+                    settingsTab.style.display = 'none';
+                    accessIndicator.style.display = 'flex';
+                    document.getElementById('scanAccess').classList.add('active');
+                    document.getElementById('reportAccess').classList.add('active');
+                    document.getElementById('staffAccess').classList.add('active');
+                    break;
+                    
+                case 'owner':
+                    statsSection.style.display = 'block';
+                    staffTab.style.display = 'inline-block';
+                    settingsTab.style.display = 'inline-block';
+                    accessIndicator.style.display = 'flex';
+                    document.querySelectorAll('.access-dot').forEach(dot => {
+                        dot.classList.add('active');
+                    });
+                    break;
+            }
+        }
+
+        // Scan QR Code
+        function scanQR() {
+            const qrCode = document.getElementById('qrInput').value;
+            const resultDiv = document.getElementById('validationResult');
+            
+            if (!qrCode) {
+                showToast('Please enter a QR code', 'error');
+                return;
+            }
+            
+            // Simulate validation
+            resultDiv.style.display = 'block';
+            
+            // Test different scenarios based on QR code
+            if (qrCode === 'PB003-1D-ADT-002') {
+                // Expired pass
+                resultDiv.className = 'validation-result error';
+                resultDiv.innerHTML = `
+                    <div class="result-icon error">✗</div>
+                    <h2 class="result-title">Pass Expired</h2>
+                    <p class="result-message">This pass expired on July 26, 2025</p>
+                    <div class="result-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Pass ID</span>
+                            <span class="detail-value">${qrCode}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Type</span>
+                            <span class="detail-value">1 Day Adult Pass</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status</span>
+                            <span class="detail-value" style="color: var(--danger);">Expired</span>
+                        </div>
+                    </div>
+                `;
+            } else if (qrCode.includes('PB') && qrCode.length > 10) {
+                // Valid pass
+                resultDiv.className = 'validation-result success';
+                resultDiv.innerHTML = `
+                    <div class="result-icon success">✓</div>
+                    <h2 class="result-title">Pass Valid!</h2>
+                    <p class="result-message">Guest may enter the attraction</p>
+                    <div class="result-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Pass ID</span>
+                            <span class="detail-value">${qrCode}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Type</span>
+                            <span class="detail-value">7 Day Adult Pass</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Valid Until</span>
+                            <span class="detail-value">Aug 14, 2025</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Scans Remaining</span>
+                            <span class="detail-value" style="color: var(--success);">Unlimited</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Update stats if visible
+                if (currentAccessLevel !== 'employee') {
+                    const scansToday = document.querySelector('.stat-value');
+                    if (scansToday) {
+                        scansToday.textContent = parseInt(scansToday.textContent) + 1;
+                    }
+                }
+            } else {
+                // Invalid format
+                resultDiv.className = 'validation-result error';
+                resultDiv.innerHTML = `
+                    <div class="result-icon error">✗</div>
+                    <h2 class="result-title">Invalid QR Code</h2>
+                    <p class="result-message">This QR code is not recognized</p>
+                `;
+            }
+            
+            // Clear input
+            document.getElementById('qrInput').value = '';
+        }
+
+        // Open camera (simulated)
+        function openCamera() {
+            showToast('Camera scanner would open on mobile device');
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            // Update active button
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        // Employee management
+        function addEmployee() {
+            showToast('Add employee modal would open');
+        }
+
+        function editEmployee(name) {
+            showToast(`Editing ${name}'s profile`);
+        }
+
+        function removeEmployee(name) {
+            if (confirm(`Remove ${name} from staff?`)) {
+                showToast(`${name} has been removed`);
+                event.target.closest('.employee-card').remove();
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            showToast('Settings saved successfully!');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('mainPortal').style.display = 'none';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.style.background = 'var(--danger)';
+            }
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Handle Enter key on QR input
+        document.getElementById('qrInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                scanQR();
+            }
+        });
+    </script>
+</body>
+</html>
