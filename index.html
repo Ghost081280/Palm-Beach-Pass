@@ -15,51 +15,205 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Palm Beach Pass">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTIiIGZpbGw9IiMxMEI5ODEiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSIxMiIgeT0iMTIiPgo8cGF0aCBkPSJNMjEgMTBjMCAyLTEgNC0zIDUtMiAxLTMgMi0zIDMgMCAyIDEgMyAzIDNoN3YtMmMwLTEtMS0yLTItMnMtMi0xLTItMmMwLTEgMS0yIDItMnMxLTIgMS0yeiIgZmlsbD0id2hpdGUiLz4KPHN0cm9rZSBkPSJNOSAxMWEzIDMgMCAxIDAgNi0zIDMgMyAwIDAgMC02IDN6IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHN0cm9rZSBkPSJtOSAxMi00IDEzaDZsMS0zaDRsMS0zaC00eiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+Cjwvc3ZnPgo8L3N2Zz4K">
-    
-    <!-- CSS Libraries - Load First -->
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-    
-    <!-- Fallback CSS -->
+    <!-- Complete CSS Styles -->
     <style>
-        /* Fallback styles in case Tailwind doesn't load */
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6;
+        }
+        
+        /* Utility Classes */
         .min-h-screen { min-height: 100vh; }
         .flex { display: flex; }
+        .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
         .justify-center { justify-content: center; }
-        .p-4 { padding: 1rem; }
-        .bg-white { background-color: white; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .justify-between { justify-content: space-between; }
         .text-center { text-align: center; }
-        .mb-8 { margin-bottom: 2rem; }
-        .text-2xl { font-size: 1.5rem; }
-        .font-bold { font-weight: 700; }
-        .text-gray-800 { color: #1f2937; }
-        .text-gray-600 { color: #4b5563; }
-        .space-y-4 > * + * { margin-top: 1rem; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
         .w-full { width: 100%; }
-        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .border { border: 1px solid #d1d5db; }
-        .rounded-md { border-radius: 0.375rem; }
-        .bg-green-500 { background-color: #10b981; }
-        .text-white { color: white; }
-        .w-16 { width: 4rem; }
-        .h-16 { height: 4rem; }
+        .h-full { height: 100%; }
+        .max-w-md { max-width: 28rem; }
+        .max-w-4xl { max-width: 56rem; }
         .mx-auto { margin-left: auto; margin-right: auto; }
-        .mb-4 { margin-bottom: 1rem; }
-        .w-8 { width: 2rem; }
-        .h-8 { height: 2rem; }
         
-        .line-clamp-2 {
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+        /* Spacing */
+        .p-2 { padding: 0.5rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .m-2 { margin: 0.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-4 { margin-top: 1rem; }
+        .ml-2 { margin-left: 0.5rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        
+        /* Layout */
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        
+        /* Sizing */
+        .w-8 { width: 2rem; }
+        .w-16 { width: 4rem; }
+        .w-32 { width: 8rem; }
+        .h-8 { height: 2rem; }
+        .h-16 { height: 4rem; }
+        .h-32 { height: 8rem; }
+        .h-48 { height: 12rem; }
+        .h-64 { height: 16rem; }
+        
+        /* Colors */
+        .bg-white { background-color: #ffffff; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .bg-gray-200 { background-color: #e5e7eb; }
+        .bg-blue-500 { background-color: #3b82f6; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-green-500 { background-color: #10b981; }
+        .bg-green-600 { background-color: #059669; }
+        .bg-red-500 { background-color: #ef4444; }
+        .bg-purple-600 { background-color: #9333ea; }
+        .text-white { color: #ffffff; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-gray-800 { color: #1f2937; }
+        .text-green-600 { color: #059669; }
+        .text-blue-600 { color: #2563eb; }
+        
+        /* Typography */
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        
+        /* Borders */
+        .border { border: 1px solid #d1d5db; }
+        .border-b { border-bottom: 1px solid #e5e7eb; }
+        .rounded { border-radius: 0.25rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        /* Effects */
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        /* Interactive */
+        .cursor-pointer { cursor: pointer; }
+        .hover\:bg-gray-100:hover { background-color: #f3f4f6; }
+        .hover\:bg-green-600:hover { background-color: #059669; }
+        .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+        .hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .focus\:outline-none:focus { outline: 2px solid transparent; }
+        .focus\:ring-2:focus { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); }
+        .transition-all { transition: all 0.3s ease; }
+        
+        /* Gradients */
+        .bg-gradient-blue-green {
+            background: linear-gradient(135deg, #60a5fa 0%, #4ade80 100%);
+        }
+        
+        .bg-gradient-purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* Custom styles */
+        .attraction-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .attraction-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+        }
+        
+        .icon-lg {
+            width: 2rem;
+            height: 2rem;
         }
         
         /* Loading animation */
@@ -68,542 +222,366 @@
             100% { transform: rotate(360deg); }
         }
         
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            font-family: Arial, sans-serif;
+        .spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
         
-        .error-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #ef4444;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9998;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
+        /* Responsive */
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\:flex { display: flex; }
+            .md\:hidden { display: none; }
+            .md\:text-lg { font-size: 1.125rem; }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
-    <div id="loading" class="loading-screen">
+    <div id="loading" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
         <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-            <div style="width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div class="spinner"></div>
         </div>
         <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 8px;">Palm Beach Pass</h1>
         <p style="opacity: 0.8;">Loading your digital attraction pass...</p>
-        <p style="font-size: 12px; margin-top: 20px; opacity: 0.6;">If this takes too long, try refreshing the page</p>
-    </div>
-
-    <!-- Error Screen (hidden by default) -->
-    <div id="error" class="error-screen" style="display: none;">
-        <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">Loading Error</h1>
-        <p style="margin-bottom: 20px;">There was a problem loading the app. This could be due to:</p>
-        <ul style="text-align: left; margin-bottom: 20px;">
-            <li>• Slow internet connection</li>
-            <li>• Browser compatibility issues</li>
-            <li>• Script loading problems</li>
-        </ul>
-        <button onclick="window.location.reload()" style="background: white; color: #ef4444; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold;">
-            Refresh Page
-        </button>
     </div>
 
     <!-- Main App Container -->
     <div id="root"></div>
 
-    <!-- JavaScript Libraries -->
+    <!-- Vanilla JavaScript Application -->
     <script>
-        // Global error handler
-        window.addEventListener('error', function(e) {
-            console.error('Global error:', e.error);
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'flex';
-            }, 1000);
-        });
-
-        // Timeout fallback
-        setTimeout(() => {
-            if (document.getElementById('loading').style.display !== 'none') {
-                console.warn('Loading timeout reached');
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'flex';
-            }
-        }, 15000); // 15 second timeout
-    </script>
-
-    <!-- React -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-    <!-- Fallback for React -->
-    <script>
-        if (!window.React) {
-            console.log('Loading React fallback...');
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"><\/script>');
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"><\/script>');
-        }
-    </script>
-
-    <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script>
-        if (!window.Babel) {
-            console.log('Loading Babel fallback...');
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"><\/script>');
-        }
-    </script>
-
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-
-    <!-- Main Application -->
-    <script type="text/babel">
         console.log('Starting Palm Beach Pass app...');
 
-        // Wait for all dependencies to load
-        function waitForDependencies() {
-            return new Promise((resolve) => {
-                const checkDeps = () => {
-                    if (window.React && window.ReactDOM && window.Babel) {
-                        console.log('All dependencies loaded');
-                        resolve();
-                    } else {
-                        console.log('Waiting for dependencies...', {
-                            React: !!window.React,
-                            ReactDOM: !!window.ReactDOM,
-                            Babel: !!window.Babel
-                        });
-                        setTimeout(checkDeps, 100);
-                    }
-                };
-                checkDeps();
-            });
+        // App State
+        let currentScreen = 'login';
+        let user = null;
+        let selectedCategory = 'all';
+        let cart = [];
+
+        // Sample Data
+        const attractions = [
+            {
+                id: 1,
+                name: "Palm Beach Seaquarium",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop",
+                price: 120,
+                rating: 4.8,
+                description: "Both entertaining and educational, this underwater wonderland has it all to dive in and explore the ocean's most amazing creatures at Seaquarium.",
+                location: "Boynton Beach, FL"
+            },
+            {
+                id: 2,
+                name: "Norton Museum of Art",
+                category: "culture", 
+                image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=300&h=200&fit=crop",
+                price: 120,
+                rating: 4.7,
+                description: "World-class art collection and exhibitions in a beautiful setting.",
+                location: "West Palm Beach, FL"
+            },
+            {
+                id: 3,
+                name: "Worth Avenue",
+                category: "shopping",
+                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop", 
+                price: 120,
+                rating: 4.6,
+                description: "Luxury shopping and dining destination in Palm Beach.",
+                location: "Palm Beach, FL"
+            },
+            {
+                id: 4,
+                name: "Boca Raton Museum",
+                category: "culture",
+                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=300&h=200&fit=crop",
+                price: 120,
+                rating: 4.4,
+                description: "Contemporary and modern art in a beautiful setting.",
+                location: "Boca Raton, FL"
+            },
+            {
+                id: 5,
+                name: "FlyBoard South Florida",
+                category: "outdoor",
+                image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=200&fit=crop",
+                price: 120,
+                rating: 4.8,
+                description: "Experience the thrill of flying above the water.",
+                location: "South Florida"
+            },
+            {
+                id: 6,
+                name: "Food Tours",
+                category: "food",
+                image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&h=200&fit=crop",
+                price: 120,
+                rating: 4.6,
+                description: "Culinary adventures through Palm Beach's best restaurants.",
+                location: "Palm Beach, FL"
+            }
+        ];
+
+        const passPrices = {
+            1: { adult: 35.00, child: 25.00 },
+            2: { adult: 55.00, child: 35.00 },
+            3: { adult: 70.00, child: 45.00 },
+            5: { adult: 85.00, child: 55.00 },
+            7: { adult: 95.00, child: 65.00 }
+        };
+
+        // Utility Functions
+        function createElement(tag, className = '', innerHTML = '') {
+            const element = document.createElement(tag);
+            if (className) element.className = className;
+            if (innerHTML) element.innerHTML = innerHTML;
+            return element;
         }
 
-        // Initialize app
-        waitForDependencies().then(() => {
-            console.log('Initializing React app...');
+        function clearContainer() {
+            document.getElementById('root').innerHTML = '';
+        }
 
-            const { useState } = React;
+        function filterAttractions() {
+            return selectedCategory === 'all' 
+                ? attractions 
+                : attractions.filter(attraction => attraction.category === selectedCategory);
+        }
+
+        // Screen Renderers
+        function renderLoginScreen() {
+            clearContainer();
             
-            // Icon fallbacks
-            const Icons = {
-                MapPin: () => React.createElement('span', { style: { fontSize: '16px' } }, '📍'),
-                Phone: () => React.createElement('span', { style: { fontSize: '16px' } }, '📞'),
-                Star: () => React.createElement('span', { style: { fontSize: '16px' } }, '⭐'),
-                Filter: () => React.createElement('span', { style: { fontSize: '16px' } }, '🔽'),
-                Grid: () => React.createElement('span', { style: { fontSize: '16px' } }, '⊞'),
-                List: () => React.createElement('span', { style: { fontSize: '16px' } }, '☰'),
-                Heart: () => React.createElement('span', { style: { fontSize: '16px' } }, '❤️'),
-                ShoppingCart: () => React.createElement('span', { style: { fontSize: '16px' } }, '🛒'),
-                User: () => React.createElement('span', { style: { fontSize: '16px' } }, '👤'),
-                Menu: () => React.createElement('span', { style: { fontSize: '16px' } }, '☰'),
-                X: () => React.createElement('span', { style: { fontSize: '16px' } }, '✕'),
-                DollarSign: () => React.createElement('span', { style: { fontSize: '16px' } }, '$')
-            };
+            const container = createElement('div', 'min-h-screen flex items-center justify-center p-4 bg-gradient-blue-green');
+            
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-green-500 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                            📍
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-800">Palm Beach Pass</h1>
+                        <p class="text-gray-600">Saving on attractions, made simple</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" value="demo@demo.com" class="input-field" placeholder="Enter your email">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" id="password" value="demo" class="input-field" placeholder="Enter your password">
+                        </div>
+                        
+                        <button onclick="handleLogin()" class="btn btn-primary w-full">Sign In</button>
+                        
+                        <p class="text-xs text-gray-500 text-center mt-4">Demo: Use demo@demo.com / demo</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('root').appendChild(container);
+        }
 
-            // Check if Lucide loaded
-            if (window.lucide) {
-                console.log('Lucide icons loaded');
-                Object.assign(Icons, window.lucide);
+        function render2FAScreen() {
+            clearContainer();
+            
+            const container = createElement('div', 'min-h-screen flex items-center justify-center p-4 bg-gradient-blue-green');
+            
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 text-green-500 mx-auto mb-4 flex items-center justify-center text-4xl">📞</div>
+                        <h1 class="text-2xl font-bold text-gray-800">Verify Your Phone</h1>
+                        <p class="text-gray-600">We've sent a verification code to +1 (555) 123-4567</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Verification Code</label>
+                            <input type="text" id="verificationCode" maxlength="6" class="input-field text-center text-2xl" placeholder="000000">
+                        </div>
+                        
+                        <button onclick="handleVerification()" class="btn btn-primary w-full">Verify</button>
+                        
+                        <p class="text-xs text-gray-500 text-center mt-4">Demo code: 123456</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('root').appendChild(container);
+        }
+
+        function renderHomeScreen() {
+            clearContainer();
+            
+            const container = createElement('div', 'min-h-screen bg-gray-50');
+            
+            const filteredAttractions = filterAttractions();
+            
+            container.innerHTML = `
+                <!-- Header -->
+                <header class="bg-white shadow-sm border-b">
+                    <div class="max-w-4xl mx-auto px-4 py-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white">📍</div>
+                                <span class="text-xl font-bold text-gray-800">Palm Beach Pass</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-sm text-gray-600 cursor-pointer" onclick="openPage('customer-account.html')">Account</span>
+                                <div class="cursor-pointer" onclick="openPage('checkout.html')">🛒</div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Hero Section -->
+                <div class="h-64 bg-gradient-blue-green flex items-center justify-center text-white text-center">
+                    <div>
+                        <h1 class="text-4xl font-bold mb-4">CHOOSE FROM 156 ATTRACTIONS</h1>
+                        <h2 class="text-2xl mb-2"><span style="color: #4ade80;">FREE</span> WITH PALM BEACH PASS</h2>
+                        <p class="text-lg">Access outdoor adventures, surfing hotspots, museums and more experiences</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="max-w-4xl mx-auto px-4 py-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <button onclick="openPage('customer-passes.html')" class="btn btn-secondary w-full py-4">📱 View My Passes</button>
+                        <button onclick="openPage('checkout.html')" class="btn btn-primary w-full py-4">🛒 Buy New Pass</button>
+                        <button onclick="openPage('vendor-portal.html')" class="bg-red-500 text-white rounded-lg py-4 font-semibold hover:bg-red-600 transition-all">🔍 Vendor Portal</button>
+                    </div>
+
+                    <!-- Category Filters -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button onclick="setCategory('all')" class="px-4 py-2 rounded ${selectedCategory === 'all' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">ALL</button>
+                        <button onclick="setCategory('family')" class="px-4 py-2 rounded ${selectedCategory === 'family' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">FAMILY</button>
+                        <button onclick="setCategory('culture')" class="px-4 py-2 rounded ${selectedCategory === 'culture' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">CULTURE</button>
+                        <button onclick="setCategory('outdoor')" class="px-4 py-2 rounded ${selectedCategory === 'outdoor' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">OUTDOOR</button>
+                        <button onclick="setCategory('food')" class="px-4 py-2 rounded ${selectedCategory === 'food' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">FOOD</button>
+                        <button onclick="setCategory('shopping')" class="px-4 py-2 rounded ${selectedCategory === 'shopping' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-gray-300 transition-all">SHOPPING</button>
+                    </div>
+
+                    <!-- Attractions Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${filteredAttractions.map(attraction => `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden attraction-card cursor-pointer" onclick="viewAttraction(${attraction.id})">
+                                <img src="${attraction.image}" alt="${attraction.name}" class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-bold text-lg mb-1">${attraction.name}</h3>
+                                    <p class="text-sm text-gray-600 mb-2">Regular price $${attraction.price}</p>
+                                    <p class="text-xs text-gray-500 mb-3">${attraction.description}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">${attraction.location}</span>
+                                        <div class="flex items-center">
+                                            <span class="text-yellow-400">⭐</span>
+                                            <span class="text-sm text-gray-600 ml-1">${attraction.rating}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Pass Selection -->
+                    <div class="mt-12 bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-2xl font-bold text-center mb-6">Choose Your Palm Beach Pass</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${Object.entries(passPrices).map(([days, prices]) => `
+                                <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-green-500 transition-all">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-bold text-lg">${days} ${days === '1' ? 'Day' : 'Days'}</h4>
+                                            <p class="text-sm text-gray-600">Adults</p>
+                                            <p class="text-2xl font-bold text-green-600">$${prices.adult}</p>
+                                            <p class="text-sm text-gray-500">Child $${prices.child}</p>
+                                        </div>
+                                        <button onclick="addToCart('${days}', ${prices.adult})" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-all">CHOOSE</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Demo Links -->
+                <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <button onclick="openPage('qr-system.html')" class="bg-gray-600 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition-all" title="QR System">⚙️</button>
+                </div>
+            `;
+            
+            document.getElementById('root').appendChild(container);
+        }
+
+        // Event Handlers
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email === 'demo@demo.com' && password === 'demo') {
+                currentScreen = '2fa';
+                render2FAScreen();
             } else {
-                console.log('Using fallback icons');
+                alert('Please use demo@demo.com / demo for this demo');
             }
+        }
 
-            const { MapPin, Phone, Star, Filter, Grid, List, Heart, ShoppingCart, User, Menu, X, DollarSign } = Icons;
-
-            // Attractions data
-            const attractions = [
-                {
-                    id: 1,
-                    name: "Palm Beach Seaquarium",
-                    category: "family",
-                    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop",
-                    price: 120,
-                    rating: 4.8,
-                    description: "Both entertaining and educational, this underwater wonderland has it all to dive in and explore the ocean's most amazing creatures.",
-                    location: "Boynton Beach, FL"
-                },
-                {
-                    id: 2,
-                    name: "Norton Museum of Art",
-                    category: "culture",
-                    image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=300&h=200&fit=crop",
-                    price: 120,
-                    rating: 4.7,
-                    description: "World-class art collection and exhibitions in a beautiful setting.",
-                    location: "West Palm Beach, FL"
-                },
-                {
-                    id: 3,
-                    name: "Worth Avenue",
-                    category: "shopping",
-                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop",
-                    price: 120,
-                    rating: 4.6,
-                    description: "Luxury shopping and dining destination in Palm Beach.",
-                    location: "Palm Beach, FL"
-                }
-            ];
-
-            // Main App Component
-            const App = () => {
-                const [currentScreen, setCurrentScreen] = useState('login');
-                const [user, setUser] = useState(null);
-                const [verificationCode, setVerificationCode] = useState('');
-
-                // Login Screen
-                const LoginScreen = () => {
-                    const [email, setEmail] = useState('demo@demo.com');
-                    const [password, setPassword] = useState('demo');
-
-                    const handleLogin = () => {
-                        if (email === 'demo@demo.com' && password === 'demo') {
-                            setCurrentScreen('2fa');
-                        } else {
-                            alert('Please use demo@demo.com / demo');
-                        }
-                    };
-
-                    return React.createElement('div', {
-                        className: "min-h-screen flex items-center justify-center p-4",
-                        style: { background: 'linear-gradient(135deg, #60a5fa 0%, #4ade80 100%)' }
-                    },
-                        React.createElement('div', {
-                            className: "bg-white rounded-lg shadow-2xl p-8 w-full max-w-md"
-                        },
-                            React.createElement('div', {
-                                className: "text-center mb-8"
-                            },
-                                React.createElement('div', {
-                                    className: "w-16 h-16 bg-green-500 rounded-lg mx-auto mb-4 flex items-center justify-center"
-                                }, React.createElement(MapPin, { className: "w-8 h-8 text-white" })),
-                                React.createElement('h1', {
-                                    className: "text-2xl font-bold text-gray-800"
-                                }, "Palm Beach Pass"),
-                                React.createElement('p', {
-                                    className: "text-gray-600"
-                                }, "Saving on attractions, made simple")
-                            ),
-                            React.createElement('div', {
-                                className: "space-y-4"
-                            },
-                                React.createElement('div', null,
-                                    React.createElement('label', {
-                                        className: "block text-sm font-medium text-gray-700 mb-2"
-                                    }, "Email"),
-                                    React.createElement('input', {
-                                        type: "email",
-                                        value: email,
-                                        onChange: (e) => setEmail(e.target.value),
-                                        className: "w-full px-3 py-2 border rounded-md",
-                                        placeholder: "Enter your email"
-                                    })
-                                ),
-                                React.createElement('div', null,
-                                    React.createElement('label', {
-                                        className: "block text-sm font-medium text-gray-700 mb-2"
-                                    }, "Password"),
-                                    React.createElement('input', {
-                                        type: "password",
-                                        value: password,
-                                        onChange: (e) => setPassword(e.target.value),
-                                        className: "w-full px-3 py-2 border rounded-md",
-                                        placeholder: "Enter your password"
-                                    })
-                                ),
-                                React.createElement('button', {
-                                    onClick: handleLogin,
-                                    className: "w-full bg-green-500 text-white py-2 px-4 rounded-md font-semibold",
-                                    style: { transition: 'background-color 0.2s' }
-                                }, "Sign In"),
-                                React.createElement('p', {
-                                    className: "text-xs text-gray-500 text-center mt-4"
-                                }, "Demo: Use demo@demo.com / demo")
-                            )
-                        )
-                    );
-                };
-
-                // 2FA Screen
-                const TwoFactorScreen = () => {
-                    const handleVerification = () => {
-                        if (verificationCode === '123456') {
-                            setUser({ email: 'demo@demo.com' });
-                            setCurrentScreen('home');
-                        } else {
-                            alert('Please enter 123456');
-                        }
-                    };
-
-                    return React.createElement('div', {
-                        className: "min-h-screen flex items-center justify-center p-4",
-                        style: { background: 'linear-gradient(135deg, #60a5fa 0%, #4ade80 100%)' }
-                    },
-                        React.createElement('div', {
-                            className: "bg-white rounded-lg shadow-2xl p-8 w-full max-w-md"
-                        },
-                            React.createElement('div', {
-                                className: "text-center mb-8"
-                            },
-                                React.createElement(Phone, { 
-                                    className: "w-16 h-16 text-green-500 mx-auto mb-4",
-                                    style: { width: '4rem', height: '4rem' }
-                                }),
-                                React.createElement('h1', {
-                                    className: "text-2xl font-bold text-gray-800"
-                                }, "Verify Your Phone"),
-                                React.createElement('p', {
-                                    className: "text-gray-600"
-                                }, "Enter the verification code: 123456")
-                            ),
-                            React.createElement('div', {
-                                className: "space-y-4"
-                            },
-                                React.createElement('input', {
-                                    type: "text",
-                                    value: verificationCode,
-                                    onChange: (e) => setVerificationCode(e.target.value),
-                                    className: "w-full px-3 py-2 border rounded-md text-center text-2xl",
-                                    placeholder: "000000",
-                                    maxLength: "6"
-                                }),
-                                React.createElement('button', {
-                                    onClick: handleVerification,
-                                    className: "w-full bg-green-500 text-white py-2 px-4 rounded-md font-semibold"
-                                }, "Verify"),
-                                React.createElement('p', {
-                                    className: "text-xs text-gray-500 text-center"
-                                }, "Demo code: 123456")
-                            )
-                        )
-                    );
-                };
-
-                // Home Screen
-                const HomeScreen = () => React.createElement('div', {
-                    className: "min-h-screen",
-                    style: { backgroundColor: '#f9fafb' }
-                },
-                    // Header
-                    React.createElement('header', {
-                        className: "bg-white shadow-sm",
-                        style: { borderBottom: '1px solid #e5e7eb' }
-                    },
-                        React.createElement('div', {
-                            style: { maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }
-                        },
-                            React.createElement('div', {
-                                style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '4rem' }
-                            },
-                                React.createElement('div', {
-                                    style: { display: 'flex', alignItems: 'center' }
-                                },
-                                    React.createElement('div', {
-                                        className: "w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center",
-                                        style: { marginRight: '0.5rem' }
-                                    }, React.createElement(MapPin, { className: "w-5 h-5 text-white" })),
-                                    React.createElement('span', {
-                                        style: { fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937' }
-                                    }, "Palm Beach Pass")
-                                ),
-                                React.createElement('div', {
-                                    style: { display: 'flex', gap: '1rem', alignItems: 'center' }
-                                },
-                                    React.createElement('span', {
-                                        style: { fontSize: '0.875rem', color: '#6b7280', cursor: 'pointer' },
-                                        onClick: () => window.open('customer-account.html', '_blank')
-                                    }, "Account"),
-                                    React.createElement(ShoppingCart, { 
-                                        style: { width: '1.25rem', height: '1.25rem', color: '#6b7280', cursor: 'pointer' },
-                                        onClick: () => window.open('checkout.html', '_blank')
-                                    })
-                                )
-                            )
-                        )
-                    ),
-
-                    // Hero Section
-                    React.createElement('div', {
-                        style: { 
-                            height: '16rem', 
-                            background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            textAlign: 'center'
-                        }
-                    },
-                        React.createElement('div', null,
-                            React.createElement('h1', {
-                                style: { fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem' }
-                            }, "156 ATTRACTIONS"),
-                            React.createElement('h2', {
-                                style: { fontSize: '1.5rem', marginBottom: '0.5rem' }
-                            }, React.createElement('span', { style: { color: '#4ade80' } }, "FREE"), " WITH PALM BEACH PASS"),
-                            React.createElement('p', {
-                                style: { fontSize: '1.125rem' }
-                            }, "Access outdoor adventures, museums and more experiences")
-                        )
-                    ),
-
-                    // Quick Links
-                    React.createElement('div', {
-                        style: { maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }
-                    },
-                        React.createElement('div', {
-                            style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }
-                        },
-                            React.createElement('button', {
-                                onClick: () => window.open('customer-passes.html', '_blank'),
-                                style: { 
-                                    background: '#3b82f6', 
-                                    color: 'white', 
-                                    padding: '1.5rem', 
-                                    borderRadius: '0.5rem', 
-                                    border: 'none', 
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold'
-                                }
-                            }, "📱 View My Passes"),
-                            React.createElement('button', {
-                                onClick: () => window.open('checkout.html', '_blank'),
-                                style: { 
-                                    background: '#10b981', 
-                                    color: 'white', 
-                                    padding: '1.5rem', 
-                                    borderRadius: '0.5rem', 
-                                    border: 'none', 
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold'
-                                }
-                            }, "🛒 Buy New Pass"),
-                            React.createElement('button', {
-                                onClick: () => window.open('vendor-portal.html', '_blank'),
-                                style: { 
-                                    background: '#ef4444', 
-                                    color: 'white', 
-                                    padding: '1.5rem', 
-                                    borderRadius: '0.5rem', 
-                                    border: 'none', 
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold'
-                                }
-                            }, "🔍 Vendor Portal")
-                        ),
-
-                        // Sample Attractions
-                        React.createElement('h3', {
-                            style: { fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#1f2937' }
-                        }, "Featured Attractions"),
-                        React.createElement('div', {
-                            style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }
-                        }, attractions.map(attraction =>
-                            React.createElement('div', {
-                                key: attraction.id,
-                                style: { 
-                                    background: 'white', 
-                                    borderRadius: '0.5rem', 
-                                    overflow: 'hidden', 
-                                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                                    cursor: 'pointer'
-                                }
-                            },
-                                React.createElement('img', {
-                                    src: attraction.image,
-                                    alt: attraction.name,
-                                    style: { width: '100%', height: '12rem', objectFit: 'cover' }
-                                }),
-                                React.createElement('div', {
-                                    style: { padding: '1rem' }
-                                },
-                                    React.createElement('h4', {
-                                        style: { fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '0.5rem' }
-                                    }, attraction.name),
-                                    React.createElement('p', {
-                                        style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }
-                                    }, attraction.description),
-                                    React.createElement('div', {
-                                        style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' }
-                                    },
-                                        React.createElement('span', {
-                                            style: { fontSize: '0.875rem', color: '#6b7280' }
-                                        }, attraction.location),
-                                        React.createElement('div', {
-                                            style: { display: 'flex', alignItems: 'center' }
-                                        },
-                                            React.createElement(Star, { style: { width: '1rem', height: '1rem', color: '#fbbf24' } }),
-                                            React.createElement('span', {
-                                                style: { marginLeft: '0.25rem', fontSize: '0.875rem' }
-                                            }, attraction.rating)
-                                        )
-                                    )
-                                )
-                            )
-                        ))
-                    )
-                );
-
-                // Route to appropriate screen
-                switch (currentScreen) {
-                    case 'login':
-                        return React.createElement(LoginScreen);
-                    case '2fa':
-                        return React.createElement(TwoFactorScreen);
-                    case 'home':
-                        return React.createElement(HomeScreen);
-                    default:
-                        return React.createElement(LoginScreen);
-                }
-            };
-
-            // Render the app
-            try {
-                console.log('Rendering app...');
-                ReactDOM.render(React.createElement(App), document.getElementById('root'));
-                
-                // Hide loading screen after successful render
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                    console.log('App loaded successfully');
-                }, 500);
-                
-            } catch (error) {
-                console.error('Render error:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'flex';
+        function handleVerification() {
+            const code = document.getElementById('verificationCode').value;
+            
+            if (code === '123456') {
+                user = { email: 'demo@demo.com' };
+                currentScreen = 'home';
+                renderHomeScreen();
+            } else {
+                alert('Please enter 123456 for this demo');
             }
+        }
 
-        }).catch(error => {
-            console.error('Dependency loading error:', error);
+        function setCategory(category) {
+            selectedCategory = category;
+            renderHomeScreen();
+        }
+
+        function viewAttraction(id) {
+            const attraction = attractions.find(a => a.id === id);
+            alert(`Viewing ${attraction.name}\\n\\n${attraction.description}\\n\\nLocation: ${attraction.location}\\nRating: ${attraction.rating}/5`);
+        }
+
+        function addToCart(days, price) {
+            cart.push({ days, price });
+            alert(`${days}-day pass added to cart! Total items: ${cart.length}\\n\\nClick "Buy New Pass" to proceed to checkout`);
+        }
+
+        function openPage(page) {
+            window.open(page, '_blank');
+        }
+
+        // Initialize App
+        function initApp() {
+            console.log('Initializing app...');
+            
+            // Hide loading screen
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'flex';
-        });
+            
+            // Render initial screen
+            renderLoginScreen();
+            
+            console.log('App initialized successfully');
+        }
 
         // PWA Service Worker
         if ('serviceWorker' in navigator) {
@@ -613,6 +591,9 @@
                     .catch(error => console.log('SW registration failed'));
             });
         }
+
+        // Start the app
+        setTimeout(initApp, 500);
     </script>
 </body>
 </html>
