@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Digital attraction passes for Palm Beach County - save up to 50% on 156+ attractions">
-    <meta name="theme-color" content="#0EA5E9">
+    <meta name="theme-color" content="#10B981">
     <title>Palm Beach Pass - Your Gateway to Paradise</title>
     
     <!-- PWA Manifest -->
@@ -18,26 +18,19 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Complete CSS Styles -->
     <style>
         :root {
-            --primary-blue: #0EA5E9;
-            --primary-blue-dark: #0284C7;
-            --secondary-teal: #14B8A6;
-            --secondary-teal-dark: #0F766E;
-            --accent-coral: #F97316;
-            --accent-coral-dark: #EA580C;
-            --warm-sand: #FEF3C7;
-            --ocean-mist: #F0F9FF;
-            --palm-green: #059669;
-            --sunset-orange: #FB923C;
-            --luxury-navy: #1E293B;
-            --soft-white: #FEFEFE;
-            --warm-gray: #F8FAFC;
-            --border-light: rgba(148, 163, 184, 0.2);
-            --shadow-luxury: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 0 1px rgba(14, 165, 233, 0.05);
+            --primary-green: #10B981;
+            --primary-green-dark: #059669;
+            --accent-blue: #3B82F6;
+            --accent-blue-dark: #2563EB;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --border-light: #E5E7EB;
+            --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
         * { 
@@ -49,1116 +42,739 @@
         body { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
             line-height: 1.6;
-            color: var(--luxury-navy);
-            background: var(--soft-white);
+            color: var(--text-dark);
+            background: var(--bg-white);
         }
         
-        /* Typography */
-        .font-display { font-family: 'Playfair Display', serif; }
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* Header Styles */
+        .header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
         
-        /* Utility Classes */
-        .min-h-screen { min-height: 100vh; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .text-center { text-align: center; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .fixed { position: fixed; }
-        .w-full { width: 100%; }
-        .h-full { height: 100%; }
-        .max-w-7xl { max-width: 80rem; }
-        .max-w-4xl { max-width: 56rem; }
-        .max-w-md { max-width: 28rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .overflow-hidden { overflow: hidden; }
-        
-        /* Spacing System */
-        .p-3 { padding: 0.75rem; }
-        .p-4 { padding: 1rem; }
-        .p-6 { padding: 1.5rem; }
-        .p-8 { padding: 2rem; }
-        .p-12 { padding: 3rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .px-8 { padding-left: 2rem; padding-right: 2rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
-        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mb-12 { margin-bottom: 3rem; }
-        .mb-16 { margin-bottom: 4rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mt-8 { margin-top: 2rem; }
-        .ml-3 { margin-left: 0.75rem; }
-        .mr-3 { margin-right: 0.75rem; }
-        
-        /* Layout */
-        .grid { display: grid; }
-        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .gap-4 { gap: 1rem; }
-        .gap-6 { gap: 1.5rem; }
-        .gap-8 { gap: 2rem; }
-        .space-y-4 > * + * { margin-top: 1rem; }
-        .space-y-6 > * + * { margin-top: 1.5rem; }
-        .space-x-2 > * + * { margin-left: 0.5rem; }
-        .space-x-3 > * + * { margin-left: 0.75rem; }
-        .space-x-4 > * + * { margin-left: 1rem; }
-        
-        /* Sizing */
-        .w-6 { width: 1.5rem; }
-        .w-8 { width: 2rem; }
-        .w-10 { width: 2.5rem; }
-        .w-12 { width: 3rem; }
-        .w-16 { width: 4rem; }
-        .w-24 { width: 6rem; }
-        .h-6 { height: 1.5rem; }
-        .h-8 { height: 2rem; }
-        .h-10 { height: 2.5rem; }
-        .h-12 { height: 3rem; }
-        .h-16 { height: 4rem; }
-        .h-24 { height: 6rem; }
-        .h-64 { height: 16rem; }
-        .h-80 { height: 20rem; }
-        .h-96 { height: 24rem; }
-        
-        /* Typography Sizes */
-        .text-xs { font-size: 0.75rem; line-height: 1rem; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .text-base { font-size: 1rem; line-height: 1.5rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-        .text-5xl { font-size: 3rem; line-height: 1; }
-        .text-6xl { font-size: 3.75rem; line-height: 1; }
-        .font-light { font-weight: 300; }
-        .font-normal { font-weight: 400; }
-        .font-medium { font-weight: 500; }
-        .font-semibold { font-weight: 600; }
-        .font-bold { font-weight: 700; }
-        .font-extrabold { font-weight: 800; }
-        
-        /* Colors */
-        .text-white { color: #ffffff; }
-        .text-gray-50 { color: #f8fafc; }
-        .text-gray-500 { color: #64748b; }
-        .text-gray-600 { color: #475569; }
-        .text-gray-700 { color: #334155; }
-        .text-gray-800 { color: #1e293b; }
-        .text-gray-900 { color: #0f172a; }
-        .text-blue-600 { color: var(--primary-blue); }
-        .text-teal-600 { color: var(--secondary-teal); }
-        .text-orange-600 { color: var(--accent-coral); }
-        
-        /* Borders */
-        .border { border: 1px solid var(--border-light); }
-        .border-b { border-bottom: 1px solid var(--border-light); }
-        .rounded { border-radius: 0.375rem; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .rounded-xl { border-radius: 0.75rem; }
-        .rounded-2xl { border-radius: 1rem; }
-        .rounded-3xl { border-radius: 1.5rem; }
-        .rounded-full { border-radius: 9999px; }
-        
-        /* Shadows and Effects */
-        .shadow-sm { box-shadow: var(--shadow-soft); }
-        .shadow-lg { box-shadow: var(--shadow-luxury); }
-        .shadow-glow { box-shadow: var(--shadow-glow); }
-        
-        /* Backgrounds */
-        .bg-white { background-color: var(--soft-white); }
-        .bg-gray-50 { background-color: var(--warm-gray); }
-        .bg-ocean { background: linear-gradient(135deg, var(--ocean-mist) 0%, var(--warm-sand) 100%); }
-        .bg-tropical { 
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 50%, var(--palm-green) 100%);
-        }
-        .bg-sunset {
-            background: linear-gradient(135deg, var(--accent-coral) 0%, var(--sunset-orange) 100%);
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
-        /* Interactive States */
-        .cursor-pointer { cursor: pointer; }
-        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .transition-smooth { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hover\:scale-105:hover { transform: scale(1.05); }
-        .hover\:scale-110:hover { transform: scale(1.1); }
-        .hover\:shadow-2xl:hover { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); }
-        .hover\:bg-blue-600:hover { background-color: var(--primary-blue-dark); }
-        .hover\:bg-teal-600:hover { background-color: var(--secondary-teal-dark); }
-        .hover\:bg-orange-600:hover { background-color: var(--accent-coral-dark); }
-        
-        /* Custom Styles */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
-        .gradient-border {
-            position: relative;
-            background: white;
-            border-radius: 1rem;
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary-green);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .gradient-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 2px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-teal));
-            border-radius: inherit;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            -webkit-mask-composite: xor;
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
         }
         
-        .attraction-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
+        .nav-menu {
+            display: none;
+            gap: 2rem;
         }
         
-        .attraction-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        .nav-menu a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--text-dark);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
         .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.875rem 2rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 100%);
+            background: var(--primary-green);
             color: white;
-            box-shadow: 0 4px 15px 0 rgba(14, 165, 233, 0.3);
         }
         
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px 0 rgba(14, 165, 233, 0.4);
+            background: var(--primary-green-dark);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, var(--accent-coral) 0%, var(--sunset-orange) 100%);
-            color: white;
-            box-shadow: 0 4px 15px 0 rgba(249, 115, 22, 0.3);
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
         }
         
         .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.4);
+            background: #F3F4F6;
         }
         
-        .input-field {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--border-light);
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            background: var(--soft-white);
-            transition: all 0.3s ease;
+        /* Filter Bar */
+        .filter-bar {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 0;
         }
         
-        .input-field:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-            background: white;
+        .filter-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
-        /* Hero Animation */
-        .hero-float {
-            animation: heroFloat 6s ease-in-out infinite;
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
-        @keyframes heroFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* Parallax Wave */
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-        }
-        
-        .wave svg {
-            position: relative;
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 60px;
-        }
-        
-        .wave .shape-fill {
-            fill: var(--soft-white);
-        }
-        
-        /* Category Pills */
-        .category-pill {
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            color: var(--text-gray);
             font-weight: 500;
-            font-size: 0.875rem;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .category-pill.active {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-teal) 100%);
+        .filter-tab.active {
+            background: var(--primary-green);
             color: white;
-            transform: scale(1.05);
+            border-color: var(--primary-green);
         }
         
-        .category-pill:hover {
+        .search-filters {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            width: 200px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .view-btn {
+            padding: 0.5rem;
+            background: var(--bg-white);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .view-btn.active {
+            background: var(--bg-light);
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .content-header {
+            margin-bottom: 2rem;
+        }
+        
+        .content-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .content-subtitle {
+            color: var(--text-gray);
+            font-size: 1.125rem;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-dark));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .promo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .promo-subtitle {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        /* Attraction Grid */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .attraction-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .attraction-card:hover {
+            box-shadow: var(--shadow-medium);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         
-        /* Loading Animation */
-        .loading-wave {
-            width: 60px;
-            height: 60px;
-            position: relative;
-        }
-        
-        .loading-wave::before {
-            content: '';
-            position: absolute;
+        .attraction-image {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-teal));
-            border-radius: 50%;
-            animation: wave-pulse 2s ease-in-out infinite;
+            height: 200px;
+            object-fit: cover;
         }
         
-        @keyframes wave-pulse {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+        .attraction-content {
+            padding: 1.5rem;
         }
         
-        /* Responsive Design */
+        .attraction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .attraction-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+        
+        .attraction-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: var(--bg-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            white-space: nowrap;
+        }
+        
+        .rating-star {
+            width: 0.875rem;
+            height: 0.875rem;
+            fill: #FCD34D;
+        }
+        
+        .rating-text {
+            font-size: 0.875rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+        
+        .attraction-description {
+            color: var(--text-gray);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .attraction-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .original-price {
+            color: var(--text-gray);
+            text-decoration: line-through;
+            font-size: 0.875rem;
+        }
+        
+        .current-price {
+            color: var(--primary-green);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+        
+        .add-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .add-btn:hover {
+            background: var(--primary-green-dark);
+        }
+        
+        /* Responsive */
         @media (min-width: 768px) {
-            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-            .md\:flex { display: flex; }
-            .md\:hidden { display: none; }
-            .md\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-            .md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-            .md\:text-5xl { font-size: 3rem; line-height: 1; }
-            .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
-            .md\:px-8 { padding-left: 2rem; padding-right: 2rem; }
-            .md\:py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+            .nav-menu {
+                display: flex;
+            }
+            
+            .filter-content {
+                flex-wrap: nowrap;
+            }
+            
+            .search-input {
+                width: 300px;
+            }
         }
         
         @media (min-width: 1024px) {
-            .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-            .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-            .lg\:text-7xl { font-size: 4.5rem; line-height: 1; }
+            .attractions-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
         
-        /* Scroll Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        /* List View */
+        .attractions-list {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
         }
         
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .attractions-list.active {
+            display: flex;
         }
         
-        /* Floating Elements */
-        .floating-1 { animation: float-1 3s ease-in-out infinite; }
-        .floating-2 { animation: float-2 4s ease-in-out infinite; }
-        .floating-3 { animation: float-3 5s ease-in-out infinite; }
-        
-        @keyframes float-1 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        .attraction-list-item {
+            display: flex;
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
         }
         
-        @keyframes float-2 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(-3deg); }
+        .attraction-list-item:hover {
+            box-shadow: var(--shadow-medium);
         }
         
-        @keyframes float-3 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(2deg); }
+        .list-item-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .list-item-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .list-item-info {
+            flex: 1;
+        }
+        
+        .list-item-actions {
+            margin-left: 1rem;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading" class="fixed inset-0 bg-tropical flex flex-col items-center justify-center z-50">
-        <div class="text-center mb-8">
-            <div class="w-24 h-24 glass-effect rounded-3xl flex items-center justify-center mb-6">
-                <div class="loading-wave"></div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+                    </svg>
+                </div>
+                <div class="logo-text">Palm Beach Pass</div>
             </div>
-            <h1 class="text-4xl font-display font-bold text-white mb-2">Palm Beach Pass</h1>
-            <p class="text-white text-lg font-light">Your gateway to paradise...</p>
+            
+            <nav class="nav-menu">
+                <a href="#home">Home</a>
+                <a href="#attractions">Attractions</a>
+                <a href="#passes">Passes</a>
+                <a href="#about">About</a>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="openPage('customer-account.html')">Account</button>
+                <button class="btn btn-primary" onclick="openPage('checkout.html')">Get Pass</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-content">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="setCategory('all')">ALL</button>
+                <button class="filter-tab" onclick="setCategory('family')">FAMILY ATTRACTIONS</button>
+                <button class="filter-tab" onclick="setCategory('outdoor')">OUTDOOR SPORTS</button>
+                <button class="filter-tab" onclick="setCategory('special')">SPECIAL OFFERS</button>
+                <button class="filter-tab" onclick="setCategory('top')">TOP ATTRACTIONS</button>
+            </div>
+            
+            <div class="search-filters">
+                <input type="text" class="search-input" placeholder="Search attractions..." id="searchInput">
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="toggleView('grid')" title="Grid View">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 3h7v7H3V3zm11 0h7v7h-7V3zM3 14h7v7H3v-7zm11 0h7v7h-7v-7z"/>
+                        </svg>
+                    </button>
+                    <button class="view-btn" onclick="toggleView('list')" title="List View">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="root"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Promo Banner -->
+        <div class="promo-banner">
+            <div class="promo-title">CHOOSE FROM 156 ATTRACTIONS</div>
+            <div class="promo-subtitle">FREE with PALM BEACH PASS</div>
+            <div class="promo-subtitle">Access outdoor adventures, surfing hotspots, museums and more experiences. One time payment.</div>
+        </div>
 
-    <!-- Vanilla JavaScript Application -->
+        <!-- Content Header -->
+        <div class="content-header">
+            <h1 class="content-title">156 items found</h1>
+        </div>
+
+        <!-- Attractions Grid -->
+        <div class="attractions-grid" id="attractionsGrid">
+            <!-- Attraction cards will be populated by JavaScript -->
+        </div>
+
+        <!-- Attractions List -->
+        <div class="attractions-list" id="attractionsList">
+            <!-- List items will be populated by JavaScript -->
+        </div>
+    </main>
+
     <script>
-        console.log('Starting Premium Palm Beach Pass experience...');
-
-        // Enhanced App State
-        let currentScreen = 'login';
-        let user = null;
-        let selectedCategory = 'all';
-        let cart = [];
-        let isLoading = false;
-
-        // Premium Sample Data
+        // Sample attraction data
         const attractions = [
             {
                 id: 1,
-                name: "The Breakers Palm Beach",
-                category: "luxury",
-                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop&crop=center",
-                price: 185,
-                rating: 4.9,
-                description: "Iconic oceanfront resort with Italian Renaissance architecture, offering world-class dining and spa services.",
-                location: "Palm Beach, FL",
-                features: ["Ocean View", "Spa", "Fine Dining", "Golf"]
+                name: "Boynton Beach Dive Center",
+                category: "outdoor",
+                image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 220,
+                rating: 4.8,
+                description: "Both entertaining and educational, this underwater wonderland has it all to dive in and explore the ocean's most amazing creatures at Seaquarium."
             },
             {
                 id: 2,
-                name: "Norton Museum of Art",
-                category: "culture", 
-                image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=400&h=300&fit=crop&crop=center",
+                name: "Spady Museum",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=400&h=300&fit=crop",
                 price: 120,
-                rating: 4.8,
-                description: "World-renowned contemporary art museum featuring masterpieces from American, European, and Chinese artists.",
-                location: "West Palm Beach, FL",
-                features: ["Contemporary Art", "Sculpture Garden", "Educational Programs"]
+                originalPrice: 195,
+                rating: 4.6,
+                description: "Interactive exhibits and educational programs showcasing local history and culture."
             },
             {
                 id: 3,
-                name: "Worth Avenue Shopping",
-                category: "shopping",
-                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&crop=center", 
+                name: "Worth Avenue",
+                category: "special",
+                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop",
                 price: 120,
+                originalPrice: 180,
                 rating: 4.7,
-                description: "Prestigious shopping destination with luxury boutiques, art galleries, and fine dining establishments.",
-                location: "Palm Beach, FL",
-                features: ["Luxury Shopping", "Art Galleries", "Fine Dining", "Historic Architecture"]
+                description: "Premium shopping destination with luxury boutiques and fine dining establishments."
             },
             {
                 id: 4,
-                name: "Flagler Museum",
-                category: "culture",
-                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop&crop=center",
-                price: 150,
-                rating: 4.6,
-                description: "Gilded Age mansion showcasing the opulent lifestyle of Henry Flagler and Florida's development history.",
-                location: "Palm Beach, FL",
-                features: ["Historic Mansion", "Guided Tours", "Gardens", "Railway Exhibit"]
+                name: "Boca Raton Museum of Art",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 160,
+                rating: 4.5,
+                description: "Contemporary art museum featuring rotating exhibitions and educational programs."
             },
             {
                 id: 5,
-                name: "Palm Beach Water Sports",
-                category: "adventure",
-                image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=400&h=300&fit=crop&crop=center",
-                price: 165,
-                rating: 4.8,
-                description: "Premier water sports experience with jet skiing, parasailing, and deep-sea fishing adventures.",
-                location: "Palm Beach, FL",
-                features: ["Jet Skiing", "Parasailing", "Fishing", "Boat Tours"]
+                name: "Delray Beach Playhouse",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1507924538820-ede94a04019d?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 145,
+                rating: 4.4,
+                description: "Historic theater featuring live performances and community productions."
             },
             {
                 id: 6,
-                name: "Gourmet Food Tours",
-                category: "dining",
-                image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop&crop=center",
-                price: 145,
-                rating: 4.7,
-                description: "Exclusive culinary journey through Palm Beach's finest restaurants and hidden gastronomic gems.",
-                location: "Palm Beach County, FL",
-                features: ["Chef Experiences", "Wine Tastings", "Local Cuisine", "Private Tours"]
+                name: "Craft Food Tours",
+                category: "special",
+                image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 175,
+                rating: 4.8,
+                description: "Culinary experiences featuring local restaurants and artisanal food makers."
             },
             {
                 id: 7,
-                name: "Morikami Museum",
-                category: "culture",
-                image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=400&h=300&fit=crop&crop=center",
-                price: 95,
-                rating: 4.5,
-                description: "Beautiful Japanese cultural center with authentic gardens, tea ceremonies, and rotating exhibitions.",
-                location: "Delray Beach, FL",
-                features: ["Japanese Gardens", "Tea Ceremony", "Cultural Exhibits", "Meditation"]
+                name: "Flyboard South Florida",
+                category: "outdoor",
+                image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 200,
+                rating: 4.9,
+                description: "Thrilling water sports experience with professional instruction and equipment."
             },
             {
                 id: 8,
-                name: "Polo Season Experience",
-                category: "luxury",
-                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&crop=center",
-                price: 200,
-                rating: 4.9,
-                description: "Exclusive access to Wellington's world-class polo matches and VIP hospitality experiences.",
-                location: "Wellington, FL",
-                features: ["VIP Access", "Polo Matches", "Luxury Hospitality", "Social Events"]
+                name: "Morikami Museum",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 155,
+                rating: 4.6,
+                description: "Japanese cultural center with beautiful gardens and authentic experiences."
+            },
+            {
+                id: 9,
+                name: "Young At Art Museum",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1594736797933-d0c92db5d6a5?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 130,
+                rating: 4.3,
+                description: "Interactive art museum designed for children and families."
+            },
+            {
+                id: 10,
+                name: "Norton Museum of Art",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 170,
+                rating: 4.7,
+                description: "World-class contemporary art collection with rotating exhibitions."
+            },
+            {
+                id: 11,
+                name: "West Palm Beach Food Tours",
+                category: "special",
+                image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 165,
+                rating: 4.5,
+                description: "Guided culinary tours exploring local flavors and hidden gems."
+            },
+            {
+                id: 12,
+                name: "Boca Raton Museum",
+                category: "family",
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
+                price: 120,
+                originalPrice: 140,
+                rating: 4.4,
+                description: "Cultural institution showcasing art, history, and educational programs."
             }
         ];
 
-        const passPrices = {
-            1: { adult: 49.00, child: 35.00, savings: 156 },
-            3: { adult: 89.00, child: 65.00, savings: 346 },
-            5: { adult: 129.00, child: 89.00, savings: 571 },
-            7: { adult: 159.00, child: 109.00, savings: 741 }
-        };
+        let currentCategory = 'all';
+        let currentView = 'grid';
+        let filteredAttractions = attractions;
 
-        // Enhanced Utility Functions
-        function createElement(tag, className = '', innerHTML = '') {
-            const element = document.createElement(tag);
-            if (className) element.className = className;
-            if (innerHTML) element.innerHTML = innerHTML;
-            return element;
-        }
-
-        function clearContainer() {
-            document.getElementById('root').innerHTML = '';
+        function setCategory(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            filterAttractions();
         }
 
         function filterAttractions() {
-            return selectedCategory === 'all' 
-                ? attractions 
-                : attractions.filter(attraction => attraction.category === selectedCategory);
-        }
-
-        // Smooth scroll animations
-        function observeElements() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredAttractions = attractions.filter(attraction => {
+                const matchesCategory = currentCategory === 'all' || attraction.category === currentCategory;
+                const matchesSearch = attraction.name.toLowerCase().includes(searchTerm) || 
+                                    attraction.description.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
             });
+            
+            renderAttractions();
         }
 
-        // Enhanced Login Screen
-        function renderLoginScreen() {
-            clearContainer();
+        function toggleView(view) {
+            currentView = view;
             
-            const container = createElement('div', 'min-h-screen bg-tropical flex items-center justify-center p-6 relative overflow-hidden');
+            // Update active view button
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
             
-            container.innerHTML = `
-                <!-- Floating Elements -->
-                <div class="absolute top-10 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full floating-1"></div>
-                <div class="absolute top-1/3 right-10 w-16 h-16 bg-white bg-opacity-10 rounded-full floating-2"></div>
-                <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-white bg-opacity-10 rounded-full floating-3"></div>
-                
-                <div class="glass-effect rounded-3xl shadow-lg p-8 w-full max-w-md relative z-10 fade-in">
-                    <div class="text-center mb-8">
-                        <div class="w-20 h-20 bg-gradient-to-br from-white to-blue-100 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                            <svg class="w-10 h-10 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                            </svg>
-                        </div>
-                        <h1 class="text-3xl font-display font-bold text-gray-800 mb-2">Palm Beach Pass</h1>
-                        <p class="text-gray-600 font-medium">Your Gateway to Paradise</p>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                            <input type="email" id="email" value="demo@demo.com" class="input-field" placeholder="Enter your email">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                            <input type="password" id="password" value="demo" class="input-field" placeholder="Enter your password">
-                        </div>
-                        
-                        <button onclick="handleLogin()" class="btn btn-primary w-full text-lg">
-                            <span>Sign In</span>
-                        </button>
-                        
-                        <div class="text-center">
-                            <p class="text-xs text-gray-500 mb-4">Demo credentials: demo@demo.com / demo</p>
-                            <div class="flex items-center justify-center space-x-4 text-xs text-gray-400">
-                                <span>Secure Login</span>
-                                <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
-                                <span>2FA Protected</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Wave Effect -->
-                <div class="wave">
-                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                        <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
-                    </svg>
-                </div>
-            `;
+            const gridView = document.getElementById('attractionsGrid');
+            const listView = document.getElementById('attractionsList');
             
-            document.getElementById('root').appendChild(container);
-            setTimeout(observeElements, 100);
+            if (view === 'grid') {
+                gridView.style.display = 'grid';
+                listView.classList.remove('active');
+            } else {
+                gridView.style.display = 'none';
+                listView.classList.add('active');
+            }
+            
+            renderAttractions();
         }
 
-        function render2FAScreen() {
-            clearContainer();
+        function renderAttractions() {
+            const gridContainer = document.getElementById('attractionsGrid');
+            const listContainer = document.getElementById('attractionsList');
             
-            const container = createElement('div', 'min-h-screen bg-tropical flex items-center justify-center p-6 relative overflow-hidden');
-            
-            container.innerHTML = `
-                <!-- Floating Elements -->
-                <div class="absolute top-10 right-10 w-16 h-16 bg-white bg-opacity-10 rounded-full floating-1"></div>
-                <div class="absolute bottom-1/3 left-10 w-12 h-12 bg-white bg-opacity-10 rounded-full floating-2"></div>
-                
-                <div class="glass-effect rounded-3xl shadow-lg p-8 w-full max-w-md relative z-10 fade-in">
-                    <div class="text-center mb-8">
-                        <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                            </svg>
-                        </div>
-                        <h1 class="text-3xl font-display font-bold text-gray-800 mb-2">Security Verification</h1>
-                        <p class="text-gray-600">Enter the 6-digit code sent to your device</p>
-                        <p class="text-sm text-gray-500 mt-2">+1 (555) •••-••67</p>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Verification Code</label>
-                            <input type="text" id="verificationCode" maxlength="6" class="input-field text-center text-2xl font-mono tracking-widest" placeholder="••••••">
-                        </div>
-                        
-                        <button onclick="handleVerification()" class="btn btn-primary w-full text-lg">
-                            <span>Verify & Continue</span>
-                        </button>
-                        
-                        <div class="text-center">
-                            <p class="text-xs text-gray-500 mb-2">Demo code: 123456</p>
-                            <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">Resend Code</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('root').appendChild(container);
-            setTimeout(observeElements, 100);
-        }
-
-        function renderHomeScreen() {
-            clearContainer();
-            
-            const container = createElement('div', 'min-h-screen bg-white');
-            
-            const filteredAttractions = filterAttractions();
-            
-            container.innerHTML = `
-                <!-- Premium Header -->
-                <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
-                    <div class="max-w-7xl mx-auto px-6 py-4">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-tropical rounded-xl flex items-center justify-center shadow-lg">
-                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <span class="text-xl font-display font-bold text-gray-800">Palm Beach Pass</span>
-                                    <p class="text-xs text-gray-500 font-medium">Premium Access</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-6">
-                                <button onclick="openPage('customer-account.html')" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">My Account</button>
-                                <button onclick="openPage('vendor-portal.html')" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">Business Portal</button>
-                                <button onclick="openPage('checkout.html')" class="relative p-2 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 2.5M7 13l2.5 2.5"/>
-                                    </svg>
-                                    ${cart.length > 0 ? `<span class="absolute -top-2 -right-2 w-5 h-5 bg-coral text-white text-xs rounded-full flex items-center justify-center">${cart.length}</span>` : ''}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <!-- Hero Section -->
-                <section class="relative bg-tropical overflow-hidden">
-                    <div class="absolute inset-0">
-                        <div class="absolute top-10 left-10 w-32 h-32 bg-white bg-opacity-5 rounded-full floating-1"></div>
-                        <div class="absolute top-1/3 right-20 w-24 h-24 bg-white bg-opacity-5 rounded-full floating-2"></div>
-                        <div class="absolute bottom-20 left-1/4 w-20 h-20 bg-white bg-opacity-5 rounded-full floating-3"></div>
-                    </div>
-                    
-                    <div class="relative max-w-7xl mx-auto px-6 py-20 md:py-32 text-center">
-                        <div class="hero-float">
-                            <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
-                                Discover Paradise<br>
-                                <span class="text-gradient bg-white">Without Limits</span>
-                            </h1>
-                            <p class="text-xl md:text-2xl text-white font-light mb-8 max-w-3xl mx-auto leading-relaxed">
-                                Access 156+ premium attractions, exclusive experiences, and hidden gems across Palm Beach County with one elegant pass.
-                            </p>
-                            <div class="flex flex-col md:flex-row gap-4 justify-center items-center mb-12">
-                                <button onclick="openPage('checkout.html')" class="btn btn-secondary text-lg px-8 py-4">
-                                    <span>Start Your Journey</span>
-                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                                    </svg>
-                                </button>
-                                <button onclick="openPage('customer-passes.html')" class="btn bg-white bg-opacity-20 text-white border-2 border-white border-opacity-30 hover:bg-white hover:bg-opacity-30">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                    </svg>
-                                    <span>View My Passes</span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                            <div class="text-center">
-                                <div class="text-3xl md:text-4xl font-bold text-white mb-2">156+</div>
-                                <div class="text-white text-opacity-80 font-medium">Premium Venues</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl md:text-4xl font-bold text-white mb-2">$745</div>
-                                <div class="text-white text-opacity-80 font-medium">Average Savings</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
-                                <div class="text-white text-opacity-80 font-medium">Concierge Support</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl md:text-4xl font-bold text-white mb-2">4.9★</div>
-                                <div class="text-white text-opacity-80 font-medium">Guest Rating</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Wave Transition -->
-                    <div class="wave">
-                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
-                        </svg>
-                    </div>
-                </section>
-
-                <!-- Main Content -->
-                <main class="max-w-7xl mx-auto px-6 py-16">
-                    <!-- Quick Actions -->
-                    <section class="mb-16 fade-in">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="gradient-border p-8 rounded-2xl hover:scale-105 transition-all cursor-pointer" onclick="openPage('customer-passes.html')">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
-                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-xl font-display font-semibold text-gray-800">Digital Wallet</h3>
-                                        <p class="text-gray-600">Access your active passes</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="gradient-border p-8 rounded-2xl hover:scale-105 transition-all cursor-pointer" onclick="openPage('checkout.html')">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mr-4">
-                                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-xl font-display font-semibold text-gray-800">Purchase Pass</h3>
-                                        <p class="text-gray-600">Start saving immediately</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Category Filters -->
-                    <section class="mb-12 fade-in">
-                        <h2 class="text-3xl font-display font-bold text-center text-gray-800 mb-8">Explore by Category</h2>
-                        <div class="flex flex-wrap justify-center gap-3">
-                            <button onclick="setCategory('all')" class="category-pill ${selectedCategory === 'all' ? 'active' : ''}">All Experiences</button>
-                            <button onclick="setCategory('luxury')" class="category-pill ${selectedCategory === 'luxury' ? 'active' : ''}">Luxury</button>
-                            <button onclick="setCategory('culture')" class="category-pill ${selectedCategory === 'culture' ? 'active' : ''}">Culture & Arts</button>
-                            <button onclick="setCategory('adventure')" class="category-pill ${selectedCategory === 'adventure' ? 'active' : ''}">Adventure</button>
-                            <button onclick="setCategory('dining')" class="category-pill ${selectedCategory === 'dining' ? 'active' : ''}">Fine Dining</button>
-                            <button onclick="setCategory('shopping')" class="category-pill ${selectedCategory === 'shopping' ? 'active' : ''}">Shopping</button>
-                        </div>
-                    </section>
-
-                    <!-- Attractions Grid -->
-                    <section class="mb-16 fade-in">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            ${filteredAttractions.map(attraction => `
-                                <div class="attraction-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="viewAttraction(${attraction.id})">
-                                    <div class="relative">
-                                        <img src="${attraction.image}" alt="${attraction.name}" class="w-full h-64 object-cover">
-                                        <div class="absolute top-4 left-4">
-                                            <span class="px-3 py-1 bg-white bg-opacity-90 rounded-full text-xs font-semibold text-gray-800 capitalize">${attraction.category}</span>
-                                        </div>
-                                        <div class="absolute top-4 right-4">
-                                            <div class="flex items-center bg-white bg-opacity-90 rounded-full px-2 py-1">
-                                                <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                                </svg>
-                                                <span class="text-xs font-medium text-gray-700">${attraction.rating}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-2">${attraction.name}</h3>
-                                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${attraction.description}</p>
-                                        
-                                        <div class="flex flex-wrap gap-1 mb-4">
-                                            ${attraction.features.slice(0, 3).map(feature => `
-                                                <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md">${feature}</span>
-                                            `).join('')}
-                                        </div>
-                                        
-                                        <div class="flex justify-between items-center">
-                                            <div>
-                                                <p class="text-xs text-gray-500 line-through">Regular $${attraction.price}</p>
-                                                <p class="text-lg font-bold text-green-600">FREE with Pass</p>
-                                            </div>
-                                            <button onclick="event.stopPropagation(); addToCart('7', 159)" class="btn btn-primary text-sm px-4 py-2">
-                                                Add to Pass
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="flex items-center mt-3 text-xs text-gray-500">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            </svg>
-                                            ${attraction.location}
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </section>
-
-                    <!-- Pass Selection -->
-                    <section class="bg-ocean rounded-3xl p-8 md:p-12 fade-in">
-                        <div class="text-center mb-12">
-                            <h2 class="text-4xl font-display font-bold text-gray-800 mb-4">Choose Your Perfect Pass</h2>
-                            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Unlock unlimited access to Palm Beach's finest attractions with flexible duration options.</p>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                            ${Object.entries(passPrices).map(([days, prices]) => `
-                                <div class="bg-white rounded-2xl p-6 shadow-lg hover:scale-105 transition-all border-2 border-transparent hover:border-blue-200">
-                                    <div class="text-center mb-6">
-                                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-teal-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                                            <span class="text-2xl font-bold text-white">${days}</span>
-                                        </div>
-                                        <h3 class="text-2xl font-display font-bold text-gray-800">${days} ${days === '1' ? 'Day' : 'Days'}</h3>
-                                        <p class="text-gray-600 font-medium">Premium Access</p>
-                                    </div>
-                                    
-                                    <div class="space-y-3 mb-6">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">Adult</span>
-                                            <span class="text-2xl font-bold text-gray-800">$${prices.adult}</span>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-gray-600">Child</span>
-                                            <span class="text-xl font-semibold text-gray-700">$${prices.child}</span>
-                                        </div>
-                                        <div class="bg-green-50 rounded-lg p-3 text-center">
-                                            <p class="text-sm font-semibold text-green-700">Save up to $${prices.savings}</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <button onclick="addToCart('${days}', ${prices.adult})" class="btn btn-primary w-full">
-                                        Select Pass
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
-                        
-                        <div class="text-center mt-12">
-                            <p class="text-gray-600 mb-6">All passes include 24/7 concierge support and mobile-first convenience</p>
-                            <div class="flex justify-center space-x-8 text-sm text-gray-500">
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Instant Digital Delivery
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    No Booking Required
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Full Refund Policy
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-
-                <!-- Premium Footer -->
-                <footer class="bg-gray-900 text-white py-12">
-                    <div class="max-w-7xl mx-auto px-6">
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-tropical rounded-xl mx-auto mb-4 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+            // Render grid view
+            gridContainer.innerHTML = filteredAttractions.map(attraction => `
+                <div class="attraction-card" onclick="viewAttraction(${attraction.id})">
+                    <img src="${attraction.image}" alt="${attraction.name}" class="attraction-image">
+                    <div class="attraction-content">
+                        <div class="attraction-header">
+                            <h3 class="attraction-title">${attraction.name}</h3>
+                            <div class="attraction-rating">
+                                <svg class="rating-star" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                 </svg>
-                            </div>
-                            <h3 class="text-2xl font-display font-bold mb-2">Palm Beach Pass</h3>
-                            <p class="text-gray-400 mb-8">Your Gateway to Paradise</p>
-                            
-                            <div class="flex justify-center space-x-8 mb-8">
-                                <button onclick="openPage('vendor-portal.html')" class="text-gray-400 hover:text-white transition-colors">Business Portal</button>
-                                <button onclick="openPage('qr-system.html')" class="text-gray-400 hover:text-white transition-colors">System Demo</button>
-                                <a href="mailto:support@palmbeachpass.com" class="text-gray-400 hover:text-white transition-colors">Support</a>
-                            </div>
-                            
-                            <div class="border-t border-gray-800 pt-8">
-                                <p class="text-gray-500 text-sm">© 2025 Palm Beach Pass. Experience the extraordinary.</p>
+                                <span class="rating-text">${attraction.rating}</span>
                             </div>
                         </div>
+                        <p class="attraction-description">${attraction.description}</p>
+                        <div class="attraction-price">
+                            <div class="price-info">
+                                <span class="original-price">Regular price $${attraction.originalPrice}</span>
+                                <span class="current-price">FREE with Pass</span>
+                            </div>
+                            <button class="add-btn" onclick="event.stopPropagation(); addToCart(${attraction.id})">
+                                ADD TO PASS
+                            </button>
+                        </div>
                     </div>
-                </footer>
-            `;
+                </div>
+            `).join('');
             
-            document.getElementById('root').appendChild(container);
-            setTimeout(observeElements, 100);
-        }
-
-        // Event Handlers
-        function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (email === 'demo@demo.com' && password === 'demo') {
-                currentScreen = '2fa';
-                render2FAScreen();
-            } else {
-                alert('Please use demo@demo.com / demo for this demo experience');
-            }
-        }
-
-        function handleVerification() {
-            const code = document.getElementById('verificationCode').value;
-            
-            if (code === '123456') {
-                user = { email: 'demo@demo.com', name: 'Demo User' };
-                currentScreen = 'home';
-                renderHomeScreen();
-            } else {
-                alert('Please enter 123456 for this demo experience');
-            }
-        }
-
-        function setCategory(category) {
-            selectedCategory = category;
-            renderHomeScreen();
+            // Render list view
+            listContainer.innerHTML = filteredAttractions.map(attraction => `
+                <div class="attraction-list-item" onclick="viewAttraction(${attraction.id})">
+                    <img src="${attraction.image}" alt="${attraction.name}" class="list-item-image">
+                    <div class="list-item-content">
+                        <div class="list-item-info">
+                            <h3 class="attraction-title">${attraction.name}</h3>
+                            <p class="attraction-description">${attraction.description}</p>
+                            <div class="attraction-rating">
+                                <svg class="rating-star" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span class="rating-text">${attraction.rating}</span>
+                            </div>
+                        </div>
+                        <div class="list-item-actions">
+                            <div class="price-info">
+                                <span class="original-price">Regular $${attraction.originalPrice}</span>
+                                <span class="current-price">FREE with Pass</span>
+                            </div>
+                            <button class="add-btn" onclick="event.stopPropagation(); addToCart(${attraction.id})">
+                                ADD TO PASS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function viewAttraction(id) {
             const attraction = attractions.find(a => a.id === id);
-            
-            const modal = createElement('div', 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6 z-50');
-            modal.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-screen overflow-y-auto">
-                    <div class="flex justify-between items-start mb-6">
-                        <h2 class="text-3xl font-display font-bold text-gray-800">${attraction.name}</h2>
-                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <img src="${attraction.image}" alt="${attraction.name}" class="w-full h-64 object-cover rounded-2xl mb-6">
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">${attraction.category}</span>
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                                <span class="font-medium text-gray-700">${attraction.rating}</span>
-                            </div>
-                        </div>
-                        
-                        <p class="text-gray-600 leading-relaxed">${attraction.description}</p>
-                        
-                        <div class="flex flex-wrap gap-2">
-                            ${attraction.features.map(feature => `
-                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm">${feature}</span>
-                            `).join('')}
-                        </div>
-                        
-                        <div class="bg-green-50 rounded-2xl p-4">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-sm text-gray-600 line-through">Regular Price: ${attraction.price}</p>
-                                    <p class="text-2xl font-bold text-green-600">FREE with Palm Beach Pass</p>
-                                </div>
-                                <button onclick="addToCart('7', 159); this.parentElement.parentElement.parentElement.parentElement.parentElement.remove();" class="btn btn-primary">
-                                    Add to Pass
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center text-gray-500">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            ${attraction.location}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
+            alert(`Viewing: ${attraction.name}\n\n${attraction.description}`);
         }
 
-        function addToCart(days, price) {
-            cart.push({ days, price, name: `${days}-Day Premium Pass` });
-            
-            // Show success animation
-            const notification = createElement('div', 'fixed bottom-6 right-6 bg-green-500 text-white px-6 py-4 rounded-2xl shadow-lg z-50 transform translate-y-full transition-transform');
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="font-medium">Added to cart! Continue to checkout when ready.</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            setTimeout(() => notification.style.transform = 'translateY(0)', 100);
-            setTimeout(() => {
-                notification.style.transform = 'translateY(full)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-            
-            // Update header cart count
-            renderHomeScreen();
+        function addToCart(id) {
+            const attraction = attractions.find(a => a.id === id);
+            alert(`Added ${attraction.name} to your pass!`);
         }
 
         function openPage(page) {
             window.open(page, '_blank');
         }
 
-        // Initialize App
-        function initApp() {
-            console.log('Initializing premium Palm Beach Pass experience...');
-            
-            // Hide loading screen with elegant fade
-            const loading = document.getElementById('loading');
-            loading.style.opacity = '0';
-            loading.style.transform = 'scale(0.95)';
-            
-            setTimeout(() => {
-                loading.style.display = 'none';
-                renderLoginScreen();
-            }, 500);
-            
-            console.log('Premium experience ready');
-        }
+        // Initialize search functionality
+        document.getElementById('searchInput').addEventListener('input', filterAttractions);
 
-        // PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => console.log('SW registered'))
-                    .catch(error => console.log('SW registration failed'));
-            });
-        }
-
-        // Enhanced animations and interactions
-        document.addEventListener('DOMContentLoaded', () => {
-            // Smooth scroll for any anchor links
-            document.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
-                    e.preventDefault();
-                    const target = document.querySelector(e.target.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
-        // Start the premium experience
-        setTimeout(initApp, 1000);
+        // Initial render
+        renderAttractions();
     </script>
 </body>
 </html>
