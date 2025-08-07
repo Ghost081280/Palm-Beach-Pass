@@ -440,97 +440,85 @@
             /* Gradient fade at bottom */
         }
 
-        /* Map Styles */
         .map-view {
             height: 100%;
             position: relative;
             overflow: hidden;
+            background: #E3F2FD;
         }
 
+        /* Clean Map Pins without complex shapes */
         .map-overlay-pins {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            pointer-events: none;
         }
 
         .map-marker {
             position: absolute;
             cursor: pointer;
-            pointer-events: all;
             transition: all 0.3s;
             z-index: 10;
         }
 
         .map-marker:hover {
             z-index: 20;
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
-        .map-marker.active {
-            z-index: 15;
-        }
-
-        .marker-pin {
-            width: 40px;
-            height: 40px;
+        .marker-icon {
+            width: 48px;
+            height: 48px;
             background: white;
-            border-radius: 50% 50% 50% 0;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            transform: rotate(-45deg);
-            margin-bottom: 10px;
-        }
-
-        .marker-pin::after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        .map-marker.active .marker-pin {
-            background: var(--coral);
-            color: white;
-            width: 50px;
-            height: 50px;
             font-size: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 3px solid white;
         }
 
-        .marker-label {
+        .map-marker.active .marker-icon {
+            background: var(--coral);
+            width: 56px;
+            height: 56px;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+        }
+
+        .marker-tooltip {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
             background: white;
-            padding: 0.5rem 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             font-size: 0.85rem;
             font-weight: 600;
             white-space: nowrap;
-            display: none;
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: 120px;
-            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            pointer-events: none;
         }
 
-        .map-marker:hover .marker-label,
-        .map-marker.active .marker-label {
-            display: block;
+        .map-marker:hover .marker-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: 65px;
         }
 
-        .map-marker .marker-pin > * {
-            transform: rotate(45deg);
+        .map-marker.active .marker-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: 70px;
+            background: var(--coral);
+            color: white;
         }
 
         .map-overlay {
@@ -1238,63 +1226,62 @@
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228447.75837592068!2d-80.24045274179685!3d26.628318569685075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d8d5ccb595adc1%3A0x15efc7b51fe16bde!2sPalm%20Beach%20County%2C%20FL!5e0!3m2!1sen!2sus!4v1707410421351!5m2!1sen!2sus"
                         width="100%"
                         height="100%"
-                        style="border:0; filter: brightness(0.9) contrast(1.1);"
+                        style="border:0;"
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                     
-                    <!-- Custom Map Overlay with Pins -->
+                    <!-- Simple Map Pins -->
                     <div class="map-overlay-pins">
-                        <!-- Attraction Markers -->
-                        <div class="map-marker" style="top: 25%; left: 20%;" data-attraction="Lion Country Safari">
-                            <div class="marker-pin">🦁</div>
-                            <div class="marker-label">Lion Country Safari</div>
+                        <div class="map-marker" style="top: 25%; left: 20%;" onclick="focusAttraction('lion')">
+                            <div class="marker-icon">🦁</div>
+                            <div class="marker-tooltip">Lion Country Safari</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 35%; left: 45%;" data-attraction="Norton Museum">
-                            <div class="marker-pin">🎨</div>
-                            <div class="marker-label">Norton Museum</div>
+                        <div class="map-marker" style="top: 35%; left: 45%;" onclick="focusAttraction('norton')">
+                            <div class="marker-icon">🎨</div>
+                            <div class="marker-tooltip">Norton Museum</div>
                         </div>
                         
-                        <div class="map-marker active" style="top: 45%; left: 60%;" data-attraction="Boynton Beach Dive">
-                            <div class="marker-pin">🤿</div>
-                            <div class="marker-label">Boynton Beach<br>Dive Center</div>
+                        <div class="map-marker active" style="top: 45%; left: 60%;" onclick="focusAttraction('boynton')">
+                            <div class="marker-icon">🤿</div>
+                            <div class="marker-tooltip">Boynton Beach Dive Center</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 30%; left: 70%;" data-attraction="Palm Beach Zoo">
-                            <div class="marker-pin">🐘</div>
-                            <div class="marker-label">Palm Beach Zoo</div>
+                        <div class="map-marker" style="top: 30%; left: 70%;" onclick="focusAttraction('zoo')">
+                            <div class="marker-icon">🐘</div>
+                            <div class="marker-tooltip">Palm Beach Zoo</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 55%; left: 35%;" data-attraction="Rapids Water Park">
-                            <div class="marker-pin">🏊</div>
-                            <div class="marker-label">Rapids Water Park</div>
+                        <div class="map-marker" style="top: 55%; left: 35%;" onclick="focusAttraction('rapids')">
+                            <div class="marker-icon">💦</div>
+                            <div class="marker-tooltip">Rapids Water Park</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 60%; left: 55%;" data-attraction="Seaquarium">
-                            <div class="marker-pin">🐠</div>
-                            <div class="marker-label">Seaquarium</div>
+                        <div class="map-marker" style="top: 60%; left: 55%;" onclick="focusAttraction('seaquarium')">
+                            <div class="marker-icon">🐠</div>
+                            <div class="marker-tooltip">Seaquarium</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 40%; left: 30%;" data-attraction="Worth Avenue">
-                            <div class="marker-pin">🛍️</div>
-                            <div class="marker-label">Worth Avenue</div>
+                        <div class="map-marker" style="top: 40%; left: 30%;" onclick="focusAttraction('worth')">
+                            <div class="marker-icon">💎</div>
+                            <div class="marker-tooltip">Worth Avenue</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 20%; left: 50%;" data-attraction="Flyboard">
-                            <div class="marker-pin">🏄</div>
-                            <div class="marker-label">Flyboard South FL</div>
+                        <div class="map-marker" style="top: 20%; left: 50%;" onclick="focusAttraction('flyboard')">
+                            <div class="marker-icon">🏄</div>
+                            <div class="marker-tooltip">Flyboard South FL</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 70%; left: 40%;" data-attraction="Morikami">
-                            <div class="marker-pin">🏯</div>
-                            <div class="marker-label">Morikami Gardens</div>
+                        <div class="map-marker" style="top: 70%; left: 40%;" onclick="focusAttraction('morikami')">
+                            <div class="marker-icon">🌸</div>
+                            <div class="marker-tooltip">Morikami Gardens</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 50%; left: 25%;" data-attraction="Spady Museum">
-                            <div class="marker-pin">🏛️</div>
-                            <div class="marker-label">Spady Museum</div>
+                        <div class="map-marker" style="top: 50%; left: 25%;" onclick="focusAttraction('spady')">
+                            <div class="marker-icon">🏛️</div>
+                            <div class="marker-tooltip">Spady Museum</div>
                         </div>
                     </div>
                 </div>
@@ -1800,13 +1787,22 @@
         }
 
         function focusAttraction(attractionId) {
-            // Update map pins
-            document.querySelectorAll('.map-pin').forEach(pin => {
-                pin.classList.remove('active');
+            // Update active marker
+            document.querySelectorAll('.map-marker').forEach(marker => {
+                marker.classList.remove('active');
             });
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
             
-            showMessage(`Focusing on ${attractionId} on the map`);
+            // Scroll to related attraction card
+            const cards = document.querySelectorAll('.attraction-card');
+            cards.forEach(card => {
+                if (card.dataset.category === attractionId || 
+                    card.textContent.toLowerCase().includes(attractionId.toLowerCase())) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+            
+            showMessage(`Selected: ${attractionId}`);
         }
 
         function openAttraction(attractionId) {
