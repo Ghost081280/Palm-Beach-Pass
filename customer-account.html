@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Palm Beach Pass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --palm-green: #2D5016;
+            --ocean-blue: #006B7D;
+            --sand: #FAF3E3;
+            --coral: #FF6B6B;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #FAF3E3 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .logo-text span {
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--ocean-blue);
+        }
+
+        .nav-link.active {
+            color: var(--palm-green);
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: var(--coral);
+            border: 2px solid var(--coral);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: var(--coral);
+            color: white;
+        }
+
+        /* Account Layout */
+        .account-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 35px;
+            height: 35px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--palm-green);
+        }
+
+        .profile-email {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .membership-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--coral));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-link:hover {
+            background: var(--sand);
+            transform: translateX(5px);
+        }
+
+        .menu-link.active {
+            background: linear-gradient(135deg, rgba(45,80,22,0.1), rgba(0,107,125,0.1));
+            color: var(--palm-green);
+            font-weight: 500;
+        }
+
+        .menu-icon {
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            min-height: 600px;
+        }
+
+        .content-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .content-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--palm-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .content-subtitle {
+            color: var(--text-light);
+        }
+
+        /* Dashboard Section */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--sand), white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--palm-green);
+        }
+
+        .stat-card.primary {
+            border-left-color: var(--ocean-blue);
+        }
+
+        .stat-card.warning {
+            border-left-color: var(--gold);
+        }
+
+        .stat-card.success {
+            border-left-color: var(--success);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: var(--success);
+            margin-top: 0.25rem;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--palm-green);
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .activity-item:hover {
+            background: var(--sand);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .activity-time {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Profile Form */
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+            box-shadow: 0 0 0 3px rgba(0,107,125,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .btn-save {
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            padding: 0.875rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--ocean-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-dark);
+            border: 2px solid #e0e0e0;
+            padding: 0.875rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--ocean-blue);
+            color: var(--ocean-blue);
+        }
+
+        /* Purchase History */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            background: var(--sand);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .history-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .history-table tr:hover {
+            background: rgba(250,243,227,0.3);
+        }
+
+        .order-number {
+            font-family: monospace;
+            color: var(--ocean-blue);
+            cursor: pointer;
+        }
+
+        .order-number:hover {
+            text-decoration: underline;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16,185,129,0.1);
+            color: var(--success);
+        }
+
+        .status-badge.expired {
+            background: rgba(255,107,107,0.1);
+            color: var(--coral);
+        }
+
+        .btn-view-order {
+            background: var(--ocean-blue);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .btn-view-order:hover {
+            background: var(--palm-green);
+        }
+
+        /* Settings Section */
+        .settings-group {
+            background: var(--sand);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--palm-green);
+        }
+
+        .toggle-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .toggle-title {
+            font-weight: 500;
+        }
+
+        .toggle-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--palm-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Support Section */
+        .support-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, var(--sand), white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .support-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .support-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--palm-green);
+        }
+
+        .support-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .account-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--palm-green);
+        }
+
+        .modal-message {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-close-modal {
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .btn-close-modal:hover {
+            background: var(--ocean-blue);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--palm-green);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease-out;
+            z-index: 3000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🌴</div>
+                <div class="logo-text">Palm Beach <span>Pass</span></div>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="customer-passes.html" class="nav-link">My Passes</a>
+                <a href="#" class="nav-link active">Account</a>
+                <a href="index.html#attractions" class="nav-link">Attractions</a>
+            </nav>
+            
+            <button class="btn-logout" onclick="logout()">Sign Out</button>
+        </div>
+    </header>
+
+    <!-- Account Container -->
+    <div class="account-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-header">
+                <div class="profile-avatar" onclick="changeAvatar()">
+                    DU
+                    <div class="avatar-upload">📷</div>
+                </div>
+                <div class="profile-name">Demo User</div>
+                <div class="profile-email">demo@demo.com</div>
+                <div class="membership-badge">🌟 Premium Member</div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a class="menu-link active" onclick="showSection('dashboard')">
+                        <span class="menu-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="showSection('profile')">
+                        <span class="menu-icon">👤</span>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="showSection('history')">
+                        <span class="menu-icon">📜</span>
+                        <span>Purchase History</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="showSection('preferences')">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Preferences</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="showSection('security')">
+                        <span class="menu-icon">🔒</span>
+                        <span>Security</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="showSection('support')">
+                        <span class="menu-icon">💬</span>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content-section">
+                <div class="content-header">
+                    <h1 class="content-title">Welcome Back!</h1>
+                    <p class="content-subtitle">Here's your Palm Beach Pass activity overview</p>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Passes</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-change">✓ Valid for 4 more days</div>
+                    </div>
+                    
+                    <div class="stat-card primary">
+                        <div class="stat-label">Attractions Visited</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-change">↑ 3 this week</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-label">Total Saved</div>
+                        <div class="stat-value">$458</div>
+                        <div class="stat-change">With Palm Beach Pass</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-label">Member Since</div>
+                        <div class="stat-value">2025</div>
+                        <div class="stat-change">Premium Status</div>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h2 class="section-title">Recent Activity</h2>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon">🎫</div>
+                            <div class="activity-details">
+                                <div class="activity-title">Pass Activated</div>
+                                <div class="activity-description">3 Day Adult Pass activated at Lion Country Safari</div>
+                            </div>
+                            <div class="activity-time">2 hours ago</div>
+                        </li>
+                        
+                        <li class="activity-item">
+                            <div class="activity-icon">🏖️</div>
+                            <div class="activity-details">
+                                <div class="activity-title">Attraction Visited</div>
+                                <div class="activity-description">Checked in at Norton Museum of Art</div>
+                            </div>
+                            <div class="activity-time">Yesterday</div>
+                        </li>
+                        
+                        <li class="activity-item">
+                            <div class="activity-icon">💳</div>
+                            <div class="activity-details">
+                                <div class="activity-title">Purchase Complete</div>
+                                <div class="activity-description">7 Day Pass purchased - Order #PB-2025-0847</div>
+                            </div>
+                            <div class="activity-time">2 days ago</div>
+                        </li>
+                        
+                        <li class="activity-item">
+                            <div class="activity-icon">⭐</div>
+                            <div class="activity-details">
+                                <div class="activity-title">Review Submitted</div>
+                                <div class="activity-description">5-star review for Rapids Water Park</div>
+                            </div>
+                            <div class="activity-time">3 days ago</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="content-title">My Profile</h1>
+                    <p class="content-subtitle">Manage your personal information</p>
+                </div>
+                
+                <form onsubmit="saveProfile(event)">
+                    <div class="form-section">
+                        <h3 class="section-title">Personal Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" id="firstName" value="Demo">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="lastName" value="User">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" value="demo@demo.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" value="(561) 555-0123">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-title">Address Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Street Address</label>
+                                <input type="text" id="address" value="123 Ocean Drive">
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" id="city" value="Palm Beach">
+                            </div>
+                            <div class="form-group">
+                                <label>State</label>
+                                <select id="state">
+                                    <option value="FL" selected>Florida</option>
+                                    <option value="NY">New York</option>
+                                    <option value="CA">California</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ZIP Code</label>
+                                <input type="text" id="zip" value="33480">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-title">Additional Information</h3>
+                        <div class="form-group">
+                            <label>Bio</label>
+                            <textarea id="bio" placeholder="Tell us about yourself...">Enjoying the best of Palm Beach with my annual pass!</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="showSection('dashboard')">Cancel</button>
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Purchase History Section -->
+            <div id="history-section" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="content-title">Purchase History</h1>
+                    <p class="content-subtitle">View all your past purchases and downloads</p>
+                </div>
+                
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Date</th>
+                            <th>Pass Type</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="order-number">PB-2025-0847</span></td>
+                            <td>Aug 7, 2025</td>
+                            <td>3 Day Pass - Adult</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>$189.00</td>
+                            <td><button class="btn-view-order" onclick="viewOrder('PB-2025-0847')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td><span class="order-number">PB-2025-0723</span></td>
+                            <td>Aug 5, 2025</td>
+                            <td>7 Day Pass - Adult</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>$329.00</td>
+                            <td><button class="btn-view-order" onclick="viewOrder('PB-2025-0723')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td><span class="order-number">PB-2025-0412</span></td>
+                            <td>Jul 20, 2025</td>
+                            <td>1 Day Pass - Child</td>
+                            <td><span class="status-badge expired">Expired</span></td>
+                            <td>$69.00</td>
+                            <td><button class="btn-view-order" onclick="viewOrder('PB-2025-0412')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td><span class="order-number">PB-2025-0201</span></td>
+                            <td>Jun 15, 2025</td>
+                            <td>5 Day Pass - Family</td>
+                            <td><span class="status-badge expired">Expired</span></td>
+                            <td>$478.00</td>
+                            <td><button class="btn-view-order" onclick="viewOrder('PB-2025-0201')">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Preferences Section -->
+            <div id="preferences-section" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="content-title">Preferences</h1>
+                    <p class="content-subtitle">Customize your Palm Beach Pass experience</p>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-header">📧 Email Notifications</h3>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Pass Expiry Reminders</span>
+                            <span class="toggle-description">Get notified before your pass expires</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Special Offers</span>
+                            <span class="toggle-description">Receive exclusive deals and promotions</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Attraction Updates</span>
+                            <span class="toggle-description">New attractions and seasonal events</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-header">📱 Mobile App Settings</h3>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Push Notifications</span>
+                            <span class="toggle-description">Real-time updates on your mobile device</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Location Services</span>
+                            <span class="toggle-description">Enable for nearby attraction recommendations</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Offline Mode</span>
+                            <span class="toggle-description">Access passes without internet connection</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn-save" onclick="savePreferences()">Save Preferences</button>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div id="security-section" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="content-title">Security Settings</h1>
+                    <p class="content-subtitle">Keep your account safe and secure</p>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="section-title">Change Password</h3>
+                    <form onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" id="currentPassword">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="newPassword">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirmPassword">
+                        </div>
+                        <button type="submit" class="btn-save">Update Password</button>
+                    </form>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-header">🔐 Two-Factor Authentication</h3>
+                    
+                    <div class="toggle-switch">
+                        <div class="toggle-label">
+                            <span class="toggle-title">Enable 2FA</span>
+                            <span class="toggle-description">Add an extra layer of security with SMS verification</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-header">🖥️ Active Sessions</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">You're currently signed in on these devices:</p>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Chrome on Windows</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">Current session</div>
+                            </div>
+                            <span style="color: var(--success);">Active now</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Safari on iPhone</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">Palm Beach, FL</div>
+                            </div>
+                            <button style="background: var(--coral); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Section -->
+            <div id="support-section" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="content-title">Help & Support</h1>
+                    <p class="content-subtitle">We're here to help you make the most of your Palm Beach Pass</p>
+                </div>
+                
+                <div class="support-cards">
+                    <div class="support-card" onclick="openSupport('faq')">
+                        <div class="support-icon">❓</div>
+                        <div class="support-title">FAQs</div>
+                        <div class="support-description">Find answers to common questions</div>
+                    </div>
+                    
+                    <div class="support-card" onclick="openSupport('contact')">
+                        <div class="support-icon">📧</div>
+                        <div class="support-title">Contact Us</div>
+                        <div class="support-description">Get in touch with our support team</div>
+                    </div>
+                    
+                    <div class="support-card" onclick="openSupport('guide')">
+                        <div class="support-icon">📖</div>
+                        <div class="support-title">User Guide</div>
+                        <div class="support-description">Learn how to use your pass</div>
+                    </div>
+                    
+                    <div class="support-card" onclick="openSupport('chat')">
+                        <div class="support-icon">💬</div>
+                        <div class="support-title">Live Chat</div>
+                        <div class="support-description">Chat with us in real-time</div>
+                    </div>
+                </div>
+                
+                <div class="form-section" style="margin-top: 3rem;">
+                    <h3 class="section-title">Send us a Message</h3>
+                    <form onsubmit="sendMessage(event)">
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input type="text" id="subject" placeholder="How can we help?">
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea id="message" placeholder="Describe your issue or question..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-save">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2 class="modal-title">Success!</h2>
+            <p class="modal-message" id="modalMessage">Your changes have been saved successfully.</p>
+            <button class="btn-close-modal" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Load user data
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.name) {
+                document.querySelector('.profile-name').textContent = currentUser.name;
+                document.querySelector('.profile-email').textContent = currentUser.email;
+            }
+        };
+
+        // Show section
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Update menu
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Save profile
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const profile = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip: document.getElementById('zip').value,
+                bio: document.getElementById('bio').value
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('userProfile', JSON.stringify(profile));
+            
+            // Update display name
+            document.querySelector('.profile-name').textContent = `${profile.firstName} ${profile.lastName}`;
+            document.querySelector('.profile-email').textContent = profile.email;
+            
+            // Show success modal
+            showModal('Your profile has been updated successfully!');
+        }
+
+        // Change password
+        function changePassword(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            // Show success
+            showModal('Your password has been changed successfully!');
+            
+            // Clear form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        // Save preferences
+        function savePreferences() {
+            showModal('Your preferences have been saved!');
+        }
+
+        // View order
+        function viewOrder(orderNumber) {
+            showToast(`Loading order ${orderNumber}...`);
+            setTimeout(() => {
+                window.location.href = 'customer-passes.html';
+            }, 1000);
+        }
+
+        // Open support
+        function openSupport(type) {
+            const messages = {
+                faq: 'Opening FAQ section...',
+                contact: 'Loading contact form...',
+                guide: 'Opening user guide...',
+                chat: 'Starting live chat...'
+            };
+            showToast(messages[type]);
+        }
+
+        // Send message
+        function sendMessage(event) {
+            event.preventDefault();
+            
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            if (!subject || !message) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Show success
+            showModal('Your message has been sent! We\'ll respond within 24 hours.');
+            
+            // Clear form
+            document.getElementById('subject').value = '';
+            document.getElementById('message').value = '';
+        }
+
+        // Change avatar
+        function changeAvatar() {
+            showToast('Avatar upload coming soon!');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Show modal
+        function showModal(message) {
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Show toast
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.style.background = 'var(--coral)';
+            }
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
