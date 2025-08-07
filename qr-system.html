@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR System Management - Palm Beach Pass Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --palm-green: #2D5016;
+            --ocean-blue: #006B7D;
+            --sand: #FAF3E3;
+            --coral: #FF6B6B;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --purple: #7C3AED;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Admin Header */
+        .admin-header {
+            background: linear-gradient(135deg, var(--purple), #9333EA);
+            color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .admin-logo-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .admin-logo-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .admin-logo-text span {
+            font-weight: 600;
+        }
+
+        .system-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 1rem;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .admin-nav-link {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .admin-nav-link:hover {
+            opacity: 1;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+        }
+
+        .admin-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(147,51,234,0.1));
+            transform: translateX(5px);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(135deg, var(--purple), #9333EA);
+            color: white;
+        }
+
+        .sidebar-icon {
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: 600px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.primary {
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(147,51,234,0.2));
+            color: var(--purple);
+        }
+
+        .stat-icon.success {
+            background: rgba(16,185,129,0.2);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245,158,11,0.2);
+            color: var(--warning);
+        }
+
+        .stat-icon.danger {
+            background: rgba(239,68,68,0.2);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--purple);
+        }
+
+        /* QR Generation Form */
+        .generation-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input,
+        .form-select {
+            padding: 0.875rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+        }
+
+        .btn-generate {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--purple), #9333EA);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* QR Preview */
+        .qr-preview {
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .qr-display {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: #f0f0f0;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .qr-info {
+            flex: 1;
+        }
+
+        .qr-details {
+            background: var(--sand);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Validation Console */
+        .validation-console {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .console-line {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .console-line.error {
+            color: #ff4444;
+        }
+
+        .console-line.success {
+            color: #00ff00;
+        }
+
+        .console-line.warning {
+            color: #ffaa00;
+        }
+
+        .console-line.info {
+            color: #00aaff;
+        }
+
+        /* Pass Table */
+        .pass-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pass-table th {
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(147,51,234,0.1));
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--purple);
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .pass-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .pass-table tr:hover {
+            background: rgba(124,58,237,0.03);
+        }
+
+        .pass-id {
+            font-family: monospace;
+            background: var(--sand);
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16,185,129,0.2);
+            color: var(--success);
+        }
+
+        .status-badge.inactive {
+            background: rgba(245,158,11,0.2);
+            color: var(--warning);
+        }
+
+        .status-badge.expired {
+            background: rgba(239,68,68,0.2);
+            color: var(--danger);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-view {
+            background: var(--ocean-blue);
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: var(--palm-green);
+        }
+
+        .btn-test {
+            background: var(--purple);
+            color: white;
+        }
+
+        .btn-test:hover {
+            background: #9333EA;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #DC2626;
+        }
+
+        /* Settings Panel */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .setting-card {
+            background: var(--sand);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .setting-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--purple);
+        }
+
+        .toggle-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .toggle-title {
+            font-weight: 500;
+        }
+
+        .toggle-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--purple);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* System Logs */
+        .log-viewer {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .log-time {
+            color: var(--text-light);
+            font-family: monospace;
+            min-width: 150px;
+        }
+
+        .log-level {
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .log-level.info {
+            background: rgba(0,170,255,0.2);
+            color: #0066cc;
+        }
+
+        .log-level.success {
+            background: rgba(16,185,129,0.2);
+            color: var(--success);
+        }
+
+        .log-level.warning {
+            background: rgba(245,158,11,0.2);
+            color: var(--warning);
+        }
+
+        .log-level.error {
+            background: rgba(239,68,68,0.2);
+            color: var(--danger);
+        }
+
+        .log-message {
+            flex: 1;
+            color: var(--text-dark);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--purple);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--purple);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease-out;
+            z-index: 3000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .generation-form {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-generate {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-nav {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .qr-preview {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center;">
+                <a href="index.html" class="admin-logo">
+                    <div class="admin-logo-icon">⚙️</div>
+                    <div class="admin-logo-text">QR System <span>Management</span></div>
+                </a>
+                <span class="system-badge">v2.4.1</span>
+            </div>
+            
+            <nav class="admin-nav">
+                <a href="index.html" class="admin-nav-link">Customer Portal</a>
+                <a href="vendor-portal.html" class="admin-nav-link">Vendor Portal</a>
+                <a href="#" class="admin-nav-link">Documentation</a>
+            </nav>
+            
+            <div class="admin-user">
+                <div class="admin-avatar">SA</div>
+                <span>System Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a class="sidebar-link active" onclick="showSection('dashboard')">
+                        <span class="sidebar-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('generate')">
+                        <span class="sidebar-icon">🎫</span>
+                        <span>Generate QR</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('validate')">
+                        <span class="sidebar-icon">✅</span>
+                        <span>Validation</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('passes')">
+                        <span class="sidebar-icon">📋</span>
+                        <span>All Passes</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('analytics')">
+                        <span class="sidebar-icon">📈</span>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('settings')">
+                        <span class="sidebar-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" onclick="showSection('logs')">
+                        <span class="sidebar-icon">📜</span>
+                        <span>System Logs</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content-area">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Total Passes Generated</div>
+                                <div class="stat-value">12,847</div>
+                                <div class="stat-change">↑ 12% from last month</div>
+                            </div>
+                            <div class="stat-icon primary">🎫</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Active Passes</div>
+                                <div class="stat-value">3,264</div>
+                                <div class="stat-change">↑ 8% from last week</div>
+                            </div>
+                            <div class="stat-icon success">✓</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Validations Today</div>
+                                <div class="stat-value">486</div>
+                                <div class="stat-change">Peak: 2:30 PM</div>
+                            </div>
+                            <div class="stat-icon warning">📍</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-title">Failed Validations</div>
+                                <div class="stat-value">23</div>
+                                <div class="stat-change negative">↓ 5% improvement</div>
+                            </div>
+                            <div class="stat-icon danger">⚠️</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent System Activity</h2>
+                    </div>
+                    
+                    <div class="log-viewer">
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 14:32:15</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">Pass PB001-7D-ADT-001 validated at Lion Country Safari</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 14:28:43</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">New batch of 50 passes generated for 3-day adult category</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 14:15:22</span>
+                            <span class="log-level warning">WARNING</span>
+                            <span class="log-message">Geolocation validation failed - Pass used outside designated area</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 14:02:10</span>
+                            <span class="log-level error">ERROR</span>
+                            <span class="log-message">Invalid QR code scanned: PB999-XX-XXX-999</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 13:45:55</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">System backup completed successfully</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate QR Section -->
+            <div id="generate-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Generate New QR Passes</h2>
+                    </div>
+                    
+                    <div class="generation-form">
+                        <div class="form-group">
+                            <label class="form-label">Pass Type</label>
+                            <select class="form-select" id="passType">
+                                <option value="1D">1 Day Pass</option>
+                                <option value="3D" selected>3 Day Pass</option>
+                                <option value="5D">5 Day Pass</option>
+                                <option value="7D">7 Day Pass</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="passCategory">
+                                <option value="ADT">Adult</option>
+                                <option value="CHD">Child (3-12)</option>
+                                <option value="SNR">Senior (65+)</option>
+                                <option value="FAM">Family</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" class="form-input" id="quantity" value="1" min="1" max="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Valid From</label>
+                            <input type="date" class="form-input" id="validFrom" value="2025-08-07">
+                        </div>
+                        
+                        <button class="btn-generate" onclick="generatePasses()">Generate Passes</button>
+                    </div>
+                    
+                    <div class="qr-preview" id="qrPreview" style="display: none;">
+                        <div class="qr-display">
+                            <div class="qr-code">
+                                <span style="font-size: 3rem;">📱</span>
+                            </div>
+                            <div style="font-family: monospace; font-weight: 600;" id="qrCodeId">PB001-3D-ADT-001</div>
+                        </div>
+                        
+                        <div class="qr-info">
+                            <div class="qr-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Pass Type</span>
+                                    <span class="detail-value" id="previewType">3 Day Pass</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Category</span>
+                                    <span class="detail-value" id="previewCategory">Adult</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Status</span>
+                                    <span class="detail-value" style="color: var(--success);">Ready to Activate</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Generated</span>
+                                    <span class="detail-value" id="previewDate">Aug 7, 2025</span>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn-action btn-test" onclick="testValidation()">Test Validation</button>
+                                <button class="btn-action btn-view" onclick="downloadQR()">Download QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validation Section -->
+            <div id="validate-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">QR Code Validation Testing</h2>
+                    </div>
+                    
+                    <div class="generation-form">
+                        <div class="form-group">
+                            <label class="form-label">Enter QR Code</label>
+                            <input type="text" class="form-input" id="testQRCode" placeholder="PB001-3D-ADT-001">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Test Location</label>
+                            <select class="form-select" id="testLocation">
+                                <option>Lion Country Safari</option>
+                                <option>Norton Museum of Art</option>
+                                <option>Rapids Water Park</option>
+                                <option>Invalid Location</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn-generate" onclick="runValidation()">Run Validation Test</button>
+                    </div>
+                    
+                    <div class="validation-console" id="validationConsole">
+                        <div class="console-line info">[SYSTEM] Validation console ready...</div>
+                        <div class="console-line info">[SYSTEM] Awaiting QR code input...</div>
+                    </div>
+                    
+                    <div class="qr-details" style="margin-top: 1rem;">
+                        <h3 style="margin-bottom: 1rem;">Test QR Codes:</h3>
+                        <div class="detail-row">
+                            <span class="pass-id">PB001-7D-ADT-001</span>
+                            <span>Valid 7-day adult pass</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="pass-id">PB002-3D-CHD-001</span>
+                            <span>Valid 3-day child pass</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="pass-id">PB003-1D-ADT-002</span>
+                            <span>Expired 1-day pass</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Passes Section -->
+            <div id="passes-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Pass Management</h2>
+                        <button class="btn-action btn-test" onclick="exportPasses()">Export CSV</button>
+                    </div>
+                    
+                    <table class="pass-table">
+                        <thead>
+                            <tr>
+                                <th>Pass ID</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="pass-id">PB001-7D-ADT-001</span></td>
+                                <td>7 Day Pass</td>
+                                <td>Adult</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Aug 5, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" onclick="viewPass('PB001-7D-ADT-001')">View</button>
+                                        <button class="btn-action btn-test" onclick="testPass('PB001-7D-ADT-001')">Test</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="pass-id">PB002-3D-CHD-001</span></td>
+                                <td>3 Day Pass</td>
+                                <td>Child</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Aug 6, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" onclick="viewPass('PB002-3D-CHD-001')">View</button>
+                                        <button class="btn-action btn-test" onclick="testPass('PB002-3D-CHD-001')">Test</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="pass-id">PB003-1D-ADT-002</span></td>
+                                <td>1 Day Pass</td>
+                                <td>Adult</td>
+                                <td><span class="status-badge expired">Expired</span></td>
+                                <td>Jul 30, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" onclick="viewPass('PB003-1D-ADT-002')">View</button>
+                                        <button class="btn-action btn-delete" onclick="deletePass('PB003-1D-ADT-002')">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="pass-id">PB004-5D-FAM-001</span></td>
+                                <td>5 Day Pass</td>
+                                <td>Family</td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                                <td>Aug 7, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" onclick="viewPass('PB004-5D-FAM-001')">View</button>
+                                        <button class="btn-action btn-test" onclick="testPass('PB004-5D-FAM-001')">Test</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">System Analytics</h2>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-title">Validation Success Rate</div>
+                                    <div class="stat-value">96.8%</div>
+                                    <div class="stat-change">Target: 95%</div>
+                                </div>
+                                <div class="stat-icon success">📊</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-title">Average Response Time</div>
+                                    <div class="stat-value">124ms</div>
+                                    <div class="stat-change">↑ 15ms faster</div>
+                                </div>
+                                <div class="stat-icon primary">⚡</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-title">Peak Hour</div>
+                                    <div class="stat-value">2:00 PM</div>
+                                    <div class="stat-change">847 validations</div>
+                                </div>
+                                <div class="stat-icon warning">🕐</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-title">System Uptime</div>
+                                    <div class="stat-value">99.98%</div>
+                                    <div class="stat-change">30 days</div>
+                                </div>
+                                <div class="stat-icon success">🟢</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center;">
+                        <p style="color: var(--text-light);">📈 Advanced analytics charts and reports will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">System Settings</h2>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3 class="setting-title">Validation Rules</h3>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Geolocation Validation</span>
+                                    <span class="toggle-description">Verify pass usage location</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Time Delay Restriction</span>
+                                    <span class="toggle-description">1-hour minimum between scans</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Auto-Expire Passes</span>
+                                    <span class="toggle-description">Disable expired passes automatically</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3 class="setting-title">System Configuration</h3>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">API Access</span>
+                                    <span class="toggle-description">Enable external API calls</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Debug Mode</span>
+                                    <span class="toggle-description">Show detailed error logs</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Maintenance Mode</span>
+                                    <span class="toggle-description">Disable all validations</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h3 class="setting-title">Security Settings</h3>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">2FA for Admin</span>
+                                    <span class="toggle-description">Require two-factor authentication</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">IP Whitelisting</span>
+                                    <span class="toggle-description">Restrict access by IP</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="toggle-switch">
+                                <div class="toggle-label">
+                                    <span class="toggle-title">Audit Logging</span>
+                                    <span class="toggle-description">Track all system changes</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; text-align: right;">
+                        <button class="btn-action btn-test" onclick="saveSettings()">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Logs Section -->
+            <div id="logs-section" class="content-area" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">System Logs</h2>
+                        <div style="display: flex; gap: 1rem;">
+                            <select class="form-select" style="width: 150px;">
+                                <option>All Levels</option>
+                                <option>Info</option>
+                                <option>Success</option>
+                                <option>Warning</option>
+                                <option>Error</option>
+                            </select>
+                            <button class="btn-action btn-test" onclick="exportLogs()">Export Logs</button>
+                        </div>
+                    </div>
+                    
+                    <div class="log-viewer" style="max-height: 600px;">
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:45:22</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">System settings updated by admin@palmbeachpass.com</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:42:10</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">Database backup initiated - scheduled maintenance</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:38:55</span>
+                            <span class="log-level warning">WARNING</span>
+                            <span class="log-message">High API usage detected from vendor portal (ID: V-2847)</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:32:18</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">Batch generation completed: 100 new 3-day passes</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:28:03</span>
+                            <span class="log-level error">ERROR</span>
+                            <span class="log-message">Failed validation attempt - Invalid QR format: INVALID-CODE-123</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:22:44</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">New vendor registered: Butterfly World (ID: V-3021)</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:18:29</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">Pass PB005-7D-ADT-003 activated at Palm Beach Zoo</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:12:15</span>
+                            <span class="log-level warning">WARNING</span>
+                            <span class="log-message">Rate limit approaching for API endpoint /validate</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:08:41</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">System health check completed - all services operational</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">2025-08-07 15:02:33</span>
+                            <span class="log-level success">SUCCESS</span>
+                            <span class="log-message">SSL certificate renewed successfully</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Success!</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <p id="modalMessage">Operation completed successfully.</p>
+        </div>
+    </div>
+
+    <script>
+        // Show section
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-area').forEach(area => {
+                area.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        // Generate passes
+        function generatePasses() {
+            const passType = document.getElementById('passType').value;
+            const category = document.getElementById('passCategory').value;
+            const quantity = document.getElementById('quantity').value;
+            
+            // Show preview
+            document.getElementById('qrPreview').style.display = 'flex';
+            
+            // Generate pass ID
+            const passId = `PB${Math.floor(Math.random() * 900) + 100}-${passType}-${category}-001`;
+            document.getElementById('qrCodeId').textContent = passId;
+            
+            // Update preview details
+            const typeText = passType.replace('D', ' Day Pass');
+            document.getElementById('previewType').textContent = typeText;
+            
+            const categoryTexts = {
+                'ADT': 'Adult',
+                'CHD': 'Child',
+                'SNR': 'Senior',
+                'FAM': 'Family'
+            };
+            document.getElementById('previewCategory').textContent = categoryTexts[category];
+            
+            showToast(`Generated ${quantity} ${typeText} passes successfully!`);
+        }
+
+        // Run validation test
+        function runValidation() {
+            const qrCode = document.getElementById('testQRCode').value;
+            const location = document.getElementById('testLocation').value;
+            const console = document.getElementById('validationConsole');
+            
+            // Clear console
+            console.innerHTML = '';
+            
+            // Validation sequence
+            const logs = [
+                { type: 'info', text: `[SYSTEM] Initiating validation for ${qrCode}...` },
+                { type: 'info', text: `[CHECK] Verifying QR code format...` },
+                { type: 'success', text: `[PASS] Valid QR format detected` },
+                { type: 'info', text: `[CHECK] Checking pass status in database...` },
+                { type: 'success', text: `[PASS] Pass is active and valid` },
+                { type: 'info', text: `[CHECK] Verifying geolocation: ${location}...` }
+            ];
+            
+            if (location === 'Invalid Location') {
+                logs.push({ type: 'error', text: `[FAIL] Location not authorized for this pass` });
+                logs.push({ type: 'error', text: `[RESULT] VALIDATION FAILED - Invalid location` });
+            } else if (qrCode.includes('003')) {
+                logs.push({ type: 'warning', text: `[WARNING] Pass has expired` });
+                logs.push({ type: 'error', text: `[RESULT] VALIDATION FAILED - Pass expired` });
+            } else {
+                logs.push({ type: 'success', text: `[PASS] Location verified successfully` });
+                logs.push({ type: 'info', text: `[CHECK] Checking time restrictions...` });
+                logs.push({ type: 'success', text: `[PASS] No recent scans detected` });
+                logs.push({ type: 'success', text: `[RESULT] VALIDATION SUCCESSFUL - Pass accepted` });
+            }
+            
+            // Animate console output
+            logs.forEach((log, index) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = `console-line ${log.type}`;
+                    line.textContent = log.text;
+                    console.appendChild(line);
+                    console.scrollTop = console.scrollHeight;
+                }, index * 300);
+            });
+        }
+
+        // Test validation from preview
+        function testValidation() {
+            const qrCode = document.getElementById('qrCodeId').textContent;
+            document.getElementById('testQRCode').value = qrCode;
+            showSection('validate');
+            runValidation();
+        }
+
+        // View pass details
+        function viewPass(passId) {
+            showModal('Pass Details', `Viewing details for pass: ${passId}`);
+        }
+
+        // Test pass
+        function testPass(passId) {
+            document.getElementById('testQRCode').value = passId;
+            showSection('validate');
+            document.querySelectorAll('.sidebar-link')[2].classList.add('active');
+            document.querySelectorAll('.sidebar-link')[3].classList.remove('active');
+        }
+
+        // Delete pass
+        function deletePass(passId) {
+            if (confirm(`Are you sure you want to delete pass ${passId}?`)) {
+                showToast(`Pass ${passId} has been deleted`);
+                event.target.closest('tr').remove();
+            }
+        }
+
+        // Export passes
+        function exportPasses() {
+            showToast('Exporting passes to CSV...');
+            setTimeout(() => {
+                showToast('Export completed: passes_export_2025-08-07.csv');
+            }, 1500);
+        }
+
+        // Export logs
+        function exportLogs() {
+            showToast('Exporting system logs...');
+            setTimeout(() => {
+                showToast('Export completed: system_logs_2025-08-07.log');
+            }, 1500);
+        }
+
+        // Save settings
+        function saveSettings() {
+            showToast('Settings saved successfully!');
+        }
+
+        // Download QR
+        function downloadQR() {
+            const passId = document.getElementById('qrCodeId').textContent;
+            showToast(`Downloading QR code for ${passId}...`);
+        }
+
+        // Show modal
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Show toast
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Initialize dashboard
+        window.onload = function() {
+            // Simulate real-time updates
+            setInterval(() => {
+                const validations = document.querySelector('.stat-value');
+                if (validations && document.getElementById('dashboard-section').style.display !== 'none') {
+                    const current = parseInt(validations.textContent.replace(',', ''));
+                    validations.textContent = (current + Math.floor(Math.random() * 3)).toLocaleString();
+                }
+            }, 5000);
+        };
+    </script>
+</body>
+</html>
