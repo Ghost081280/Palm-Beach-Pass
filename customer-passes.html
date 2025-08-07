@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Passes - Palm Beach Pass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --palm-green: #2D5016;
+            --ocean-blue: #006B7D;
+            --sand: #FAF3E3;
+            --coral: #FF6B6B;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --success: #10B981;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #FAF3E3 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .logo-text span {
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--ocean-blue);
+        }
+
+        .nav-link.active {
+            color: var(--palm-green);
+            font-weight: 500;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--sand);
+            border-radius: 30px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Pass Filter Tabs */
+        .filter-tabs {
+            max-width: 1400px;
+            margin: -2rem auto 3rem;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tab-btn.active {
+            background: var(--palm-green);
+            color: white;
+            border-color: var(--palm-green);
+        }
+
+        .tab-badge {
+            background: rgba(255,255,255,0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tab-btn.active .tab-badge {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Passes Container */
+        .passes-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .passes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Pass Card */
+        .pass-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .pass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pass-card.expired {
+            opacity: 0.7;
+        }
+
+        .pass-header {
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pass-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pass-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pass-status.active {
+            background: rgba(16,185,129,0.2);
+            color: #10B981;
+        }
+
+        .pass-status.expired {
+            background: rgba(255,107,107,0.2);
+            color: var(--coral);
+        }
+
+        .pass-status.ready {
+            background: rgba(212,175,55,0.2);
+            color: var(--gold);
+        }
+
+        .pass-type {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .pass-duration {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .pass-body {
+            padding: 1.5rem;
+        }
+
+        .pass-id {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: var(--sand);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pass-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--palm-green);
+        }
+
+        .pass-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-view-qr {
+            background: var(--palm-green);
+            color: white;
+        }
+
+        .btn-view-qr:hover {
+            background: var(--ocean-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-share {
+            background: var(--sand);
+            color: var(--text-dark);
+        }
+
+        .btn-share:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        /* QR Modal */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-modal.active {
+            display: flex;
+        }
+
+        .qr-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .qr-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .qr-close:hover {
+            background: var(--sand);
+        }
+
+        .qr-pass-info {
+            background: linear-gradient(135deg, var(--palm-green), var(--ocean-blue));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .qr-pass-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .qr-pass-id {
+            font-family: monospace;
+            opacity: 0.9;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #f0f0f0;
+            margin-bottom: 2rem;
+        }
+
+        .qr-code {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            background: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-instructions {
+            background: var(--sand);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-instructions p {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .qr-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-download {
+            flex: 1;
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover {
+            background: var(--ocean-blue);
+        }
+
+        .btn-print {
+            flex: 1;
+            background: transparent;
+            color: var(--palm-green);
+            border: 2px solid var(--palm-green);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-print:hover {
+            background: var(--palm-green);
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .empty-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--sand);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+        }
+
+        .empty-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--palm-green);
+        }
+
+        .empty-text {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-browse {
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-browse:hover {
+            background: var(--ocean-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(135deg, var(--sand), white);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--palm-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            background: var(--palm-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            background: var(--ocean-blue);
+        }
+
+        .fab.secondary {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: var(--palm-green);
+            font-size: 1.2rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .filter-tabs {
+                flex-wrap: wrap;
+            }
+
+            .passes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top-color: var(--palm-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--palm-green);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUpToast 0.3s ease-out;
+            z-index: 3000;
+        }
+
+        @keyframes slideUpToast {
+            from {
+                transform: translate(-50%, 100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🌴</div>
+                <div class="logo-text">Palm Beach <span>Pass</span></div>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#" class="nav-link active">My Passes</a>
+                <a href="customer-account.html" class="nav-link">Account</a>
+                <a href="index.html#attractions" class="nav-link">Attractions</a>
+                <a href="#" class="nav-link" onclick="showHelp()">Help</a>
+            </nav>
+            
+            <div class="user-info">
+                <div class="user-avatar">DU</div>
+                <span>Demo User</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">My Digital Passes</h1>
+        <p class="page-subtitle">Access your passes anytime, anywhere</p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="tab-btn active" onclick="filterPasses('all')">
+            All Passes
+            <span class="tab-badge" id="allCount">0</span>
+        </button>
+        <button class="tab-btn" onclick="filterPasses('active')">
+            Active
+            <span class="tab-badge" id="activeCount">0</span>
+        </button>
+        <button class="tab-btn" onclick="filterPasses('ready')">
+            Ready to Use
+            <span class="tab-badge" id="readyCount">0</span>
+        </button>
+        <button class="tab-btn" onclick="filterPasses('expired')">
+            Expired
+            <span class="tab-badge" id="expiredCount">0</span>
+        </button>
+    </div>
+
+    <!-- Passes Container -->
+    <div class="passes-container">
+        <!-- Stats Banner -->
+        <div class="stats-banner" id="statsBanner" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalAttractions">0</div>
+                    <div class="stat-label">Attractions Visited</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="daysRemaining">0</div>
+                    <div class="stat-label">Days Remaining</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="savedAmount">$0</div>
+                    <div class="stat-label">Total Saved</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="passesOwned">0</div>
+                    <div class="stat-label">Passes Owned</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Passes Grid -->
+        <div class="passes-grid" id="passesGrid">
+            <!-- Passes will be dynamically inserted here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">🎫</div>
+            <h2 class="empty-title">No Passes Yet</h2>
+            <p class="empty-text">Start your Palm Beach adventure by purchasing your first pass. Unlock access to 180+ attractions and experiences!</p>
+            <a href="index.html#passes" class="btn-browse">Browse Passes</a>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-content">
+            <button class="qr-close" onclick="closeQR()">×</button>
+            
+            <div class="qr-pass-info">
+                <div class="qr-pass-title" id="qrPassTitle">3 Day Pass - Adult</div>
+                <div class="qr-pass-id" id="qrPassId">PB001-3D-ADT-001</div>
+            </div>
+            
+            <div class="qr-code-container">
+                <canvas id="qrCode" class="qr-code"></canvas>
+            </div>
+            
+            <div class="qr-instructions">
+                <p>Show this QR code at any participating attraction for instant entry. Screenshot or save for offline access.</p>
+            </div>
+            
+            <div class="qr-actions">
+                <button class="btn-download" onclick="downloadQR()">📥 Download</button>
+                <button class="btn-print" onclick="printQR()">🖨️ Print</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="fab secondary" onclick="refreshPasses()">🔄</button>
+        <button class="fab" onclick="window.location.href='index.html#passes'">+</button>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        // Sample pass data
+        let userPasses = [];
+        let currentFilter = 'all';
+        let currentQRPass = null;
+
+        // Initialize
+        window.onload = function() {
+            checkAuth();
+            loadPasses();
+            updateStats();
+        };
+
+        // Check authentication
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        // Load passes from localStorage
+        function loadPasses() {
+            const savedPasses = localStorage.getItem('userPasses');
+            
+            if (savedPasses) {
+                userPasses = JSON.parse(savedPasses);
+            } else {
+                // Demo passes for testing
+                userPasses = [
+                    {
+                        id: 'PB001-3D-ADT-001',
+                        type: '3 Day Pass',
+                        category: 'Adult',
+                        status: 'active',
+                        purchaseDate: '2025-08-05',
+                        activationDate: '2025-08-06',
+                        expiryDate: '2025-08-09',
+                        scansRemaining: 'Unlimited',
+                        lastUsed: 'Lion Country Safari'
+                    },
+                    {
+                        id: 'PB002-7D-ADT-002',
+                        type: '7 Day Pass',
+                        category: 'Adult',
+                        status: 'ready',
+                        purchaseDate: '2025-08-07',
+                        activationDate: null,
+                        expiryDate: null,
+                        scansRemaining: 'Not Activated',
+                        lastUsed: null
+                    },
+                    {
+                        id: 'PB003-1D-CHD-001',
+                        type: '1 Day Pass',
+                        category: 'Child',
+                        status: 'expired',
+                        purchaseDate: '2025-07-20',
+                        activationDate: '2025-07-25',
+                        expiryDate: '2025-07-26',
+                        scansRemaining: 'Expired',
+                        lastUsed: 'Rapids Water Park'
+                    }
+                ];
+            }
+            
+            displayPasses();
+            updateCounts();
+        }
+
+        // Display passes
+        function displayPasses() {
+            const grid = document.getElementById('passesGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter passes
+            let filteredPasses = userPasses;
+            if (currentFilter !== 'all') {
+                filteredPasses = userPasses.filter(pass => pass.status === currentFilter);
+            }
+            
+            if (filteredPasses.length === 0 && userPasses.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('statsBanner').style.display = 'none';
+                return;
+            } else {
+                grid.style.display = 'grid';
+                emptyState.style.display = 'none';
+                document.getElementById('statsBanner').style.display = 'block';
+            }
+            
+            grid.innerHTML = filteredPasses.map(pass => `
+                <div class="pass-card ${pass.status === 'expired' ? 'expired' : ''}" onclick="showQR('${pass.id}')">
+                    <div class="pass-header">
+                        <span class="pass-status ${pass.status}">${getStatusText(pass.status)}</span>
+                        <div class="pass-type">${pass.type}</div>
+                        <div class="pass-duration">${pass.category} Pass</div>
+                    </div>
+                    <div class="pass-body">
+                        <div class="pass-id">${pass.id}</div>
+                        <div class="pass-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Purchase Date</span>
+                                <span class="detail-value">${formatDate(pass.purchaseDate)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">${pass.scansRemaining}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">${pass.status === 'ready' ? 'Ready to Activate' : 'Valid Until'}</span>
+                                <span class="detail-value">${pass.expiryDate ? formatDate(pass.expiryDate) : 'First Use'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Last Used</span>
+                                <span class="detail-value">${pass.lastUsed || 'Not Yet Used'}</span>
+                            </div>
+                        </div>
+                        <div class="pass-actions">
+                            <button class="btn-action btn-view-qr" onclick="event.stopPropagation(); showQR('${pass.id}')">
+                                <span>📱</span>
+                                <span>View QR Code</span>
+                            </button>
+                            <button class="btn-action btn-share" onclick="event.stopPropagation(); sharePass('${pass.id}')">
+                                <span>🔗</span>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter passes
+        function filterPasses(filter) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayPasses();
+        }
+
+        // Update counts
+        function updateCounts() {
+            const counts = {
+                all: userPasses.length,
+                active: userPasses.filter(p => p.status === 'active').length,
+                ready: userPasses.filter(p => p.status === 'ready').length,
+                expired: userPasses.filter(p => p.status === 'expired').length
+            };
+            
+            document.getElementById('allCount').textContent = counts.all;
+            document.getElementById('activeCount').textContent = counts.active;
+            document.getElementById('readyCount').textContent = counts.ready;
+            document.getElementById('expiredCount').textContent = counts.expired;
+        }
+
+        // Update stats
+        function updateStats() {
+            const activePasses = userPasses.filter(p => p.status === 'active');
+            
+            document.getElementById('totalAttractions').textContent = activePasses.length * 3; // Demo value
+            document.getElementById('daysRemaining').textContent = activePasses.length > 0 ? '4' : '0';
+            document.getElementById('savedAmount').textContent = `$${(activePasses.length * 150).toFixed(0)}`;
+            document.getElementById('passesOwned').textContent = userPasses.length;
+        }
+
+        // Show QR code
+        function showQR(passId) {
+            const pass = userPasses.find(p => p.id === passId);
+            if (!pass) return;
+            
+            currentQRPass = pass;
+            
+            // Update modal content
+            document.getElementById('qrPassTitle').textContent = `${pass.type} - ${pass.category}`;
+            document.getElementById('qrPassId').textContent = pass.id;
+            
+            // Generate QR code
+            const canvas = document.getElementById('qrCode');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear previous QR
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Create QR code (simple placeholder - in production use proper QR library)
+            canvas.width = 250;
+            canvas.height = 250;
+            
+            // Draw QR pattern (simplified)
+            const moduleSize = 10;
+            const modules = 25;
+            
+            for (let row = 0; row < modules; row++) {
+                for (let col = 0; col < modules; col++) {
+                    if (Math.random() > 0.5 || 
+                        (row < 7 && col < 7) || 
+                        (row < 7 && col >= modules - 7) || 
+                        (row >= modules - 7 && col < 7)) {
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+                    }
+                }
+            }
+            
+            // Add pass ID in center
+            ctx.fillStyle = 'white';
+            ctx.fillRect(75, 110, 100, 30);
+            ctx.fillStyle = 'black';
+            ctx.font = '8px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(pass.id, 125, 128);
+            
+            // Show modal
+            document.getElementById('qrModal').classList.add('active');
+            
+            // Activate pass if ready
+            if (pass.status === 'ready') {
+                showToast('Pass activated! Valid for ' + pass.type);
+                pass.status = 'active';
+                pass.activationDate = new Date().toISOString().split('T')[0];
+                const days = parseInt(pass.type.split(' ')[0]);
+                const expiry = new Date();
+                expiry.setDate(expiry.getDate() + days);
+                pass.expiryDate = expiry.toISOString().split('T')[0];
+                pass.scansRemaining = 'Unlimited';
+                
+                // Save updated passes
+                localStorage.setItem('userPasses', JSON.stringify(userPasses));
+                loadPasses();
+            }
+        }
+
+        // Close QR modal
+        function closeQR() {
+            document.getElementById('qrModal').classList.remove('active');
+        }
+
+        // Download QR code
+        function downloadQR() {
+            const canvas = document.getElementById('qrCode');
+            const link = document.createElement('a');
+            link.download = `palm-beach-pass-${currentQRPass.id}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast('QR code downloaded!');
+        }
+
+        // Print QR code
+        function printQR() {
+            window.print();
+            showToast('Print dialog opened');
+        }
+
+        // Share pass
+        function sharePass(passId) {
+            const pass = userPasses.find(p => p.id === passId);
+            if (!pass) return;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Palm Beach Pass',
+                    text: `Check out my ${pass.type}! Pass ID: ${pass.id}`,
+                    url: window.location.href
+                }).then(() => {
+                    showToast('Pass shared successfully!');
+                }).catch(() => {
+                    copyToClipboard(pass.id);
+                });
+            } else {
+                copyToClipboard(pass.id);
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Pass ID copied to clipboard!');
+        }
+
+        // Refresh passes
+        function refreshPasses() {
+            showToast('Refreshing passes...');
+            setTimeout(() => {
+                loadPasses();
+                showToast('Passes updated!');
+            }, 1000);
+        }
+
+        // Show help
+        function showHelp() {
+            showToast('Help center coming soon!');
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Get status text
+        function getStatusText(status) {
+            const texts = {
+                active: '✓ Active',
+                ready: '⏳ Ready',
+                expired: '× Expired'
+            };
+            return texts[status] || status;
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Handle ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeQR();
+            }
+        });
+    </script>
+</body>
+</html>
