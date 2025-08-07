@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Palm Beach Pass</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .profile-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: avatar-glow 3s infinite;
+        }
+        
+        @keyframes avatar-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(118, 75, 162, 0.5); }
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .achievement-badge {
+            animation: achievement-pulse 2s infinite;
+        }
+        
+        @keyframes achievement-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .settings-panel {
+            animation: slide-in 0.3s ease-out;
+        }
+        
+        @keyframes slide-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification-dot {
+            animation: notification-pulse 2s infinite;
+        }
+        
+        @keyframes notification-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #10B981, #059669, #047857);
+            background-size: 200% 100%;
+            animation: progress-shimmer 2s infinite;
+        }
+        
+        @keyframes progress-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .card-hover {
+            transition: all 0.2s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .member-tier {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .loyalty-progress {
+            background: linear-gradient(90deg, #e5e7eb 0%, #10B981 var(--progress, 0%), #e5e7eb var(--progress, 0%));
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { 
+            User, Settings, Bell, CreditCard, Gift, History, Star, Trophy,
+            MapPin, Calendar, Download, Share, Edit, Eye, EyeOff, Lock,
+            Smartphone, Mail, Phone, LogOut, ArrowRight, Plus, Trash2,
+            Heart, Bookmark, Award, Target, TrendingUp, Zap, Shield,
+            CheckCircle, AlertCircle, Clock, DollarSign, Users, HelpCircle
+        } = lucide;
+
+        // Customer account data simulation
+        const accountData = {
+            user: {
+                id: 1,
+                firstName: 'John',
+                lastName: 'Smith',
+                email: 'demo@demo.com',
+                phone: '+1 (555) 123-4567',
+                avatar: null,
+                memberSince: '2024-01-15',
+                memberTier: 'Gold',
+                totalSpent: 485.00,
+                totalSavings: 1247.50,
+                passesOwned: 8,
+                attractionsVisited: 47,
+                favoritesCount: 12,
+                loyaltyPoints: 1250,
+                nextTierPoints: 500,
+                address: {
+                    street: '123 Ocean Drive',
+                    city: 'Palm Beach',
+                    state: 'FL',
+                    zip: '33480'
+                }
+            },
+            
+            purchaseHistory: [
+                {
+                    id: 'ORD-2025-001',
+                    date: '2025-08-05T10:00:00Z',
+                    passes: [
+                        { name: '7-Day Adult Pass', price: 95.00, id: 'PB001-7D-ADT-001' }
+                    ],
+                    total: 95.00,
+                    savings: 745.00,
+                    status: 'active',
+                    promoUsed: null
+                },
+                {
+                    id: 'ORD-2025-002',
+                    date: '2025-08-06T15:20:00Z',
+                    passes: [
+                        { name: '3-Day Child Pass', price: 45.00, id: 'PB045-3D-CHD-002' }
+                    ],
+                    total: 45.00,
+                    savings: 315.00,
+                    status: 'active',
+                    promoUsed: 'FAMILY15'
+                },
+                {
+                    id: 'ORD-2025-003',
+                    date: '2025-07-20T09:00:00Z',
+                    passes: [
+                        { name: '7-Day Adult Pass', price: 95.00, id: 'PB012-7D-ADT-004' }
+                    ],
+                    total: 95.00,
+                    savings: 855.00,
+                    status: 'completed',
+                    promoUsed: 'SUMMER25'
+                },
+                {
+                    id: 'ORD-2024-088',
+                    date: '2024-12-15T14:30:00Z',
+                    passes: [
+                        { name: '5-Day Adult Pass', price: 85.00, id: 'PB234-5D-ADT-015' },
+                        { name: '5-Day Adult Pass', price: 85.00, id: 'PB235-5D-ADT-016' }
+                    ],
+                    total: 170.00,
+                    savings: 1030.00,
+                    status: 'completed',
+                    promoUsed: null
+                }
+            ],
+            
+            favorites: [
+                { id: 1, name: 'Palm Beach Seaquarium', category: 'family', lastVisited: '2025-08-07' },
+                { id: 2, name: 'Norton Museum of Art', category: 'culture', lastVisited: '2025-08-05' },
+                { id: 3, name: 'Worth Avenue', category: 'shopping', lastVisited: '2025-07-28' },
+                { id: 4, name: 'Boca Raton Museum', category: 'culture', lastVisited: '2025-07-25' }
+            ],
+            
+            achievements: [
+                { id: 1, name: 'First Visit', description: 'Made your first attraction visit', earned: true, date: '2024-01-20' },
+                { id: 2, name: 'Culture Enthusiast', description: 'Visited 10 museums and cultural sites', earned: true, date: '2024-08-15' },
+                { id: 3, name: 'Explorer', description: 'Visited 25 different attractions', earned: true, date: '2024-11-30' },
+                { id: 4, name: 'Gold Member', description: 'Reached Gold membership tier', earned: true, date: '2024-12-01' },
+                { id: 5, name: 'Super Saver', description: 'Saved over $1000 with passes', earned: true, date: '2025-01-15' },
+                { id: 6, name: 'Master Explorer', description: 'Visit 50 different attractions', earned: false, progress: 47 }
+            ],
+            
+            notifications: [
+                {
+                    id: 1,
+                    type: 'pass_expiring',
+                    title: 'Pass Expiring Soon',
+                    message: 'Your 5-Day Adult Pass expires in 18 hours',
+                    date: '2025-08-07T09:00:00Z',
+                    read: false,
+                    action: 'View Pass'
+                },
+                {
+                    id: 2,
+                    type: 'new_attraction',
+                    title: 'New Attraction Added',
+                    message: 'Flagler Museum now available with your pass',
+                    date: '2025-08-06T14:00:00Z',
+                    read: false,
+                    action: 'Explore'
+                },
+                {
+                    id: 3,
+                    type: 'achievement',
+                    title: 'Achievement Unlocked!',
+                    message: 'You earned the "Super Saver" badge',
+                    date: '2025-08-05T16:30:00Z',
+                    read: true,
+                    action: 'View Badge'
+                }
+            ],
+            
+            paymentMethods: [
+                {
+                    id: 1,
+                    type: 'card',
+                    last4: '9012',
+                    brand: 'Visa',
+                    expiryMonth: '12',
+                    expiryYear: '2027',
+                    isDefault: true
+                },
+                {
+                    id: 2,
+                    type: 'card',
+                    last4: '5678',
+                    brand: 'Mastercard',
+                    expiryMonth: '08',
+                    expiryYear: '2026',
+                    isDefault: false
+                }
+            ]
+        };
+
+        const CustomerAccountApp = () => {
+            const [currentView, setCurrentView] = useState('dashboard');
+            const [showNotifications, setShowNotifications] = useState(false);
+            const [editingProfile, setEditingProfile] = useState(false);
+            const [userProfile, setUserProfile] = useState(accountData.user);
+            const [notifications, setNotifications] = useState(accountData.notifications);
+
+            // Calculate loyalty progress
+            const loyaltyProgress = (userProfile.loyaltyPoints / (userProfile.loyaltyPoints + userProfile.nextTierPoints)) * 100;
+
+            // Header Component
+            const Header = () => React.createElement('header', {
+                className: "bg-white shadow-sm border-b sticky top-0 z-50"
+            },
+                React.createElement('div', {
+                    className: "px-4 py-3"
+                },
+                    React.createElement('div', {
+                        className: "flex items-center justify-between"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center space-x-3"
+                        },
+                            React.createElement('div', {
+                                className: "profile-avatar w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                            }, userProfile.firstName.charAt(0) + userProfile.lastName.charAt(0)),
+                            React.createElement('div', null,
+                                React.createElement('h1', {
+                                    className: "text-lg font-bold text-gray-800"
+                                }, `${userProfile.firstName} ${userProfile.lastName}`),
+                                React.createElement('p', {
+                                    className: `text-sm font-medium member-tier`
+                                }, `${userProfile.memberTier} Member`)
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: "flex items-center space-x-2"
+                        },
+                            React.createElement('button', {
+                                onClick: () => setShowNotifications(!showNotifications),
+                                className: "relative p-2 text-gray-600 hover:text-gray-800"
+                            },
+                                React.createElement(Bell, { className: "w-5 h-5" }),
+                                notifications.filter(n => !n.read).length > 0 && React.createElement('span', {
+                                    className: "absolute -top-1 -right-1 w-3 h-3 bg-red-500 text-white text-xs rounded-full flex items-center justify-center notification-dot"
+                                }, notifications.filter(n => !n.read).length)
+                            ),
+                            React.createElement('button', {
+                                onClick: () => setCurrentView('settings'),
+                                className: "p-2 text-gray-600 hover:text-gray-800"
+                            }, React.createElement(Settings, { className: "w-5 h-5" }))
+                        )
+                    )
+                )
+            );
+
+            // Quick Stats Component
+            const QuickStats = () => React.createElement('div', {
+                className: "grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            },
+                [
+                    { label: 'Total Spent', value: `$${userProfile.totalSpent}`, icon: DollarSign, color: 'blue' },
+                    { label: 'Total Savings', value: `$${userProfile.totalSavings}`, icon: TrendingUp, color: 'green' },
+                    { label: 'Passes Owned', value: userProfile.passesOwned, icon: Gift, color: 'purple' },
+                    { label: 'Attractions Visited', value: userProfile.attractionsVisited, icon: MapPin, color: 'orange' }
+                ].map((stat, index) => 
+                    React.createElement('div', {
+                        key: index,
+                        className: "stat-card bg-white rounded-lg shadow-md p-4"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center justify-between"
+                        },
+                            React.createElement('div', null,
+                                React.createElement('p', {
+                                    className: "text-sm text-gray-600"
+                                }, stat.label),
+                                React.createElement('p', {
+                                    className: "text-xl font-bold text-gray-800"
+                                }, stat.value)
+                            ),
+                            React.createElement(stat.icon, { 
+                                className: `w-6 h-6 text-${stat.color}-600` 
+                            })
+                        )
+                    )
+                )
+            );
+
+            // Loyalty Progress Component
+            const LoyaltyProgress = () => React.createElement('div', {
+                className: "bg-white rounded-lg shadow-md p-6 mb-6"
+            },
+                React.createElement('div', {
+                    className: "flex items-center justify-between mb-4"
+                },
+                    React.createElement('h3', {
+                        className: "text-lg font-semibold text-gray-800"
+                    }, "Loyalty Program"),
+                    React.createElement('div', {
+                        className: "flex items-center space-x-2"
+                    },
+                        React.createElement(Award, { className: "w-5 h-5 text-yellow-500" }),
+                        React.createElement('span', {
+                            className: "font-medium text-yellow-600"
+                        }, `${userProfile.memberTier} Member`)
+                    )
+                ),
+                
+                React.createElement('div', {
+                    className: "mb-4"
+                },
+                    React.createElement('div', {
+                        className: "flex justify-between text-sm text-gray-600 mb-2"
+                    },
+                        React.createElement('span', null, `${userProfile.loyaltyPoints} points`),
+                        React.createElement('span', null, `${userProfile.nextTierPoints} points to Platinum`)
+                    ),
+                    React.createElement('div', {
+                        className: "w-full bg-gray-200 rounded-full h-3"
+                    },
+                        React.createElement('div', {
+                            className: "progress-bar h-3 rounded-full transition-all duration-1000",
+                            style: { width: `${loyaltyProgress}%` }
+                        })
+                    )
+                ),
+                
+                React.createElement('div', {
+                    className: "grid grid-cols-3 gap-4 text-center"
+                },
+                    [
+                        { label: 'Current Points', value: userProfile.loyaltyPoints },
+                        { label: 'This Year', value: 750 },
+                        { label: 'Lifetime', value: 2450 }
+                    ].map((item, index) => 
+                        React.createElement('div', {
+                            key: index
+                        },
+                            React.createElement('p', {
+                                className: "text-lg font-bold text-gray-800"
+                            }, item.value),
+                            React.createElement('p', {
+                                className: "text-xs text-gray-600"
+                            }, item.label)
+                        )
+                    )
+                )
+            );
+
+            // Recent Activity Component
+            const RecentActivity = () => React.createElement('div', {
+                className: "bg-white rounded-lg shadow-md p-6 mb-6"
+            },
+                React.createElement('div', {
+                    className: "flex items-center justify-between mb-4"
+                },
+                    React.createElement('h3', {
+                        className: "text-lg font-semibold text-gray-800"
+                    }, "Recent Activity"),
+                    React.createElement('button', {
+                        onClick: () => setCurrentView('history'),
+                        className: "text-blue-600 text-sm hover:underline"
+                    }, "View All")
+                ),
+                
+                React.createElement('div', {
+                    className: "space-y-3"
+                }, accountData.purchaseHistory.slice(0, 3).map(order => 
+                    React.createElement('div', {
+                        key: order.id,
+                        className: "flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    },
+                        React.createElement('div', null,
+                            React.createElement('p', {
+                                className: "font-medium text-gray-800"
+                            }, `Order ${order.id}`),
+                            React.createElement('p', {
+                                className: "text-sm text-gray-600"
+                            }, new Date(order.date).toLocaleDateString()),
+                            React.createElement('p', {
+                                className: "text-sm text-green-600"
+                            }, `Saved $${order.savings.toFixed(0)}`)
+                        ),
+                        React.createElement('div', {
+                            className: "text-right"
+                        },
+                            React.createElement('p', {
+                                className: "font-bold text-gray-800"
+                            }, `$${order.total.toFixed(2)}`),
+                            React.createElement('span', {
+                                className: `text-xs px-2 py-1 rounded-full ${
+                                    order.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                }`
+                            }, order.status.toUpperCase())
+                        )
+                    )
+                ))
+            );
+
+            // Achievements Component
+            const Achievements = () => React.createElement('div', {
+                className: "bg-white rounded-lg shadow-md p-6 mb-6"
+            },
+                React.createElement('h3', {
+                    className: "text-lg font-semibold text-gray-800 mb-4"
+                }, "Achievements"),
+                
+                React.createElement('div', {
+                    className: "grid grid-cols-2 md:grid-cols-3 gap-4"
+                }, accountData.achievements.filter(a => a.earned).slice(0, 6).map(achievement => 
+                    React.createElement('div', {
+                        key: achievement.id,
+                        className: "achievement-badge text-center p-3 bg-yellow-50 rounded-lg border border-yellow-200"
+                    },
+                        React.createElement(Trophy, { className: "w-8 h-8 text-yellow-600 mx-auto mb-2" }),
+                        React.createElement('p', {
+                            className: "text-sm font-medium text-gray-800"
+                        }, achievement.name),
+                        React.createElement('p', {
+                            className: "text-xs text-gray-600"
+                        }, achievement.description)
+                    )
+                ))
+            );
+
+            // Dashboard View
+            const DashboardView = () => React.createElement('div', {
+                className: "px-4 py-6"
+            },
+                React.createElement(QuickStats),
+                React.createElement(LoyaltyProgress),
+                React.createElement(RecentActivity),
+                React.createElement(Achievements),
+                
+                // Quick Actions
+                React.createElement('div', {
+                    className: "grid grid-cols-2 gap-4"
+                },
+                    React.createElement('button', {
+                        onClick: () => window.open('customer-passes.html', '_blank'),
+                        className: "card-hover bg-blue-600 text-white p-4 rounded-lg font-semibold"
+                    }, "View My Passes"),
+                    React.createElement('button', {
+                        onClick: () => window.open('index.html', '_blank'),
+                        className: "card-hover bg-green-600 text-white p-4 rounded-lg font-semibold"
+                    }, "Browse Attractions")
+                )
+            );
+
+            // Purchase History View
+            const PurchaseHistoryView = () => React.createElement('div', {
+                className: "px-4 py-6"
+            },
+                React.createElement('div', {
+                    className: "flex items-center justify-between mb-6"
+                },
+                    React.createElement('h2', {
+                        className: "text-xl font-bold text-gray-800"
+                    }, "Purchase History"),
+                    React.createElement('button', {
+                        onClick: () => {
+                            const csv = `Order ID,Date,Total,Savings,Status\n${accountData.purchaseHistory.map(o => 
+                                `${o.id},${new Date(o.date).toLocaleDateString()},${o.total},${o.savings},${o.status}`
+                            ).join('\n')}`;
+                            const blob = new Blob([csv], { type: 'text/csv' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'purchase-history.csv';
+                            a.click();
+                        },
+                        className: "flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                    },
+                        React.createElement(Download, { className: "w-4 h-4" }),
+                        React.createElement('span', { className: "text-sm" }, "Export")
+                    )
+                ),
+                
+                React.createElement('div', {
+                    className: "space-y-4"
+                }, accountData.purchaseHistory.map(order => 
+                    React.createElement('div', {
+                        key: order.id,
+                        className: "bg-white rounded-lg shadow-md p-6"
+                    },
+                        React.createElement('div', {
+                            className: "flex justify-between items-start mb-4"
+                        },
+                            React.createElement('div', null,
+                                React.createElement('h3', {
+                                    className: "font-bold text-gray-800"
+                                }, `Order ${order.id}`),
+                                React.createElement('p', {
+                                    className: "text-sm text-gray-600"
+                                }, new Date(order.date).toLocaleDateString())
+                            ),
+                            React.createElement('span', {
+                                className: `px-3 py-1 rounded-full text-sm ${
+                                    order.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                                }`
+                            }, order.status.toUpperCase())
+                        ),
+                        
+                        React.createElement('div', {
+                            className: "space-y-2 mb-4"
+                        }, order.passes.map((pass, index) => 
+                            React.createElement('div', {
+                                key: index,
+                                className: "flex justify-between items-center"
+                            },
+                                React.createElement('span', {
+                                    className: "text-gray-700"
+                                }, pass.name),
+                                React.createElement('span', {
+                                    className: "font-medium"
+                                }, `$${pass.price.toFixed(2)}`)
+                            )
+                        )),
+                        
+                        React.createElement('div', {
+                            className: "border-t pt-4 flex justify-between items-center"
+                        },
+                            React.createElement('div', null,
+                                React.createElement('p', {
+                                    className: "text-lg font-bold text-gray-800"
+                                }, `Total: $${order.total.toFixed(2)}`),
+                                React.createElement('p', {
+                                    className: "text-sm text-green-600"
+                                }, `Saved $${order.savings.toFixed(0)}`)
+                            ),
+                            order.status === 'active' && React.createElement('button', {
+                                onClick: () => window.open('customer-passes.html', '_blank'),
+                                className: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+                            }, "View Passes")
+                        )
+                    )
+                ))
+            );
+
+            // Profile Settings View
+            const ProfileSettingsView = () => React.createElement('div', {
+                className: "px-4 py-6"
+            },
+                React.createElement('h2', {
+                    className: "text-xl font-bold text-gray-800 mb-6"
+                }, "Profile Settings"),
+                
+                React.createElement('div', {
+                    className: "bg-white rounded-lg shadow-md p-6 mb-6"
+                },
+                    React.createElement('div', {
+                        className: "flex justify-between items-center mb-4"
+                    },
+                        React.createElement('h3', {
+                            className: "text-lg font-semibold text-gray-800"
+                        }, "Personal Information"),
+                        React.createElement('button', {
+                            onClick: () => setEditingProfile(!editingProfile),
+                            className: "text-blue-600 hover:text-blue-800"
+                        }, React.createElement(Edit, { className: "w-4 h-4" }))
+                    ),
+                    
+                    editingProfile ? React.createElement('div', {
+                        className: "space-y-4"
+                    },
+                        React.createElement('div', {
+                            className: "grid grid-cols-2 gap-4"
+                        },
+                            React.createElement('input', {
+                                type: "text",
+                                value: userProfile.firstName,
+                                onChange: (e) => setUserProfile({...userProfile, firstName: e.target.value}),
+                                placeholder: "First Name",
+                                className: "px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            }),
+                            React.createElement('input', {
+                                type: "text",
+                                value: userProfile.lastName,
+                                onChange: (e) => setUserProfile({...userProfile, lastName: e.target.value}),
+                                placeholder: "Last Name",
+                                className: "px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            })
+                        ),
+                        React.createElement('input', {
+                            type: "email",
+                            value: userProfile.email,
+                            onChange: (e) => setUserProfile({...userProfile, email: e.target.value}),
+                            placeholder: "Email",
+                            className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        }),
+                        React.createElement('input', {
+                            type: "tel",
+                            value: userProfile.phone,
+                            onChange: (e) => setUserProfile({...userProfile, phone: e.target.value}),
+                            placeholder: "Phone",
+                            className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        }),
+                        React.createElement('div', {
+                            className: "flex space-x-2"
+                        },
+                            React.createElement('button', {
+                                onClick: () => setEditingProfile(false),
+                                className: "flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+                            }, "Save Changes"),
+                            React.createElement('button', {
+                                onClick: () => setEditingProfile(false),
+                                className: "px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                            }, "Cancel")
+                        )
+                    ) : React.createElement('div', {
+                        className: "space-y-3"
+                    },
+                        React.createElement('div', {
+                            className: "flex justify-between"
+                        },
+                            React.createElement('span', { className: "text-gray-600" }, "Name"),
+                            React.createElement('span', { className: "font-medium" }, `${userProfile.firstName} ${userProfile.lastName}`)
+                        ),
+                        React.createElement('div', {
+                            className: "flex justify-between"
+                        },
+                            React.createElement('span', { className: "text-gray-600" }, "Email"),
+                            React.createElement('span', { className: "font-medium" }, userProfile.email)
+                        ),
+                        React.createElement('div', {
+                            className: "flex justify-between"
+                        },
+                            React.createElement('span', { className: "text-gray-600" }, "Phone"),
+                            React.createElement('span', { className: "font-medium" }, userProfile.phone)
+                        ),
+                        React.createElement('div', {
+                            className: "flex justify-between"
+                        },
+                            React.createElement('span', { className: "text-gray-600" }, "Member Since"),
+                            React.createElement('span', { className: "font-medium" }, new Date(userProfile.memberSince).toLocaleDateString())
+                        )
+                    )
+                ),
+                
+                // Payment Methods
+                React.createElement('div', {
+                    className: "bg-white rounded-lg shadow-md p-6 mb-6"
+                },
+                    React.createElement('div', {
+                        className: "flex justify-between items-center mb-4"
+                    },
+                        React.createElement('h3', {
+                            className: "text-lg font-semibold text-gray-800"
+                        }, "Payment Methods"),
+                        React.createElement('button', {
+                            className: "text-blue-600 hover:text-blue-800"
+                        }, React.createElement(Plus, { className: "w-4 h-4" }))
+                    ),
+                    
+                    React.createElement('div', {
+                        className: "space-y-3"
+                    }, accountData.paymentMethods.map(method => 
+                        React.createElement('div', {
+                            key: method.id,
+                            className: "flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                        },
+                            React.createElement('div', {
+                                className: "flex items-center space-x-3"
+                            },
+                                React.createElement(CreditCard, { className: "w-5 h-5 text-gray-600" }),
+                                React.createElement('div', null,
+                                    React.createElement('p', {
+                                        className: "font-medium text-gray-800"
+                                    }, `${method.brand} •••• ${method.last4}`),
+                                    React.createElement('p', {
+                                        className: "text-sm text-gray-600"
+                                    }, `Expires ${method.expiryMonth}/${method.expiryYear}`)
+                                )
+                            ),
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2"
+                            },
+                                method.isDefault && React.createElement('span', {
+                                    className: "text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full"
+                                }, "Default"),
+                                React.createElement('button', {
+                                    className: "text-red-600 hover:text-red-800"
+                                }, React.createElement(Trash2, { className: "w-4 h-4" }))
+                            )
+                        )
+                    ))
+                ),
+                
+                // Account Actions
+                React.createElement('div', {
+                    className: "space-y-3"
+                },
+                    React.createElement('button', {
+                        className: "w-full bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700"
+                    }, "Sign Out"),
+                    React.createElement('button', {
+                        className: "w-full bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300"
+                    }, "Delete Account")
+                )
+            );
+
+            // Notifications Panel
+            const NotificationsPanel = () => showNotifications && React.createElement('div', {
+                className: "fixed inset-0 bg-black bg-opacity-50 z-50",
+                onClick: () => setShowNotifications(false)
+            },
+                React.createElement('div', {
+                    className: "settings-panel fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-lg",
+                    onClick: (e) => e.stopPropagation()
+                },
+                    React.createElement('div', {
+                        className: "p-4 border-b"
+                    },
+                        React.createElement('div', {
+                            className: "flex justify-between items-center"
+                        },
+                            React.createElement('h3', {
+                                className: "text-lg font-semibold text-gray-800"
+                            }, "Notifications"),
+                            React.createElement('button', {
+                                onClick: () => setShowNotifications(false),
+                                className: "text-gray-600 hover:text-gray-800"
+                            }, "✕")
+                        )
+                    ),
+                    
+                    React.createElement('div', {
+                        className: "p-4 space-y-3"
+                    }, notifications.map(notification => 
+                        React.createElement('div', {
+                            key: notification.id,
+                            className: `p-3 rounded-lg border ${notification.read ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'}`
+                        },
+                            React.createElement('div', {
+                                className: "flex justify-between items-start mb-2"
+                            },
+                                React.createElement('h4', {
+                                    className: "font-medium text-gray-800"
+                                }, notification.title),
+                                !notification.read && React.createElement('div', {
+                                    className: "w-2 h-2 bg-blue-600 rounded-full"
+                                })
+                            ),
+                            React.createElement('p', {
+                                className: "text-sm text-gray-600 mb-2"
+                            }, notification.message),
+                            React.createElement('div', {
+                                className: "flex justify-between items-center"
+                            },
+                                React.createElement('span', {
+                                    className: "text-xs text-gray-500"
+                                }, new Date(notification.date).toLocaleDateString()),
+                                React.createElement('button', {
+                                    className: "text-xs text-blue-600 hover:underline"
+                                }, notification.action)
+                            )
+                        )
+                    ))
+                )
+            );
+
+            // Bottom Navigation
+            const BottomNav = () => React.createElement('nav', {
+                className: "fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg"
+            },
+                React.createElement('div', {
+                    className: "flex justify-around py-2"
+                }, [
+                    { id: 'dashboard', icon: User, label: 'Dashboard' },
+                    { id: 'history', icon: History, label: 'History' },
+                    { id: 'settings', icon: Settings, label: 'Settings' }
+                ].map(item => 
+                    React.createElement('button', {
+                        key: item.id,
+                        onClick: () => setCurrentView(item.id),
+                        className: `flex flex-col items-center p-2 ${
+                            currentView === item.id ? 'text-blue-600' : 'text-gray-600'
+                        }`
+                    },
+                        React.createElement(item.icon, { 
+                            className: `w-6 h-6 ${currentView === item.id ? 'text-blue-600' : 'text-gray-600'}` 
+                        }),
+                        React.createElement('span', {
+                            className: "text-xs mt-1"
+                        }, item.label)
+                    )
+                ))
+            );
+
+            // Main render
+            const renderContent = () => {
+                switch (currentView) {
+                    case 'dashboard':
+                        return React.createElement(DashboardView);
+                    case 'history':
+                        return React.createElement(PurchaseHistoryView);
+                    case 'settings':
+                        return React.createElement(ProfileSettingsView);
+                    default:
+                        return React.createElement(DashboardView);
+                }
+            };
+
+            return React.createElement('div', {
+                className: "min-h-screen bg-gray-100 pb-20"
+            },
+                React.createElement(Header),
+                renderContent(),
+                React.createElement(NotificationsPanel),
+                React.createElement(BottomNav)
+            );
+        };
+
+        ReactDOM.render(React.createElement(CustomerAccountApp), document.getElementById('root'));
+    </script>
+</body>
+</html>
