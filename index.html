@@ -381,15 +381,91 @@
             background: var(--ocean-blue);
         }
 
-        /* Attractions Section - Redesigned */
+        /* Attractions Section - Redesigned with promo above map */
         .attractions-preview {
             background: white;
             padding: 0;
         }
 
+        /* Promotional Header above the map */
+        .attractions-promo {
+            background: linear-gradient(135deg, var(--palm-green) 0%, var(--ocean-blue) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attractions-promo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="70" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .promo-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .promo-title {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .promo-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .promo-description {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .promo-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        /* Map Section */
         .attractions-header {
             position: relative;
-            height: 400px;
+            height: 500px;
             background: #f5f5f5;
         }
 
@@ -401,59 +477,18 @@
 
         .map-view {
             height: 100%;
-            background: #E3F2FD;
             position: relative;
             overflow: hidden;
         }
 
-        .map-placeholder {
-            position: relative;
-            height: 100%;
-            /* Simulated map with streets and water */
-            background: 
-                linear-gradient(90deg, transparent 49%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.1) 51%, transparent 51%),
-                linear-gradient(0deg, transparent 49%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.1) 51%, transparent 51%),
-                linear-gradient(135deg, #81C784 0%, #66BB6A 25%, #4CAF50 50%, #43A047 75%, #2E7D32 100%);
-            background-size: 100px 100px, 100px 100px, cover;
-            background-position: 0 0, 0 0, center;
-        }
-
-        .map-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(33,150,243,0.3), rgba(33,150,243,0.5));
-            /* Ocean on the right side */
-        }
-
-        .map-placeholder::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(to top, rgba(139,195,74,0.2), transparent);
-            /* Gradient fade at bottom */
-        }
-
-        .map-view {
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            background: #E3F2FD;
-        }
-
-        /* Clean Map Pins without complex shapes */
+        /* Improved Map Pins - positioned over land areas */
         .map-overlay-pins {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            pointer-events: none;
         }
 
         .map-marker {
@@ -461,6 +496,7 @@
             cursor: pointer;
             transition: all 0.3s;
             z-index: 10;
+            pointer-events: auto;
         }
 
         .map-marker:hover {
@@ -479,6 +515,7 @@
             font-size: 1.5rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             border: 3px solid white;
+            transition: all 0.3s;
         }
 
         .map-marker.active .marker-icon {
@@ -487,6 +524,7 @@
             height: 56px;
             font-size: 1.8rem;
             box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+            border-color: var(--coral);
         }
 
         .marker-tooltip {
@@ -519,66 +557,6 @@
             bottom: 70px;
             background: var(--coral);
             color: white;
-        }
-
-        .map-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: var(--text-dark);
-            background: rgba(255,255,255,0.95);
-            padding: 2rem 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: all 0.3s ease-out;
-        }
-
-        .map-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-            transform: translate(-50%, -50%) scale(0.9);
-        }
-
-        .overlay-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: var(--text-light);
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-
-        .overlay-close:hover {
-            background: rgba(0,0,0,0.1);
-            color: var(--text-dark);
-        }
-
-        .map-overlay h1 {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 0.5rem;
-            letter-spacing: 2px;
-        }
-
-        .map-overlay h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .map-overlay p {
-            color: var(--text-light);
-            line-height: 1.5;
         }
 
         /* Filter Bar */
@@ -707,24 +685,24 @@
         /* Updated Attractions Grid */
         .attractions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
 
         .attraction-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             transition: all 0.3s;
             cursor: pointer;
             border: 1px solid #f0f0f0;
         }
 
         .attraction-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
 
         .attraction-card.featured {
@@ -732,7 +710,7 @@
         }
 
         .attraction-image {
-            height: 200px;
+            height: 220px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -741,12 +719,12 @@
         }
 
         .attraction-card.featured .attraction-image {
-            height: 250px;
+            height: 280px;
         }
 
         .image-placeholder {
             font-size: 4rem;
-            opacity: 0.3;
+            opacity: 0.4;
             color: white;
         }
 
@@ -754,22 +732,25 @@
             position: absolute;
             top: 1rem;
             left: 1rem;
-            background: white;
-            padding: 0.25rem 0.75rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.4rem 0.8rem;
             border-radius: 20px;
             font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .season-badge {
             position: absolute;
             bottom: 1rem;
             left: 1rem;
-            background: rgba(255,255,255,0.95);
-            color: var(--coral);
+            background: rgba(255,107,107,0.95);
+            color: white;
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .attraction-info {
@@ -777,10 +758,11 @@
         }
 
         .attraction-info h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             color: var(--text-dark);
+            line-height: 1.3;
         }
 
         .price-row {
@@ -792,12 +774,22 @@
 
         .regular-price {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            text-decoration: line-through;
+        }
+
+        .free-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .attraction-desc {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.5;
             margin-bottom: 0.75rem;
         }
@@ -1023,6 +1015,18 @@
                 font-size: 1rem;
             }
 
+            .promo-title {
+                font-size: 2rem;
+            }
+
+            .promo-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .promo-stats {
+                gap: 1.5rem;
+            }
+
             .pass-grid {
                 grid-template-columns: 1fr;
             }
@@ -1040,12 +1044,14 @@
                 flex-wrap: nowrap;
             }
 
-            .map-overlay {
-                padding: 1rem;
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
             }
 
-            .map-overlay h1 {
-                font-size: 1.5rem;
+            .view-controls {
+                justify-content: center;
             }
         }
 
@@ -1246,8 +1252,33 @@
         </div>
     </section>
 
-    <!-- Attractions Section with Map -->
+    <!-- Attractions Section with Promo Header -->
     <section class="attractions-preview" id="attractions">
+        <!-- Promotional Header -->
+        <div class="attractions-promo">
+            <div class="promo-content">
+                <h1 class="promo-title">CHOOSE FROM 156 ATTRACTIONS</h1>
+                <h2 class="promo-subtitle">FREE WITH PALM BEACH PASS</h2>
+                <p class="promo-description">Access outback adventures, surfing hotspots, museums and more experiences. One time payment for unlimited access.</p>
+                
+                <div class="promo-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">156+</span>
+                        <div class="stat-label">Attractions</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50%</span>
+                        <div class="stat-label">Average Savings</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">200K+</span>
+                        <div class="stat-label">Happy Visitors</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
         <div class="attractions-header">
             <div class="map-container">
                 <!-- Interactive Map -->
@@ -1262,66 +1293,80 @@
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                     
-                    <!-- Simple Map Pins -->
+                    <!-- Repositioned Map Pins - All over land areas -->
                     <div class="map-overlay-pins">
-                        <div class="map-marker" style="top: 25%; left: 20%;" onclick="focusAttraction('lion')">
+                        <!-- West Palm Beach area -->
+                        <div class="map-marker" style="top: 35%; left: 25%;" onclick="focusAttraction('lion')">
                             <div class="marker-icon">🦁</div>
                             <div class="marker-tooltip">Lion Country Safari</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 35%; left: 45%;" onclick="focusAttraction('norton')">
+                        <!-- Central Palm Beach -->
+                        <div class="map-marker" style="top: 40%; left: 35%;" onclick="focusAttraction('norton')">
                             <div class="marker-icon">🎨</div>
                             <div class="marker-tooltip">Norton Museum</div>
                         </div>
                         
-                        <div class="map-marker active" style="top: 45%; left: 60%;" onclick="focusAttraction('boynton')">
+                        <!-- Boynton Beach inland -->
+                        <div class="map-marker active" style="top: 55%; left: 45%;" onclick="focusAttraction('boynton')">
                             <div class="marker-icon">🤿</div>
                             <div class="marker-tooltip">Boynton Beach Dive Center</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 30%; left: 70%;" onclick="focusAttraction('zoo')">
+                        <!-- Palm Beach Zoo area -->
+                        <div class="map-marker" style="top: 42%; left: 50%;" onclick="focusAttraction('zoo')">
                             <div class="marker-icon">🐘</div>
                             <div class="marker-tooltip">Palm Beach Zoo</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 55%; left: 35%;" onclick="focusAttraction('rapids')">
+                        <!-- Rapids Water Park - inland -->
+                        <div class="map-marker" style="top: 50%; left: 30%;" onclick="focusAttraction('rapids')">
                             <div class="marker-icon">💦</div>
                             <div class="marker-tooltip">Rapids Water Park</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 60%; left: 55%;" onclick="focusAttraction('seaquarium')">
+                        <!-- Seaquarium - coastal but on land -->
+                        <div class="map-marker" style="top: 60%; left: 40%;" onclick="focusAttraction('seaquarium')">
                             <div class="marker-icon">🐠</div>
                             <div class="marker-tooltip">Seaquarium</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 40%; left: 30%;" onclick="focusAttraction('worth')">
+                        <!-- Worth Avenue - Palm Beach -->
+                        <div class="map-marker" style="top: 45%; left: 55%;" onclick="focusAttraction('worth')">
                             <div class="marker-icon">💎</div>
                             <div class="marker-tooltip">Worth Avenue</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 20%; left: 50%;" onclick="focusAttraction('flyboard')">
+                        <!-- Flyboard - near coast but on land -->
+                        <div class="map-marker" style="top: 30%; left: 40%;" onclick="focusAttraction('flyboard')">
                             <div class="marker-icon">🏄</div>
                             <div class="marker-tooltip">Flyboard South FL</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 70%; left: 40%;" onclick="focusAttraction('morikami')">
+                        <!-- Morikami Gardens - Delray Beach area -->
+                        <div class="map-marker" style="top: 65%; left: 35%;" onclick="focusAttraction('morikami')">
                             <div class="marker-icon">🌸</div>
                             <div class="marker-tooltip">Morikami Gardens</div>
                         </div>
                         
-                        <div class="map-marker" style="top: 50%; left: 25%;" onclick="focusAttraction('spady')">
+                        <!-- Spady Museum - Delray Beach -->
+                        <div class="map-marker" style="top: 62%; left: 42%;" onclick="focusAttraction('spady')">
                             <div class="marker-icon">🏛️</div>
                             <div class="marker-tooltip">Spady Museum</div>
                         </div>
+                        
+                        <!-- Boca Raton Museum -->
+                        <div class="map-marker" style="top: 70%; left: 38%;" onclick="focusAttraction('boca')">
+                            <div class="marker-icon">🏛️</div>
+                            <div class="marker-tooltip">Boca Raton Museum</div>
+                        </div>
+                        
+                        <!-- Young At Art Museum -->
+                        <div class="map-marker" style="top: 75%; left: 32%;" onclick="focusAttraction('young-art')">
+                            <div class="marker-icon">🎨</div>
+                            <div class="marker-tooltip">Young At Art Museum</div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Header Text Overlay -->
-                <div class="map-overlay" id="mapOverlay">
-                    <button class="overlay-close" onclick="closeMapOverlay()">×</button>
-                    <h1>CHOOSE FROM 156 ATTRACTIONS</h1>
-                    <h2><span style="color: var(--success);">FREE</span> WITH PALM BEACH PASS</h2>
-                    <p>Access outback adventures, surfing hotspots, museums and more experiences.<br>One time payment.</p>
                 </div>
             </div>
         </div>
@@ -1338,7 +1383,7 @@
                     <button class="category-pill" onclick="filterCategory('family')">FAMILY ATTRACTIONS</button>
                     <button class="category-pill" onclick="filterCategory('outdoor')">OUTDOOR SPORTS</button>
                     <button class="category-pill" onclick="filterCategory('special')">SPECIAL OFFERS</button>
-                    <button class="category-pill" onclick="filterCategory('top')">TOP ATTRACTION</button>
+                    <button class="category-pill" onclick="filterCategory('culture')">MUSEUMS & CULTURE</button>
                 </div>
                 
                 <div class="view-controls">
@@ -1362,157 +1407,15 @@
                 <div class="attraction-card" data-category="culture" onclick="openAttraction('boca-museum')">
                     <div class="attraction-image" style="background: linear-gradient(135deg, #8B7355, #D4AF37);">
                         <div class="image-placeholder">🏛️</div>
-                        <span class="category-tag">🏛️</span>
+                        <span class="category-tag">🏛️ Museum</span>
                     </div>
                     <div class="attraction-info">
                         <h3>Boca Raton Museum of Art</h3>
                         <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
+                            <span class="regular-price">Regular price $18</span>
+                            <span class="free-badge">FREE</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Boynton Beach Dive Center -->
-                <div class="attraction-card featured" data-category="outdoor" onclick="openAttraction('dive-center')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #006B7D, #00A8CC);">
-                        <div class="image-placeholder">🤿</div>
-                        <span class="category-tag">🏊</span>
-                        <span class="season-badge">Closed for the season</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Boynton Beach Dive Center</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                        <p class="attraction-desc">Both entertaining and educational, this underwater wonderland has it all so dive in and explore the...</p>
-                        <a href="#" class="season-link">Closed for the season</a>
-                    </div>
-                </div>
-
-                <!-- Spady Museum -->
-                <div class="attraction-card" data-category="culture" onclick="openAttraction('spady-museum')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #8B4513, #D2691E);">
-                        <div class="image-placeholder">🏛️</div>
-                        <span class="category-tag">🎭</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Spady Museum</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Worth Avenue -->
-                <div class="attraction-card" data-category="special" onclick="openAttraction('worth-avenue')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">
-                        <div class="image-placeholder">🛍️</div>
-                        <span class="category-tag">🛍️</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Worth Avenue</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Norton Museum -->
-                <div class="attraction-card" data-category="culture" onclick="openAttraction('norton-museum')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #4B0082, #8A2BE2);">
-                        <div class="image-placeholder">🎨</div>
-                        <span class="category-tag">🏛️</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Norton Museum of Art</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Craft Food Tours -->
-                <div class="attraction-card" data-category="special" onclick="openAttraction('food-tours')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #FF6347, #FF4500);">
-                        <div class="image-placeholder">🍴</div>
-                        <span class="category-tag">🍽️</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Craft Food Tours</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Flyboard South Florida -->
-                <div class="attraction-card featured" data-category="outdoor" onclick="openAttraction('flyboard')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #1E90FF, #00BFFF);">
-                        <div class="image-placeholder">🏄</div>
-                        <span class="category-tag">🎯</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Flyboard South Florida</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Delray Beach Playhouse -->
-                <div class="attraction-card" data-category="culture" onclick="openAttraction('playhouse')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #8B008B, #9370DB);">
-                        <div class="image-placeholder">🎭</div>
-                        <span class="category-tag">🎭</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Delray Beach Playhouse</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Young At Art Museum -->
-                <div class="attraction-card" data-category="family" onclick="openAttraction('young-art')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #FF69B4, #FFB6C1);">
-                        <div class="image-placeholder">🎨</div>
-                        <span class="category-tag">👨‍👩‍👧‍👦</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Young At Art Museum</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- West Palm Beach Food Tours -->
-                <div class="attraction-card featured" data-category="special" onclick="openAttraction('food-tours-wpb')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #FFA500, #FF8C00);">
-                        <div class="image-placeholder">🥘</div>
-                        <span class="category-tag">🎯</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>West Palm Beach Food Tours</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Palm Beach Seaquarium -->
-                <div class="attraction-card" data-category="family" onclick="openAttraction('seaquarium')">
-                    <div class="attraction-image" style="background: linear-gradient(135deg, #00CED1, #48D1CC);">
-                        <div class="image-placeholder">🐠</div>
-                        <span class="category-tag">🐟</span>
-                    </div>
-                    <div class="attraction-info">
-                        <h3>Palm Beach Seaquarium</h3>
-                        <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
-                        </div>
-                        <p class="attraction-desc">Both entertaining and educational, this underwater wonderland has it all so dive in and explore the oceans most amazing creatures at Seaquarium.</p>
+                        <p class="attraction-desc">Contemporary and modern art collections featuring rotating exhibitions and permanent works.</p>
                     </div>
                 </div>
 
@@ -1520,14 +1423,177 @@
                 <div class="attraction-card featured" data-category="family" onclick="openAttraction('lion-safari')">
                     <div class="attraction-image" style="background: linear-gradient(135deg, #8B4513, #DEB887);">
                         <div class="image-placeholder">🦁</div>
-                        <span class="category-tag">🦁</span>
+                        <span class="category-tag">🦁 Safari</span>
                     </div>
                     <div class="attraction-info">
                         <h3>Lion Country Safari</h3>
                         <div class="price-row">
-                            <span class="regular-price">Regular price $120</span>
+                            <span class="regular-price">Regular price $39.95</span>
+                            <span class="free-badge">FREE</span>
                         </div>
-                        <p class="attraction-desc">Drive through 4 miles of open range habitat with over 1,000 animals roaming free. Florida's only drive-through safari!</p>
+                        <p class="attraction-desc">Drive through 4 miles of open range habitat with over 1,000 animals roaming free. Florida's only drive-through safari experience!</p>
+                    </div>
+                </div>
+
+                <!-- Spady Museum -->
+                <div class="attraction-card" data-category="culture" onclick="openAttraction('spady-museum')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #8B4513, #D2691E);">
+                        <div class="image-placeholder">🏛️</div>
+                        <span class="category-tag">🎭 History</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Spady Cultural Heritage Museum</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $10</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Celebrating African American history and culture in South Florida.</p>
+                    </div>
+                </div>
+
+                <!-- Worth Avenue -->
+                <div class="attraction-card" data-category="special" onclick="openAttraction('worth-avenue')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">
+                        <div class="image-placeholder">🛍️</div>
+                        <span class="category-tag">🛍️ Shopping</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Worth Avenue Shopping</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Exclusive discounts</span>
+                            <span class="free-badge">DISCOUNTS</span>
+                        </div>
+                        <p class="attraction-desc">Luxury shopping destination with exclusive boutiques and dining options.</p>
+                    </div>
+                </div>
+
+                <!-- Norton Museum -->
+                <div class="attraction-card" data-category="culture" onclick="openAttraction('norton-museum')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #4B0082, #8A2BE2);">
+                        <div class="image-placeholder">🎨</div>
+                        <span class="category-tag">🏛️ Museum</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Norton Museum of Art</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $18</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">World-class art collection spanning American, European, and Chinese art.</p>
+                    </div>
+                </div>
+
+                <!-- Boynton Beach Dive Center -->
+                <div class="attraction-card" data-category="outdoor" onclick="openAttraction('dive-center')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #006B7D, #00A8CC);">
+                        <div class="image-placeholder">🤿</div>
+                        <span class="category-tag">🏊 Water Sports</span>
+                        <span class="season-badge">Seasonal Hours</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Boynton Beach Dive Center</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $85</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Explore underwater wonders with guided diving experiences and equipment rental.</p>
+                        <a href="#" class="season-link">Check seasonal availability</a>
+                    </div>
+                </div>
+
+                <!-- Flyboard South Florida -->
+                <div class="attraction-card featured" data-category="outdoor" onclick="openAttraction('flyboard')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #1E90FF, #00BFFF);">
+                        <div class="image-placeholder">🏄</div>
+                        <span class="category-tag">🎯 Adventure</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Flyboard South Florida</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $199</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Experience the thrill of flying above water with our state-of-the-art flyboard technology.</p>
+                    </div>
+                </div>
+
+                <!-- Young At Art Museum -->
+                <div class="attraction-card" data-category="family" onclick="openAttraction('young-art')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #FF69B4, #FFB6C1);">
+                        <div class="image-placeholder">🎨</div>
+                        <span class="category-tag">👨‍👩‍👧‍👦 Family</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Young At Art Museum</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $14</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Interactive art experiences designed specifically for children and families.</p>
+                    </div>
+                </div>
+
+                <!-- Palm Beach Seaquarium -->
+                <div class="attraction-card" data-category="family" onclick="openAttraction('seaquarium')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #00CED1, #48D1CC);">
+                        <div class="image-placeholder">🐠</div>
+                        <span class="category-tag">🐟 Aquarium</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Palm Beach Seaquarium</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $29.95</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Both entertaining and educational, this underwater wonderland has it all so dive in and explore the oceans most amazing creatures.</p>
+                    </div>
+                </div>
+
+                <!-- Morikami Gardens -->
+                <div class="attraction-card featured" data-category="culture" onclick="openAttraction('morikami')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #228B22, #32CD32);">
+                        <div class="image-placeholder">🌸</div>
+                        <span class="category-tag">🌸 Gardens</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Morikami Museum & Gardens</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $15</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Beautiful Japanese gardens and cultural exhibits showcasing the history of Japanese pioneers in Florida.</p>
+                    </div>
+                </div>
+
+                <!-- Rapids Water Park -->
+                <div class="attraction-card" data-category="family" onclick="openAttraction('rapids')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #00BFFF, #1E90FF);">
+                        <div class="image-placeholder">💦</div>
+                        <span class="category-tag">💦 Water Park</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Rapids Water Park</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $34.99</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Thrilling water slides, lazy river, and family-friendly attractions for all ages.</p>
+                    </div>
+                </div>
+
+                <!-- Palm Beach Zoo -->
+                <div class="attraction-card" data-category="family" onclick="openAttraction('zoo')">
+                    <div class="attraction-image" style="background: linear-gradient(135deg, #228B22, #90EE90);">
+                        <div class="image-placeholder">🐘</div>
+                        <span class="category-tag">🐘 Zoo</span>
+                    </div>
+                    <div class="attraction-info">
+                        <h3>Palm Beach Zoo & Conservation Society</h3>
+                        <div class="price-row">
+                            <span class="regular-price">Regular price $24.95</span>
+                            <span class="free-badge">FREE</span>
+                        </div>
+                        <p class="attraction-desc">Home to over 900 animals representing species from around the globe with conservation programs.</p>
                     </div>
                 </div>
             </div>
@@ -1538,7 +1604,7 @@
                 <button class="page-btn">2</button>
                 <button class="page-btn">3</button>
                 <span class="page-dots">...</span>
-                <button class="page-btn">5</button>
+                <button class="page-btn">13</button>
                 <button class="page-btn next">→</button>
             </div>
         </div>
@@ -1771,12 +1837,6 @@
             }
         }
 
-        // Close map overlay
-        function closeMapOverlay() {
-            document.getElementById('mapOverlay').classList.add('hidden');
-            showMessage('Click any pin to explore attractions');
-        }
-
         // Attraction filtering
         function filterAttractions(category) {
             // Update active button
@@ -1793,19 +1853,48 @@
                     card.style.display = 'none';
                 }
             });
+            
+            // Update results count
+            const visibleCards = document.querySelectorAll('.attraction-card[style*="block"], .attraction-card:not([style*="none"])');
+            const count = category === 'all' ? 156 : visibleCards.length;
+            document.querySelector('.results-count').textContent = `${count} items found`;
         }
 
-        // New functions for enhanced attractions
+        // Enhanced functions for attractions
         function filterCategory(category) {
             filterAttractions(category);
         }
 
         function toggleFilters() {
-            showMessage('Advanced filters panel would open here');
+            showMessage('Advanced filters panel would open here - filter by price range, ratings, accessibility options, and more!');
         }
 
         function sortAttractions(sortBy) {
-            showMessage(`Sorting attractions by ${sortBy}`);
+            const grid = document.getElementById('attractionsGrid');
+            const cards = Array.from(grid.children);
+            
+            cards.sort((a, b) => {
+                switch(sortBy) {
+                    case 'rating':
+                        // Mock rating sort
+                        return Math.random() - 0.5;
+                    case 'distance':
+                        // Mock distance sort
+                        return Math.random() - 0.5;
+                    case 'price':
+                    default:
+                        // Extract price from regular price text
+                        const priceA = parseFloat(a.querySelector('.regular-price').textContent.replace(/[^0-9.]/g, '')) || 0;
+                        const priceB = parseFloat(b.querySelector('.regular-price').textContent.replace(/[^0-9.]/g, '')) || 0;
+                        return priceB - priceA; // High to low
+                }
+            });
+            
+            // Clear and re-append sorted cards
+            grid.innerHTML = '';
+            cards.forEach(card => grid.appendChild(card));
+            
+            showMessage(`Attractions sorted by ${sortBy}`);
         }
 
         function setView(viewType) {
@@ -1816,9 +1905,19 @@
             const grid = document.getElementById('attractionsGrid');
             if (viewType === 'list') {
                 grid.style.gridTemplateColumns = '1fr';
+                grid.style.gap = '1rem';
+                // Make featured cards span 1 column in list view
+                document.querySelectorAll('.attraction-card.featured').forEach(card => {
+                    card.style.gridColumn = 'span 1';
+                });
                 showMessage('Switched to list view');
             } else {
-                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+                grid.style.gap = '2rem';
+                // Restore featured cards spanning
+                document.querySelectorAll('.attraction-card.featured').forEach(card => {
+                    card.style.gridColumn = 'span 2';
+                });
                 showMessage('Switched to grid view');
             }
         }
@@ -1830,57 +1929,114 @@
             });
             event.currentTarget.classList.add('active');
             
-            // Scroll to related attraction card
-            const cards = document.querySelectorAll('.attraction-card');
-            cards.forEach(card => {
-                if (card.dataset.category === attractionId || 
-                    card.textContent.toLowerCase().includes(attractionId.toLowerCase())) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            });
+            // Find and highlight corresponding attraction card
+            const attractionNames = {
+                'lion': 'Lion Country Safari',
+                'norton': 'Norton Museum',
+                'boynton': 'Boynton Beach Dive Center',
+                'zoo': 'Palm Beach Zoo',
+                'rapids': 'Rapids Water Park',
+                'seaquarium': 'Seaquarium',
+                'worth': 'Worth Avenue',
+                'flyboard': 'Flyboard South Florida',
+                'morikami': 'Morikami',
+                'spady': 'Spady',
+                'boca': 'Boca Raton Museum',
+                'young-art': 'Young At Art Museum'
+            };
             
-            showMessage(`Selected: ${attractionId}`);
+            const attractionName = attractionNames[attractionId];
+            if (attractionName) {
+                const cards = document.querySelectorAll('.attraction-card');
+                cards.forEach(card => {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                });
+                
+                // Find and highlight the matching card
+                const matchingCard = Array.from(cards).find(card => 
+                    card.querySelector('h3').textContent.includes(attractionName.split(' ')[0])
+                );
+                
+                if (matchingCard) {
+                    matchingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    matchingCard.style.transform = 'scale(1.02)';
+                    matchingCard.style.boxShadow = '0 20px 60px rgba(255,107,107,0.3)';
+                    
+                    setTimeout(() => {
+                        matchingCard.style.transform = '';
+                        matchingCard.style.boxShadow = '';
+                    }, 2000);
+                }
+                
+                showMessage(`Selected: ${attractionName}`);
+            }
         }
 
         function openAttraction(attractionId) {
-            // In a real app, this would open the detailed attraction page
-            showMessage(`Opening detailed view for ${attractionId}`);
-            
-            // For demo, show a sample of what the detail page would look like
+            // Enhanced attraction detail preview
             const attractionDetails = {
                 'seaquarium': {
                     name: 'Palm Beach Seaquarium',
-                    price: '$39.95',
-                    description: 'Both entertaining and educational, this underwater wonderland has it all so dive in and explore the oceans most amazing creatures.'
+                    price: '$29.95',
+                    description: 'Underwater wonderland with marine life exhibits, dolphin shows, and interactive experiences.'
                 },
                 'lion-safari': {
                     name: 'Lion Country Safari',
                     price: '$39.95',
-                    description: 'Drive through 4 miles of open range habitat with over 1,000 animals roaming free.'
+                    description: 'Drive-through safari with over 1,000 animals in natural habitats.'
+                },
+                'norton-museum': {
+                    name: 'Norton Museum of Art',
+                    price: '$18.00',
+                    description: 'World-class art collection featuring American, European, and Chinese masterpieces.'
+                },
+                'boca-museum': {
+                    name: 'Boca Raton Museum of Art',
+                    price: '$18.00',
+                    description: 'Contemporary art museum with rotating exhibitions and educational programs.'
+                },
+                'flyboard': {
+                    name: 'Flyboard South Florida',
+                    price: '$199.00',
+                    description: 'Experience the thrill of flying above water with flyboard technology.'
+                },
+                'young-art': {
+                    name: 'Young At Art Museum',
+                    price: '$14.00',
+                    description: 'Interactive art museum designed for children and families.'
                 }
             };
             
-            if (attractionDetails[attractionId]) {
-                const details = attractionDetails[attractionId];
-                showMessage(`${details.name} - Regular price: ${details.price} | FREE with Palm Beach Pass!`);
+            const details = attractionDetails[attractionId];
+            if (details) {
+                showMessage(`🎫 ${details.name} | Regular: ${details.price} | FREE with Palm Beach Pass! | ${details.description}`, 'info');
+            } else {
+                showMessage(`Opening detailed view for this attraction - FREE with your Palm Beach Pass!`, 'success');
             }
         }
 
-        // Message display
+        // Message display with enhanced styling
         function showMessage(message, type = 'success') {
             const messageEl = document.createElement('div');
             messageEl.className = 'success-message';
+            messageEl.style.maxWidth = '400px';
+            messageEl.style.fontSize = '0.9rem';
+            messageEl.style.lineHeight = '1.4';
+            
             if (type === 'error') {
                 messageEl.style.background = 'var(--coral)';
             } else if (type === 'info') {
                 messageEl.style.background = 'var(--ocean-blue)';
             }
+            
             messageEl.textContent = message;
             document.body.appendChild(messageEl);
             
             setTimeout(() => {
-                messageEl.remove();
-            }, 3000);
+                messageEl.style.transform = 'translateX(100%)';
+                setTimeout(() => messageEl.remove(), 300);
+            }, 4000);
         }
 
         // Handle smooth scrolling for nav links
@@ -1893,6 +2049,72 @@
                 }
             });
         });
+
+        // Enhanced interaction feedback
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add subtle animation to attraction cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all attraction cards
+            document.querySelectorAll('.attraction-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add click effects to buttons
+            document.querySelectorAll('button, .btn-primary, .btn-secondary').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(255,255,255,0.5)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
